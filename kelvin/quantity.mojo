@@ -13,7 +13,7 @@ struct Dimensions[
     CD: IntLiteral,
 ]:
     @always_inline("builtin")
-    fn __init__(out self: Dimensions[L, M, T, EC, TH, A, CD]):
+    fn __init__(out self):
         pass
 
     @always_inline("builtin")

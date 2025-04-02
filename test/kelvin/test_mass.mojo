@@ -20,4 +20,4 @@ def test_sub():
 
 
 def test_str():
-    assert_equal(String(Kilogram(10)), "10.0 g^1")
+    assert_equal(String(Kilogram(10)), "10.0 kg^1")
