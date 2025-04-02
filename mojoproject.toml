@@ -1,0 +1,12 @@
+[project]
+authors = ["Brian Grenier <grenierb96@gmail.com>"]
+channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
+name = "Kelvin"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+test = "mojo test"
+
+[dependencies]
+max = ">=25.2.0.dev2025031805,<26"
