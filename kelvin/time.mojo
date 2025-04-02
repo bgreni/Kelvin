@@ -1,13 +1,16 @@
 from kelvin.common import Ratio
 from kelvin.quantity import *
 
-alias Seconds = Quantity[Dimensions[0, 1](), _]
+alias Second = Quantity[Dimensions[0, 0, 1, 0, 0, 0, 0](), _]
 
-fn time_cast[R: Ratio](v: Float64) -> Seconds:
-    return Seconds(R * v)
 
-fn Minutes(v: Float64) -> Seconds:
+fn time_cast[R: Ratio](v: Scalar) -> Second[v.dtype]:
+    return Second[v.dtype](R * v)
+
+
+fn Minute(v: Scalar) -> Second[v.dtype]:
     return time_cast[Ratio[60]()](v)
 
-fn Hours(v: Float64) -> Seconds:
-    return time_cast[Ratio[3600]()](v)
+
+fn Minute(v: Int) -> Second:
+    return Minute(Float64(v))

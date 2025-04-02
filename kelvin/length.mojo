@@ -1,7 +1,16 @@
-from kelvin.common import Ratio
 from kelvin.quantity import *
+from kelvin.common import Ratio
 
-alias Meters = Quantity[Dimensions[1, 0](), _]
+alias Meter = Quantity[Dimensions[1, 0, 0, 0, 0, 0, 0](), _]
 
-# fn length_cast[R: Ratio](v: Float64) -> Seconds:
-#     return Seconds(R * v)
+
+fn length_cast[R: Ratio](v: Scalar) -> Meter[v.dtype]:
+    return Meter[v.dtype](R * v)
+
+
+fn Kilometer(v: Scalar) -> Meter[v.dtype]:
+    return length_cast[Ratio.Kilo](v)
+
+
+fn Kilometer(v: Int) -> Meter:
+    return Kilometer(Float64(v))
