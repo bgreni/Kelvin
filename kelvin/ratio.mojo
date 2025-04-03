@@ -9,17 +9,16 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     alias Milli = Ratio[1, 1000]()
     alias Centi = Ratio[1, 100]()
     alias Deci = Ratio[1, 10]()
-    alias Null = Ratio[0, 0]()
-    alias Base = Ratio[1]()
+    alias Unitary = Ratio[1]()
     alias Deca = Ratio[10, 1]()
     alias Hecto = Ratio[100, 1]()
     alias Kilo = Ratio[1000, 1]()
     alias Mega = Ratio[1000000000, 1]()
     alias Giga = Ratio[1000000, 1]()
 
-    fn suffix(self) -> StringLiteral:
+    fn prefix(self) -> StringLiteral:
         @parameter
-        if Self() == Self.Base:
+        if Self() == Self.Unitary:
             return ""
         elif Self() == Self.Deci:
             return "d"
