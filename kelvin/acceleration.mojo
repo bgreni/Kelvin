@@ -1,4 +1,4 @@
-from .time import Time
-from .velocity import Velocity
+from .time import Second
+from .velocity import MetersPerSecond
 
-alias Acceleration = Quantity[Velocity.D / Second.D, _]
+alias Acceleration = Quantity[MetersPerSecond.D / Second.D, _]
