@@ -1,0 +1,16 @@
+name: Branch workflow
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+  lint:
+    uses: ./.github/workflows/pre_commit.yml
+  package:
+    uses: ./.github/workflows/package.yml
