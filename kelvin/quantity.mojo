@@ -124,6 +124,35 @@ struct Dimensions[
     ):
         return __type_of(result)()
 
+    fn write_to[W: Writer](self, mut writer: W):
+        @parameter
+        if L:
+            writer.write(" m^", L)
+
+        @parameter
+        if M:
+            writer.write(" kg^", M)
+
+        @parameter
+        if T:
+            writer.write(" s^", T)
+
+        @parameter
+        if EC:
+            writer.write(" A^", EC)
+
+        @parameter
+        if TH:
+            writer.write(" K^", TH)
+
+        @parameter
+        if A:
+            writer.write(" mol^", A)
+
+        @parameter
+        if CD:
+            writer.write(" cd^", CD)
+
 
 @value
 @register_passable("trivial")
@@ -183,19 +212,4 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
 
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(self._value)
-
-        @parameter
-        if D.L:
-            writer.write(" m^", D.L)
-        elif D.M:
-            writer.write(" kg^", D.M)
-        elif D.T:
-            writer.write(" s^", D.T)
-        elif D.EC:
-            writer.write(" A^", D.EC)
-        elif D.TH:
-            writer.write(" K^", D.TH)
-        elif D.A:
-            writer.write(" mol^", D.A)
-        elif D.CD:
-            writer.write(" cd^", D.CD)
+        writer.write(D)
