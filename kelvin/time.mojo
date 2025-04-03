@@ -1,4 +1,4 @@
-from kelvin.common import Ratio
+from kelvin.ratio import Ratio
 from kelvin.quantity import *
 
 alias Second = Quantity[Dimensions[0, 0, 1, 0, 0, 0, 0](), _]

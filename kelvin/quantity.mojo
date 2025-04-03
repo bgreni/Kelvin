@@ -1,4 +1,4 @@
-from .common import *
+from .ratio import *
 
 
 @value

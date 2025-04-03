@@ -1,5 +1,5 @@
 from kelvin.quantity import *
-from kelvin.common import Ratio
+from kelvin.ratio import Ratio
 
 alias Meter = Quantity[Dimensions[1, 0, 0, 0, 0, 0, 0](), _]
 
