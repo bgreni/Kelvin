@@ -35,8 +35,10 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
             return "da"
         elif Self() == Self.Hecto:
             return "h"
-        elif Self() == Self.Mega:
+        elif Self() == Self.Kilo:
             return "k"
+        elif Self() == Self.Mega:
+            return "M"
         elif Self() == Self.Giga:
             return "G"
         else:
