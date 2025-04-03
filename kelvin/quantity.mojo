@@ -187,27 +187,15 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         @parameter
         if D.L:
             writer.write(" m^", D.L)
-
-        @parameter
-        if D.M:
+        elif D.M:
             writer.write(" kg^", D.M)
-
-        @parameter
-        if D.T:
+        elif D.T:
             writer.write(" s^", D.T)
-
-        @parameter
-        if D.EC:
+        elif D.EC:
             writer.write(" A^", D.EC)
-
-        @parameter
-        if D.TH:
+        elif D.TH:
             writer.write(" K^", D.TH)
-
-        @parameter
-        if D.A:
+        elif D.A:
             writer.write(" mol^", D.A)
-
-        @parameter
-        if D.CD:
+        elif D.CD:
             writer.write(" cd^", D.CD)
