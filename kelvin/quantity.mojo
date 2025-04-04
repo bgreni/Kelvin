@@ -184,12 +184,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
 
     @always_inline
     @implicit
-    fn __init__(out self, other: Quantity[DT=Self.DT]):
+    fn __init__(out self, other: Quantity[DT = Self.DT]):
         constrained[
             Self.D == other.D,
             String.write("expected dimensions", Self.D, " received ", other.D),
         ]()
-        debug_assert[assert_mode='all'](False, "How did you even get here?")
+        debug_assert[assert_mode="all"](False, "How did you even get here?")
         self._value = other._value
 
     @always_inline
