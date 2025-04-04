@@ -17,6 +17,22 @@ struct Dimensions[
         pass
 
     @always_inline("builtin")
+    fn __eq__(self, o: Dimensions) -> Bool:
+        return (
+            L == o.L
+            and M == o.M
+            and T == o.T
+            and EC == o.EC
+            and TH == o.TH
+            and A == o.A
+            and CD == o.CD
+        )
+
+    @always_inline("builtin")
+    fn __ne__(self, o: Dimensions) -> Bool:
+        return not self == o
+
+    @always_inline("builtin")
     fn __truediv__[
         OL: IntLiteral,
         OM: IntLiteral,
@@ -165,6 +181,16 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     @always_inline
     fn __init__(out self, v: Self.DataType):
         self._value = v
+
+    @always_inline
+    @implicit
+    fn __init__(out self, other: Quantity[DT=Self.DT]):
+        constrained[
+            Self.D == other.D,
+            String.write("expected dimensions", Self.D, " received ", other.D),
+        ]()
+        debug_assert[assert_mode='all'](False, "How did you even get here?")
+        self._value = other._value
 
     @always_inline
     fn __truediv__[

@@ -14,4 +14,4 @@ jobs:
           run: |
             curl -ssL https://magic.modular.com | bash
             source $HOME/.bash_profile
-            magic run mojo package kelvin -o kelvin.mojopkg
+            magic run package

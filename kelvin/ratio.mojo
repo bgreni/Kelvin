@@ -1,4 +1,5 @@
 from builtin.string_literal import get_string_literal
+from math import gcd
 
 
 @value
@@ -15,6 +16,11 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     alias Kilo = Ratio[1000, 1]()
     alias Mega = Ratio[1000000000, 1]()
     alias Giga = Ratio[1000000, 1]()
+    alias _GCD = gcd(N, D)
+
+    fn __init__(out self):
+        constrained[N != 0, "Numerator cannot be 0"]()
+        constrained[D != 0, "Denominator cannot be 0"]()
 
     fn prefix(self) -> StringLiteral:
         @parameter
@@ -82,3 +88,6 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     @always_inline
     fn __str__(self) -> String:
         return String.write(self)
+
+    fn simplify(self, out output: Ratio[N // Self._GCD, D // Self._GCD]):
+        output = __type_of(output)()
