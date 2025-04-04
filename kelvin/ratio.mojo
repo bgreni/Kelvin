@@ -10,7 +10,7 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     alias Milli = Ratio[1, 1000]()
     alias Centi = Ratio[1, 100]()
     alias Deci = Ratio[1, 10]()
-    alias Base = Ratio[1]()
+    alias Unitary = Ratio[1]()
     alias Deca = Ratio[10, 1]()
     alias Hecto = Ratio[100, 1]()
     alias Kilo = Ratio[1000, 1]()
@@ -22,9 +22,9 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         constrained[N != 0, "Numerator cannot be 0"]()
         constrained[D != 0, "Denominator cannot be 0"]()
 
-    fn suffix(self) -> StringLiteral:
+    fn prefix(self) -> StringLiteral:
         @parameter
-        if Self() == Self.Base:
+        if Self() == Self.Unitary:
             return ""
         elif Self() == Self.Deci:
             return "d"
