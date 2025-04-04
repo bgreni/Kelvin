@@ -1,6 +1,6 @@
 # Kelvin
 
-A powerful SI unit library written in Mojo for all you scientific computing needs.
+A powerful dimensional analysis library written in Mojo for all you scientific computing needs.
 
 
 ## Usage
