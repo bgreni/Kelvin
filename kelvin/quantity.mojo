@@ -73,69 +73,13 @@ struct Dimensions[
         self,
         p: IntLiteral[_],
         out result: Dimensions[
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    L.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    M.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    T.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    EC.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    TH.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    A.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
-            IntLiteral[
-                __mlir_attr[
-                    `#pop<int_literal_bin<mul `,
-                    CD.value,
-                    `,`,
-                    p.value,
-                    `>> : !pop.int_literal`,
-                ]
-            ](),
+            __type_of(L * p)(),
+            __type_of(M * p)(),
+            __type_of(T * p)(),
+            __type_of(EC * p)(),
+            __type_of(TH * p)(),
+            __type_of(A * p)(),
+            __type_of(CD * p)(),
         ],
     ):
         return __type_of(result)()
