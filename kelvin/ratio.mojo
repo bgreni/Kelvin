@@ -81,6 +81,16 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         else:
             return (other * N) / D
 
+    fn __add__[
+        NO: UInt, DO: UInt, //
+    ](self, other: Ratio[NO, DO], out result: Ratio[N * DO + NO * D, D * DO]):
+        return __type_of(result)()
+
+    fn __mul__[
+        NO: UInt, DO: UInt, //
+    ](self, other: Ratio[NO, DO], out result: Ratio[N * NO, D * DO]):
+        return __type_of(result)()
+
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(N, "/", D)

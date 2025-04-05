@@ -19,3 +19,41 @@ def test_simplify():
     _test[4, 3, 4, 3]()
     _test[10 * 4, 10 * 3, 4, 3]()
     _test[10 * 3, 10 * 4, 3, 4]()
+
+
+def test_add():
+    assert_equal(
+        String((Ratio[2, 3]() + Ratio[1, 3]()).simplify()),
+        String(Ratio[1, 1]()),
+    )
+    assert_equal(
+        String((Ratio[2, 3]() + Ratio[3, 1]()).simplify()),
+        String(Ratio[11, 3]()),
+    )
+    assert_equal(
+        String((Ratio[2, 3]() + Ratio[3, 2]()).simplify()),
+        String(Ratio[13, 6]()),
+    )
+    assert_equal(
+        String((Ratio[2 * 3, 3 * 5]() + Ratio[2, 5]()).simplify()),
+        String(Ratio[4, 5]()),
+    )
+
+
+def test_multiply():
+    assert_equal(
+        String((Ratio[2, 3]() * Ratio[1, 3]()).simplify()),
+        String(Ratio[2, 9]()),
+    )
+    assert_equal(
+        String((Ratio[2, 3]() * Ratio[3, 1]()).simplify()),
+        String(Ratio[2, 1]()),
+    )
+    assert_equal(
+        String((Ratio[2, 3]() * Ratio[3, 2]()).simplify()),
+        String(Ratio[1, 1]()),
+    )
+    assert_equal(
+        String((Ratio[2 * 3, 3 * 5]() * Ratio[5, 2]()).simplify()),
+        String(Ratio[1, 1]()),
+    )
