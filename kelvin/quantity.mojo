@@ -17,20 +17,20 @@ struct Dimensions[
         pass
 
     @always_inline("builtin")
-    fn __eq__(self, o: Dimensions) -> Bool:
+    fn __eq__(self, O: Dimensions) -> Bool:
         return (
-            L == o.L
-            and M == o.M
-            and T == o.T
-            and EC == o.EC
-            and TH == o.TH
-            and A == o.A
-            and CD == o.CD
+            L == O.L
+            and M == O.M
+            and T == O.T
+            and EC == O.EC
+            and TH == O.TH
+            and A == O.A
+            and CD == O.CD
         )
 
     @always_inline("builtin")
-    fn __ne__(self, o: Dimensions) -> Bool:
-        return not self == o
+    fn __ne__(self, O: Dimensions) -> Bool:
+        return not self == O
 
     @always_inline("builtin")
     fn __truediv__[
@@ -129,6 +129,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     @always_inline
     @implicit
     fn __init__(out self, other: Quantity[DT = Self.DT]):
+        """This exists to give a more helpful error message when one tries to use the
+        wrong type implicitly.
+        """
         constrained[
             Self.D == other.D,
             String.write("expected dimensions", Self.D, " received ", other.D),
