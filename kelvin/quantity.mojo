@@ -185,3 +185,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(self._value)
         writer.write(D)
+
+    @always_inline
+    fn value(self) -> Self.DataType:
+        return self._value
