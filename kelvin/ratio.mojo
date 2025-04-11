@@ -81,11 +81,13 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         else:
             return (other * N) / D
 
+    @always_inline
     fn __add__[
         NO: UInt, DO: UInt, //
     ](self, other: Ratio[NO, DO], out result: Ratio[N * DO + NO * D, D * DO]):
         return __type_of(result)()
 
+    @always_inline
     fn __mul__[
         NO: UInt, DO: UInt, //
     ](self, other: Ratio[NO, DO], out result: Ratio[N * NO, D * DO]):
@@ -99,5 +101,6 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     fn __str__(self) -> String:
         return String.write(self)
 
+    @always_inline
     fn simplify(self, out output: Ratio[N // Self._GCD, D // Self._GCD]):
         output = __type_of(output)()
