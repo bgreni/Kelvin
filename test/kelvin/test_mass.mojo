@@ -3,13 +3,20 @@ from testing import assert_equal
 
 
 def test_ctor():
-    var s = Kilogram(10)
-    assert_equal(s._value, 10.0)
-    assert_equal(s.DT, DType.float64)
+    var a = Kilogram(10)
+    assert_equal(a.value(), 10.0)
+    assert_equal(a.DT, DType.float64)
+
+    var b = Kilogram[DType.int64](10)
+    assert_equal(b.value(), 10)
+    assert_equal(b.DT, DType.int64)
 
 
 def test_add():
     assert_equal(Kilogram(10) + Kilogram(5), Kilogram(15))
+    var s = Kilogram(30)
+    s += Kilogram(20)
+    assert_equal(s, Kilogram(50))
 
 
 def test_sub():

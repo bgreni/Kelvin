@@ -3,15 +3,13 @@ from testing import assert_equal
 
 
 def test_ctor():
-    var s = Second(10)
-    assert_equal(s._value, 10.0)
-    assert_equal(s.DT, DType.float64)
+    var a = Second(10)
+    assert_equal(a.value(), 10.0)
+    assert_equal(a.DT, DType.float64)
 
-    var m = Minute(Int64(10))
-    assert_equal(m._value, 600)
-    assert_equal(m.DT, DType.int64)
-
-    assert_equal(Minute(3), Second(180))
+    var b = Second[DType.int64](10)
+    assert_equal(b.value(), 10)
+    assert_equal(b.DT, DType.int64)
 
 
 def test_add():
@@ -30,3 +28,8 @@ def test_sub():
 
 def test_str():
     assert_equal(String(Second(10)), "10.0 s^1")
+
+
+def test_cast():
+    var a = Minute(10)
+    assert_equal(a.value(), 600)

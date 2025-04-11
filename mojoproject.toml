@@ -6,9 +6,12 @@ platforms = ["linux-64", "linux-aarch64", "osx-arm64"]
 version = "0.1.0"
 
 [tasks]
-test = "mojo test"
+test = { cmd = "mojo test", depends-on=["generate_tests", "format_quiet"] }
 format = "mojo format -l 80 kelvin test"
+format_quiet = "magic run format -q"
 package = "mojo package kelvin -o kelvin.mojopkg"
+generate_tests = "python3 generate_tests.py"
+
 
 [dependencies]
 max = ">=25.2.0.dev2025031805,<26"
