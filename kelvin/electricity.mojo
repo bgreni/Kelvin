@@ -1,3 +1,14 @@
 from kelvin.quantity import *
 
-alias Ampere = Quantity[Dimensions[0, 0, 0, 1, 0, 0, 0](), _]
+alias Ampere = Quantity[
+    Dimensions[
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension[1, Ratio.Unitary, "A"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+    ](),
+    _,
+]

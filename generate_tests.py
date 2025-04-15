@@ -1,7 +1,7 @@
 
 template = \
 """from kelvin import *
-from testing import assert_equal
+from testing import *
 
 
 def test_ctor():
@@ -27,16 +27,28 @@ def test_sub():
     s -= {0}(20)
     assert_equal(s, {0}(10))
 
+# def test_div():
+#     var a = {0}(20) / {0}(10)
+#     assert_equal(a.value(), 2.0)
+#     assert_equal(String(a), '2.0')
+
+# def test_mul():
+#     var a = {0}(20) * {0}(2)
+#     assert_equal(a.value(), 40.0)
 
 def test_str():
     assert_equal(String({0}(10)), "10.0 {1}")
+
+# def test_eq():
+#     assert_equal({0}(10), {0}(10))
+#     assert_not_equal({0}(10), {0}(20))
 """
 
 cast_test_template = \
 """
 def test_cast():
-    var a = {0}(10)
-    assert_equal(a.value(), {1})
+    var a = {0}(cast_from={1}(10))
+    assert_equal(a.value(), {2})
 """
 
 if __name__ == '__main__':
@@ -77,8 +89,32 @@ if __name__ == '__main__':
         {
             'module_name': 'velocity',
             'unit_name': 'MetersPerSecond',
-            'str_suffix': 'm^1 s^-1'
-        }
+            'str_suffix': 'm^1 s^-1',
+            'cast_test_config': {
+                'other_type': 'MilesPerHour',
+                'expected_value': 4.4704
+            }
+        },
+        {
+            'module_name': 'electricity',
+            'unit_name': 'Ampere',
+            'str_suffix': 'A^1'
+        },
+        {
+            'module_name': 'substance_amount',
+            'unit_name': 'Mole',
+            'str_suffix': 'mol^1'
+        },
+        {
+            'module_name': 'temperature',
+            'unit_name': 'Kelvin',
+            'str_suffix': 'K^1'
+        },
+        {
+            'module_name': 'luminosity',
+            'unit_name': 'Candela',
+            'str_suffix': 'cd^1'
+        },
     ]
 
     for config in test_configs:
@@ -88,7 +124,7 @@ if __name__ == '__main__':
 
             if 'cast_test_config' in config:
                 c = config['cast_test_config']
-                s = cast_test_template.format(c['other_type'], c['expected_value'])
+                s = cast_test_template.format(config['unit_name'], c['other_type'], c['expected_value'])
                 f.write('\n' + s)
 
 

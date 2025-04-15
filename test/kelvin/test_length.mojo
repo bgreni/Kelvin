@@ -1,5 +1,5 @@
 from kelvin import *
-from testing import assert_equal
+from testing import *
 
 
 def test_ctor():
@@ -26,10 +26,25 @@ def test_sub():
     assert_equal(s, Meter(10))
 
 
+# def test_div():
+#     var a = Meter(20) / Meter(10)
+#     assert_equal(a.value(), 2.0)
+#     assert_equal(String(a), '2.0')
+
+# def test_mul():
+#     var a = Meter(20) * Meter(2)
+#     assert_equal(a.value(), 40.0)
+
+
 def test_str():
     assert_equal(String(Meter(10)), "10.0 m^1")
 
 
+# def test_eq():
+#     assert_equal(Meter(10), Meter(10))
+#     assert_not_equal(Meter(10), Meter(20))
+
+
 def test_cast():
-    var a = Kilometer(10)
+    var a = Meter(cast_from=Kilometer(10))
     assert_equal(a.value(), 10000)

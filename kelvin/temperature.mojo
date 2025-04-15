@@ -1,3 +1,14 @@
 from kelvin.quantity import *
 
-alias Kelvin = Quantity[Dimensions[0, 0, 0, 0, 1, 0, 0](), _]
+alias Kelvin = Quantity[
+    Dimensions[
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension[1, Ratio.Unitary, "K"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+    ](),
+    _,
+]
