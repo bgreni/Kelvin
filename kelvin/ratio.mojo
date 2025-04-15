@@ -1,11 +1,24 @@
-from builtin.string_literal import get_string_literal
+from builtin.string_literal import get_string_literal_slice
 from math import gcd
+
+
+@value
+struct B[b: Bool]:
+    alias M = UInt(b)
+
+    fn __mul__[
+        N: UInt, D: UInt
+    ](self, other: Ratio[N, D], out res: Ratio[N * Self.M, D * Self.M]):
+        return __type_of(res)()
 
 
 @value
 @register_passable("trivial")
 struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
-    alias Nano = Ratio[1, 1000000000]()
+    alias Nano = Ratio[
+        1,
+        1000000000,
+    ]()
     alias Micro = Ratio[1, 1000000]()
     alias Milli = Ratio[1, 1000]()
     alias Centi = Ratio[1, 100]()
@@ -18,36 +31,15 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     alias Giga = Ratio[1000000, 1]()
     alias _GCD = gcd(N, D)
 
-    fn __init__(out self):
-        constrained[N != 0, "Numerator cannot be 0"]()
-        constrained[D != 0, "Denominator cannot be 0"]()
+    alias Invalid = Ratio[0, 0]()
 
-    fn prefix(self) -> StringLiteral:
-        @parameter
-        if Self() == Self.Unitary:
-            return ""
-        elif Self() == Self.Deci:
-            return "d"
-        elif Self() == Self.Centi:
-            return "c"
-        elif Self() == Self.Milli:
-            return "m"
-        elif Self() == Self.Micro:
-            return "µ"
-        elif Self() == Self.Nano:
-            return "n"
-        elif Self() == Self.Deca:
-            return "da"
-        elif Self() == Self.Hecto:
-            return "h"
-        elif Self() == Self.Kilo:
-            return "k"
-        elif Self() == Self.Mega:
-            return "M"
-        elif Self() == Self.Giga:
-            return "G"
-        else:
-            return "(" + get_string_literal[String(Self())]() + ")"
+    @always_inline
+    fn __bool__(self) -> Bool:
+        return self != Ratio.Invalid
+
+    @always_inline
+    fn __as_bool__(self) -> Bool:
+        return Bool(self)
 
     @always_inline
     fn __eq__(self, other: Ratio) -> Bool:
@@ -84,7 +76,7 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     @always_inline
     fn __add__[
         NO: UInt, DO: UInt, //
-    ](self, other: Ratio[NO, DO], out result: Ratio[N * DO + NO * D, D * DO]):
+    ](self, other: Ratio[NO, DO], out result: Ratio[N * DO + NO * D, D * DO],):
         return __type_of(result)()
 
     @always_inline
@@ -104,3 +96,27 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     @always_inline
     fn simplify(self, out output: Ratio[N // Self._GCD, D // Self._GCD]):
         output = __type_of(output)()
+
+    @always_inline
+    fn __or__(self, other: Ratio, out res: Ratio[N | other.N, D | other.D]):
+        return __type_of(res)()
+
+    @always_inline
+    fn __truediv__(
+        self,
+        other: Ratio,
+        out res: Ratio[(Self.N * other.D), (Self.D * other.N)],
+    ):
+        return __type_of(res)()
+
+    @always_inline
+    fn divide_scalar(self, owned v: Scalar) -> __type_of(v):
+        var OD = 1
+        v *= D
+        OD *= N
+
+        @parameter
+        if v.dtype.is_integral():
+            return v // OD
+        else:
+            return v / OD

@@ -1,5 +1,6 @@
-from .time import Second
-from .length import Meter
+from .time import Time
+from .length import Length
 
 
 alias MetersPerSecond = Quantity[Meter.D / Second.D, _]
+alias MilesPerHour = Quantity[Mile.D / Hour.D, _]

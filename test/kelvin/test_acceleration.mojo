@@ -1,5 +1,5 @@
 from kelvin import *
-from testing import assert_equal
+from testing import *
 
 
 def test_ctor():
@@ -32,5 +32,20 @@ def test_sub():
     assert_equal(s, MetersPerSecondSquared(10))
 
 
+# def test_div():
+#     var a = MetersPerSecondSquared(20) / MetersPerSecondSquared(10)
+#     assert_equal(a.value(), 2.0)
+#     assert_equal(String(a), '2.0')
+
+# def test_mul():
+#     var a = MetersPerSecondSquared(20) * MetersPerSecondSquared(2)
+#     assert_equal(a.value(), 40.0)
+
+
 def test_str():
     assert_equal(String(MetersPerSecondSquared(10)), "10.0 m^1 s^-2")
+
+
+# def test_eq():
+#     assert_equal(MetersPerSecondSquared(10), MetersPerSecondSquared(10))
+#     assert_not_equal(MetersPerSecondSquared(10), MetersPerSecondSquared(20))
