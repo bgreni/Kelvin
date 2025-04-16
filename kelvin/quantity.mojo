@@ -22,12 +22,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
     fn __sub__(
         self,
         other: Dimension,
-        # TODO: This is a little sketchy for the suffix
-        out res: Dimension[
-            Z - other.Z,
-            (B[R]() * R) | (B[other.R]() * other.R),
-            suffix or other.suffix,
-        ],
+        out res: Dimension[Z - other.Z, other.R | R, suffix or other.suffix],
     ):
         _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()
@@ -36,11 +31,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
     fn __add__(
         self,
         other: Dimension,
-        out res: Dimension[
-            Z + other.Z,
-            (B[R]() * R) | (B[other.R]() * other.R),
-            suffix or other.suffix,
-        ],
+        out res: Dimension[Z + other.Z, other.R | R, suffix or other.suffix],
     ):
         _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()

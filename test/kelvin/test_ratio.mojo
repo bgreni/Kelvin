@@ -38,6 +38,8 @@ def test_add():
         String((Ratio[2 * 3, 3 * 5]() + Ratio[2, 5]()).simplify()),
         String(Ratio[4, 5]()),
     )
+    assert_equal(String(Ratio.Invalid + Ratio[1, 2]()), String(Ratio[1, 2]()))
+    assert_equal(String(Ratio[1, 2]() + Ratio.Invalid), String(Ratio[1, 2]()))
 
 
 def test_multiply():
@@ -57,3 +59,11 @@ def test_multiply():
         String((Ratio[2 * 3, 3 * 5]() * Ratio[5, 2]()).simplify()),
         String(Ratio[1, 1]()),
     )
+
+
+def test_or():
+    var r1 = Ratio.Invalid
+    var r2 = Ratio[1, 2]()
+    assert_equal(String(r1 | r2), String(r2))
+    assert_equal(String(r2 | r1), String(r2))
+    assert_equal(String(r2 | r2), String(r2))
