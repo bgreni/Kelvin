@@ -27,21 +27,21 @@ def test_sub():
     s -= {0}(20)
     assert_equal(s, {0}(10))
 
-# def test_div():
-#     var a = {0}(20) / {0}(10)
-#     assert_equal(a.value(), 2.0)
-#     assert_equal(String(a), '2.0')
+def test_div():
+    var a = {0}(20) / {0}(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), '2.0')
 
-# def test_mul():
-#     var a = {0}(20) * {0}(2)
-#     assert_equal(a.value(), 40.0)
+def test_mul():
+    var a = {0}(20) * {0}(2)
+    assert_equal(a.value(), 40.0)
 
 def test_str():
     assert_equal(String({0}(10)), "10.0 {1}")
 
-# def test_eq():
-#     assert_equal({0}(10), {0}(10))
-#     assert_not_equal({0}(10), {0}(20))
+def test_eq():
+    assert_equal({0}(10), {0}(10))
+    assert_not_equal({0}(10), {0}(20))
 """
 
 cast_test_template = \

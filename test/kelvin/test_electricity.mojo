@@ -26,20 +26,21 @@ def test_sub():
     assert_equal(s, Ampere(10))
 
 
-# def test_div():
-#     var a = Ampere(20) / Ampere(10)
-#     assert_equal(a.value(), 2.0)
-#     assert_equal(String(a), '2.0')
+def test_div():
+    var a = Ampere(20) / Ampere(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), "2.0")
 
-# def test_mul():
-#     var a = Ampere(20) * Ampere(2)
-#     assert_equal(a.value(), 40.0)
+
+def test_mul():
+    var a = Ampere(20) * Ampere(2)
+    assert_equal(a.value(), 40.0)
 
 
 def test_str():
     assert_equal(String(Ampere(10)), "10.0 A^1")
 
 
-# def test_eq():
-#     assert_equal(Ampere(10), Ampere(10))
-#     assert_not_equal(Ampere(10), Ampere(20))
+def test_eq():
+    assert_equal(Ampere(10), Ampere(10))
+    assert_not_equal(Ampere(10), Ampere(20))

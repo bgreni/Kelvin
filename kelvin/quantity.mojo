@@ -6,11 +6,15 @@ from .ratio import Ratio, B
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
     alias Invalid = Dimension[0, Ratio.Invalid, ""]()
 
-    @always_inline
+    @always_inline("builtin")
+    fn __init__(out self):
+        pass
+
+    @always_inline("builtin")
     fn __eq__(self, other: Dimension) -> Bool:
         return Z == other.Z and R == other.R
 
-    @always_inline
+    @always_inline("builtin")
     fn __ne__(self, other: Dimension) -> Bool:
         return not self == other
 
@@ -41,13 +45,13 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
         _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __mul__(
         self, m: IntLiteral, out res: Dimension[Z * __type_of(m)(), R, suffix]
     ):
         return __type_of(res)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __bool__(self) -> Bool:
         return Z != 0
 
@@ -67,7 +71,11 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
 ]:
-    @always_inline
+    @always_inline("builtin")
+    fn __init__(out self):
+        pass
+
+    @always_inline("builtin")
     fn __eq__(self, O: Dimensions) -> Bool:
         return (
             L == O.L
@@ -79,11 +87,11 @@ struct Dimensions[
             and CD == O.CD
         )
 
-    @always_inline
+    @always_inline("builtin")
     fn __ne__(self, O: Dimensions) -> Bool:
         return not self == O
 
-    @always_inline
+    @always_inline("builtin")
     fn __truediv__[
         OL: Dimension,
         OM: Dimension,
@@ -101,7 +109,7 @@ struct Dimensions[
     ):
         return __type_of(result)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __mul__[
         OL: Dimension,
         OM: Dimension,
@@ -119,7 +127,7 @@ struct Dimensions[
     ):
         return __type_of(result)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __pow__(
         self,
         p: IntLiteral[_],

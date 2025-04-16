@@ -26,20 +26,21 @@ def test_sub():
     assert_equal(s, Mole(10))
 
 
-# def test_div():
-#     var a = Mole(20) / Mole(10)
-#     assert_equal(a.value(), 2.0)
-#     assert_equal(String(a), '2.0')
+def test_div():
+    var a = Mole(20) / Mole(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), "2.0")
 
-# def test_mul():
-#     var a = Mole(20) * Mole(2)
-#     assert_equal(a.value(), 40.0)
+
+def test_mul():
+    var a = Mole(20) * Mole(2)
+    assert_equal(a.value(), 40.0)
 
 
 def test_str():
     assert_equal(String(Mole(10)), "10.0 mol^1")
 
 
-# def test_eq():
-#     assert_equal(Mole(10), Mole(10))
-#     assert_not_equal(Mole(10), Mole(20))
+def test_eq():
+    assert_equal(Mole(10), Mole(10))
+    assert_not_equal(Mole(10), Mole(20))

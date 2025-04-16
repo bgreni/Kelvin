@@ -26,20 +26,21 @@ def test_sub():
     assert_equal(s, Kelvin(10))
 
 
-# def test_div():
-#     var a = Kelvin(20) / Kelvin(10)
-#     assert_equal(a.value(), 2.0)
-#     assert_equal(String(a), '2.0')
+def test_div():
+    var a = Kelvin(20) / Kelvin(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), "2.0")
 
-# def test_mul():
-#     var a = Kelvin(20) * Kelvin(2)
-#     assert_equal(a.value(), 40.0)
+
+def test_mul():
+    var a = Kelvin(20) * Kelvin(2)
+    assert_equal(a.value(), 40.0)
 
 
 def test_str():
     assert_equal(String(Kelvin(10)), "10.0 K^1")
 
 
-# def test_eq():
-#     assert_equal(Kelvin(10), Kelvin(10))
-#     assert_not_equal(Kelvin(10), Kelvin(20))
+def test_eq():
+    assert_equal(Kelvin(10), Kelvin(10))
+    assert_not_equal(Kelvin(10), Kelvin(20))
