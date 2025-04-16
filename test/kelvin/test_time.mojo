@@ -26,23 +26,24 @@ def test_sub():
     assert_equal(s, Second(10))
 
 
-# def test_div():
-#     var a = Second(20) / Second(10)
-#     assert_equal(a.value(), 2.0)
-#     assert_equal(String(a), '2.0')
+def test_div():
+    var a = Second(20) / Second(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), "2.0")
 
-# def test_mul():
-#     var a = Second(20) * Second(2)
-#     assert_equal(a.value(), 40.0)
+
+def test_mul():
+    var a = Second(20) * Second(2)
+    assert_equal(a.value(), 40.0)
 
 
 def test_str():
     assert_equal(String(Second(10)), "10.0 s^1")
 
 
-# def test_eq():
-#     assert_equal(Second(10), Second(10))
-#     assert_not_equal(Second(10), Second(20))
+def test_eq():
+    assert_equal(Second(10), Second(10))
+    assert_not_equal(Second(10), Second(20))
 
 
 def test_cast():

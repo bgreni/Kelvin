@@ -26,23 +26,24 @@ def test_sub():
     assert_equal(s, MetersPerSecond(10))
 
 
-# def test_div():
-#     var a = MetersPerSecond(20) / MetersPerSecond(10)
-#     assert_equal(a.value(), 2.0)
-#     assert_equal(String(a), '2.0')
+def test_div():
+    var a = MetersPerSecond(20) / MetersPerSecond(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), "2.0")
 
-# def test_mul():
-#     var a = MetersPerSecond(20) * MetersPerSecond(2)
-#     assert_equal(a.value(), 40.0)
+
+def test_mul():
+    var a = MetersPerSecond(20) * MetersPerSecond(2)
+    assert_equal(a.value(), 40.0)
 
 
 def test_str():
     assert_equal(String(MetersPerSecond(10)), "10.0 m^1 s^-1")
 
 
-# def test_eq():
-#     assert_equal(MetersPerSecond(10), MetersPerSecond(10))
-#     assert_not_equal(MetersPerSecond(10), MetersPerSecond(20))
+def test_eq():
+    assert_equal(MetersPerSecond(10), MetersPerSecond(10))
+    assert_not_equal(MetersPerSecond(10), MetersPerSecond(20))
 
 
 def test_cast():

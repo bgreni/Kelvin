@@ -1,4 +1,3 @@
-from builtin.string_literal import get_string_literal_slice
 from math import gcd
 
 
@@ -33,19 +32,23 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
 
     alias Invalid = Ratio[0, 0]()
 
-    @always_inline
+    @always_inline("builtin")
+    fn __init__(out self):
+        pass
+
+    @always_inline("builtin")
     fn __bool__(self) -> Bool:
         return self != Ratio.Invalid
 
-    @always_inline
+    @always_inline("builtin")
     fn __as_bool__(self) -> Bool:
-        return Bool(self)
+        return self != Ratio.Invalid
 
-    @always_inline
+    @always_inline("builtin")
     fn __eq__(self, other: Ratio) -> Bool:
         return N == other.N and D == other.D
 
-    @always_inline
+    @always_inline("builtin")
     fn __ne__(self, other: Ratio) -> Bool:
         return not self == other
 
@@ -73,13 +76,13 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         else:
             return (other * N) / D
 
-    @always_inline
+    @always_inline("builtin")
     fn __add__[
         NO: UInt, DO: UInt, //
     ](self, other: Ratio[NO, DO], out result: Ratio[N * DO + NO * D, D * DO],):
         return __type_of(result)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __mul__[
         NO: UInt, DO: UInt, //
     ](self, other: Ratio[NO, DO], out result: Ratio[N * NO, D * DO]):
@@ -93,15 +96,15 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     fn __str__(self) -> String:
         return String.write(self)
 
-    @always_inline
+    @always_inline("builtin")
     fn simplify(self, out output: Ratio[N // Self._GCD, D // Self._GCD]):
         output = __type_of(output)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __or__(self, other: Ratio, out res: Ratio[N | other.N, D | other.D]):
         return __type_of(res)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __truediv__(
         self,
         other: Ratio,
