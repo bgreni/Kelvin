@@ -14,20 +14,17 @@ struct B[b: Bool]:
 @value
 @register_passable("trivial")
 struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
-    alias Nano = Ratio[
-        1,
-        1000000000,
-    ]()
-    alias Micro = Ratio[1, 1000000]()
-    alias Milli = Ratio[1, 1000]()
+    alias Nano = Ratio[1, 10**9]()
+    alias Micro = Ratio[1, 10**6]()
+    alias Milli = Ratio[1, 10**3]()
     alias Centi = Ratio[1, 100]()
     alias Deci = Ratio[1, 10]()
     alias Unitary = Ratio[1]()
     alias Deca = Ratio[10, 1]()
     alias Hecto = Ratio[100, 1]()
-    alias Kilo = Ratio[1000, 1]()
-    alias Mega = Ratio[1000000000, 1]()
-    alias Giga = Ratio[1000000, 1]()
+    alias Kilo = Ratio[10**3, 1]()
+    alias Mega = Ratio[10**6, 1]()
+    alias Giga = Ratio[10**9, 1]()
     alias _GCD = gcd(N, D)
 
     alias Invalid = Ratio[0, 0]()
@@ -79,7 +76,13 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     @always_inline("builtin")
     fn __add__[
         NO: UInt, DO: UInt, //
-    ](self, other: Ratio[NO, DO], out result: Ratio[N * DO + NO * D, D * DO],):
+    ](
+        self,
+        other: Ratio[NO, DO],
+        out result: Ratio[
+            max(N * DO, N) + max(NO * D, NO), max(D * DO, max(D, DO))
+        ],
+    ):
         return __type_of(result)()
 
     @always_inline("builtin")
