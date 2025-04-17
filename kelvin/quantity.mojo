@@ -4,6 +4,15 @@ from .ratio import Ratio
 @value
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
+    """Represents a single dimension.
+
+    Params:
+        Z: The dimension space, eg. 2 for X^2 where X is a unit.
+        R: The scale of the dimension unit, eg. Ratio.Kilo.
+        suffix: The string suffix for the unit (m, kg, s, etc).
+    """
+
+    # Represents the lack of a dimension
     alias Invalid = Dimension[0, Ratio.Invalid, ""]()
 
     @always_inline("builtin")
@@ -63,6 +72,18 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
 ]:
+    """Represents the 7 SI unit dimension.
+
+    Params:
+        L: Length dimension.
+        M: Mass dimension.
+        T: Time dimension.
+        EC: Electric current dimension.
+        TH: Temperature dimension.
+        A: Substance amount dimension.
+        CD: Luminosity dimension.
+    """
+
     @always_inline("builtin")
     fn __init__(out self):
         pass
@@ -153,6 +174,13 @@ struct Dimensions[
 struct Quantity[D: Dimensions, DT: DType = DType.float64](
     EqualityComparableCollectionElement, Writable, Stringable
 ):
+    """Represents an abstract quantity over some given dimensions.
+
+    Params:
+        D: The dimension which the value exists in eg. (meters per second)
+        DT: The numerical type of the value, defaults to Float64
+    """
+
     alias DataType = Scalar[DT]
     var _value: Self.DataType
 
@@ -173,11 +201,15 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         self._value = other._value
 
     fn __init__(out self, *, cast_from: Quantity[DT = Self.DT]):
+        """Cast the value from the incoming quanitity into this quantity.
+        Both quantities must live in the same dimensional space (eg. velocity in, velocity out).
+        """
         _dimension_space_check[D, cast_from.D]()
         var val = cast_from.value()
 
         alias OD = cast_from.D
 
+        # Calculate the difference between the ratios on each dimension
         alias LR = OD.L.R / D.L.R
         alias MR = OD.M.R / D.M.R
         alias TR = OD.T.R / D.T.R
@@ -194,7 +226,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         val = _scale_value[D.A.Z, AR](val)
         val = _scale_value[D.CD.Z, CDR](val)
 
-        self = Self(val)
+        self._value = val
 
     @always_inline
     fn __truediv__[
