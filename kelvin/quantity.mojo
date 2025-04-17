@@ -232,6 +232,13 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __truediv__[
         OD: Dimensions
     ](self, other: Quantity[OD, DT], out res: Quantity[D / OD, DT]):
+        """Divide on quantity by another.
+        Output dimensions are the difference of the inputs.
+
+        `m^1 / s^1 -> m^1 s^-1` (aka velocity).
+
+        Inputs must have matching scale on all shared dimensions.
+        """
         _dimension_scale_check[D, OD]()
 
         @parameter
@@ -244,31 +251,52 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __mul__[
         OD: Dimensions
     ](self, other: Quantity[OD, DT], out res: Quantity[D * OD, DT]):
+        """Compute the product between two quantities
+        Output dimensions are the sum of the inputs.
+
+        `m^1 * m^1 -> m^2` (aka area).
+
+        Inputs must have matching scale on all shared dimensions.
+        """
         _dimension_scale_check[D, OD]()
         return __type_of(res)(self._value * other._value)
 
     @always_inline
     fn __add__(self, other: Self) -> Self:
+        """Compute sum of two quantities.
+        Addition is only defined on quantities of matching types
+        """
         return Self(self._value + other._value)
 
     @always_inline
     fn __iadd__(mut self, other: Self):
+        """Compute sum of two quantities in place.
+        Addition is only defined on quantities of matching types
+        """
         self._value += other._value
 
     @always_inline
     fn __sub__(self, other: Self) -> Self:
+        """Compute differecnce of two quantities.
+        Subtraction is only defined on quantities of matching types
+        """
         return Self(self._value - other._value)
 
     @always_inline
     fn __isub__(mut self, other: Self):
+        """Compute differecnce of two quantities in place.
+        Subtraction is only defined on quantities of matching types
+        """
         self._value -= other._value
 
     @always_inline
     fn __eq__(self, other: Self) -> Bool:
+        """Returns true of the two matching quantities have the same value."""
         return self._value == other._value
 
     @always_inline
     fn __ne__(self, other: Self) -> Bool:
+        """Returns true of the two matching quantities have different values."""
         return self._value != other._value
 
     @always_inline
@@ -281,6 +309,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
 
     @always_inline
     fn value(self) -> Self.DataType:
+        """Returns the value of the quantity"""
         return self._value
 
 
