@@ -15,3 +15,13 @@ generate_tests = "python3 generate_tests.py"
 
 [dependencies]
 max = ">=25.2.0.dev2025031805,<26"
+
+[environments]
+default = { solve-group = "default" }
+proof = { features = ["proof"], solve-group = "default" }
+
+[feature.proof.tasks]
+run_proofs = "python3 ./misc/ratio_add_proof.py"
+
+[feature.proof.pypi-dependencies]
+z3-solver = ">=4.14.1.0, <5"
