@@ -289,7 +289,17 @@ fn _same_scale_or_one_null_check[L: Ratio, R: Ratio]():
 fn _scale_value[Z: IntLiteral, R: Ratio](v: Scalar) -> __type_of(v):
     @parameter
     if Z > 0:
-        return R * v
+        var res = v
+
+        @parameter
+        for _ in range(Z):
+            res = R * res
+        return res
     elif Z < 0:
-        return R.divide_scalar(v)
+        var res = v
+
+        @parameter
+        for _ in range(-Z):
+            res = R.divide_scalar(res)
+        return res
     return v
