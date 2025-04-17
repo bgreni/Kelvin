@@ -19,26 +19,28 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
         return not self == other
 
     @always_inline
-    fn __sub__(
+    fn __add__(
         self,
         other: Dimension,
-        out res: Dimension[Z - other.Z, other.R | R, suffix or other.suffix],
+        out res: Dimension[Z + other.Z, R | other.R, suffix or other.suffix],
     ):
         _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()
 
     @always_inline
-    fn __add__(
+    fn __sub__(
         self,
         other: Dimension,
-        out res: Dimension[Z + other.Z, other.R | R, suffix or other.suffix],
+        out res: Dimension[Z - other.Z, R | other.R, suffix or other.suffix],
     ):
         _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()
 
     @always_inline("builtin")
     fn __mul__(
-        self, m: IntLiteral, out res: Dimension[Z * __type_of(m)(), R, suffix]
+        self,
+        m: IntLiteral,
+        out res: Dimension[Z * __type_of(m)(), R, suffix],
     ):
         return __type_of(res)()
 
@@ -46,7 +48,6 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
     fn __bool__(self) -> Bool:
         return Z != 0
 
-    @always_inline
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(" ", suffix, "^", Z)
 
@@ -83,46 +84,42 @@ struct Dimensions[
         return not self == O
 
     @always_inline("builtin")
-    fn __truediv__[
-        OL: Dimension,
-        OM: Dimension,
-        OT: Dimension,
-        OEC: Dimension,
-        OTH: Dimension,
-        OA: Dimension,
-        OCD: Dimension,
-    ](
+    fn __truediv__(
         self,
-        other: Dimensions[OL, OM, OT, OEC, OTH, OA, OCD],
-        out result: Dimensions[
-            L - OL, M - OM, T - OT, EC - OEC, TH - OTH, A - OA, CD - OCD
+        other: Dimensions,
+        out res: Dimensions[
+            L - other.L,
+            M - other.M,
+            T - other.T,
+            EC - other.EC,
+            TH - other.TH,
+            A - other.A,
+            CD - other.CD,
         ],
     ):
-        return __type_of(result)()
+        return __type_of(res)()
 
     @always_inline("builtin")
-    fn __mul__[
-        OL: Dimension,
-        OM: Dimension,
-        OT: Dimension,
-        OEC: Dimension,
-        OTH: Dimension,
-        OA: Dimension,
-        OCD: Dimension,
-    ](
+    fn __mul__(
         self,
-        other: Dimensions[OL, OM, OT, OEC, OTH, OA, OCD],
-        out result: Dimensions[
-            L + OL, M + OM, T + OT, EC + OEC, TH + OTH, A + OA, CD + OCD
+        other: Dimensions,
+        out res: Dimensions[
+            L + other.L,
+            M + other.M,
+            T + other.T,
+            EC + other.EC,
+            TH + other.TH,
+            A + other.A,
+            CD + other.CD,
         ],
     ):
-        return __type_of(result)()
+        return __type_of(res)()
 
     @always_inline("builtin")
     fn __pow__(
         self,
-        p: IntLiteral[_],
-        out result: Dimensions[
+        p: IntLiteral,
+        out res: Dimensions[
             __type_of(L * p)(),
             __type_of(M * p)(),
             __type_of(T * p)(),
@@ -132,22 +129,23 @@ struct Dimensions[
             __type_of(CD * p)(),
         ],
     ):
-        return __type_of(result)()
+        return __type_of(res)()
 
     fn write_to[W: Writer](self, mut writer: W):
+        @parameter
         @always_inline
-        fn write[W: Writer, //, Dim: Dimension](mut writer: W):
+        fn write[d: Dimension]():
             @parameter
-            if Dim:
-                writer.write(Dim)
+            if d:
+                writer.write(d)
 
-        write[L](writer)
-        write[M](writer)
-        write[T](writer)
-        write[EC](writer)
-        write[TH](writer)
-        write[A](writer)
-        write[CD](writer)
+        write[L]()
+        write[M]()
+        write[T]()
+        write[EC]()
+        write[TH]()
+        write[A]()
+        write[CD]()
 
 
 @value
@@ -180,13 +178,13 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
 
         alias OD = cast_from.D
 
-        alias LR = (OD.L.R / D.L.R)
-        alias MR = (OD.M.R / D.M.R)
-        alias TR = (OD.T.R / D.T.R)
-        alias ECR = (OD.EC.R / D.EC.R)
-        alias THR = (OD.TH.R / D.TH.R)
-        alias AR = (OD.A.R / D.A.R)
-        alias CDR = (OD.CD.R / D.CD.R)
+        alias LR = OD.L.R / D.L.R
+        alias MR = OD.M.R / D.M.R
+        alias TR = OD.T.R / D.T.R
+        alias ECR = OD.EC.R / D.EC.R
+        alias THR = OD.TH.R / D.TH.R
+        alias AR = OD.A.R / D.A.R
+        alias CDR = OD.CD.R / D.CD.R
 
         val = _scale_value[D.L.Z, LR](val)
         val = _scale_value[D.M.Z, MR](val)
@@ -265,24 +263,23 @@ fn _dimension_space_check[L: Dimensions, R: Dimensions]():
 
 
 fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
-    @always_inline
-    fn check[LZ: IntLiteral, RZ: IntLiteral, LR: Ratio, RR: Ratio]():
+    fn check[l: Dimension, r: Dimension]():
         @parameter
-        if LZ and RZ:
-            constrained[LR == RR]()
+        if l.Z and r.Z:
+            constrained[l.R == r.R]()
 
-    check[L.L.Z, R.L.Z, L.L.R, R.L.R]()
-    check[L.M.Z, R.M.Z, L.M.R, R.M.R]()
-    check[L.T.Z, R.T.Z, L.T.R, R.T.R]()
-    check[L.EC.Z, R.EC.Z, L.EC.R, R.EC.R]()
-    check[L.TH.Z, R.TH.Z, L.TH.R, R.TH.R]()
-    check[L.A.Z, R.A.Z, L.A.R, R.A.R]()
-    check[L.CD.Z, R.CD.Z, L.CD.R, R.CD.R]()
+    check[L.L, R.L]()
+    check[L.M, R.M]()
+    check[L.T, R.T]()
+    check[L.EC, R.EC]()
+    check[L.TH, R.TH]()
+    check[L.A, R.A]()
+    check[L.CD, R.CD]()
 
 
 @always_inline
 fn _same_scale_or_one_null_check[L: Ratio, R: Ratio]():
-    constrained[(L == R) or (L == Ratio.Invalid) or (R == Ratio.Invalid)]()
+    constrained[not (Bool(L) and Bool(R))]()
 
 
 @always_inline
