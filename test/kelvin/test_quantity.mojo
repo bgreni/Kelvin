@@ -12,6 +12,7 @@ def test_mph_to_mps():
         MetersPerSecond(cast_from=MilesPerHour(50)), MetersPerSecond(22.352)
     )
 
+
 def test_unit_squared():
     alias S2 = Quantity[Second.D * Second.D, _]
     alias M2 = Quantity[Minute.D * Minute.D, _]
@@ -37,4 +38,3 @@ def test_integer_values():
     assert_equal(S(20).value(), Int64(20))
     assert_equal(M(5) / S(2), MPS(2))
     assert_equal(MPS(cast_from=MPH(10)), MPS(4))
-
