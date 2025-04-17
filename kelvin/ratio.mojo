@@ -2,16 +2,6 @@ from math import gcd
 
 
 @value
-struct B[b: Bool]:
-    alias M = UInt(b)
-
-    fn __mul__[
-        N: UInt, D: UInt
-    ](self, other: Ratio[N, D], out res: Ratio[N * Self.M, D * Self.M]):
-        return __type_of(res)()
-
-
-@value
 @register_passable("trivial")
 struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     alias Nano = Ratio[1, 10**9]()

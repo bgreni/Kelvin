@@ -39,7 +39,3 @@ alias Hour = Quantity[
     ](),
     _,
 ]
-
-
-fn time_cast[R: Ratio](v: Scalar) -> Second[v.dtype]:
-    return Second[v.dtype](R * v)

@@ -1,6 +1,8 @@
 from kelvin import *
 from testing import *
 
+# AUTOMATICALLY GENERATED TESTS, DO NOT EDIT
+
 
 def test_ctor():
     var a = MetersPerSecond(10)

@@ -1,4 +1,4 @@
-from .ratio import Ratio, B
+from .ratio import Ratio
 
 
 @value

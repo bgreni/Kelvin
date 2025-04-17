@@ -30,7 +30,7 @@ alias Kilometer = Quantity[
 
 alias Mile = Quantity[
     Dimensions[
-        Dimension[1, Ratio[1609344, 1000](), "mile"](),
+        Dimension[1, Ratio[1609344, 1000]().simplify(), "mile"](),
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
@@ -40,7 +40,3 @@ alias Mile = Quantity[
     ](),
     _,
 ]
-
-
-fn length_cast[R: Ratio](v: Scalar) -> Meter[v.dtype]:
-    return Meter[v.dtype](R * v)
