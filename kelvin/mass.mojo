@@ -9,6 +9,7 @@ alias Kilogram = Quantity[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]

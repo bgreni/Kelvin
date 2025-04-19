@@ -11,6 +11,7 @@ alias Meter = Quantity[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]
@@ -24,6 +25,7 @@ alias Kilometer = Quantity[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]
@@ -37,6 +39,7 @@ alias Mile = Quantity[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]

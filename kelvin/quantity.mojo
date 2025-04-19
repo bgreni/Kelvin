@@ -3,6 +3,28 @@ from .ratio import Ratio
 
 @value
 @register_passable("trivial")
+struct Angle[R: Ratio](Boolable):
+    alias Invalid = Angle[Ratio.Invalid]()
+
+    @always_inline("builtin")
+    fn __init__(out self):
+        pass
+
+    @always_inline("builtin")
+    fn __eq__(self, other: Angle) -> Bool:
+        return R == other.R
+
+    @always_inline("builtin")
+    fn __ne__(self, other: Angle) -> Bool:
+        return not self == other
+
+    @always_inline("builtin")
+    fn __bool__(self) -> Bool:
+        return R.__bool__()
+
+
+@value
+@register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
     """Represents a single dimension.
 
@@ -71,6 +93,7 @@ struct Dimensions[
     TH: Dimension,
     A: Dimension,
     CD: Dimension,
+    Ang: Angle,
 ]:
     """Represents the 7 SI unit dimension.
 
@@ -98,6 +121,7 @@ struct Dimensions[
             and TH == O.TH
             and A == O.A
             and CD == O.CD
+            and Ang == O.Ang
         )
 
     @always_inline("builtin")
@@ -116,6 +140,7 @@ struct Dimensions[
             TH - other.TH,
             A - other.A,
             CD - other.CD,
+            Ang,
         ],
     ):
         return __type_of(res)()
@@ -132,6 +157,7 @@ struct Dimensions[
             TH + other.TH,
             A + other.A,
             CD + other.CD,
+            Ang,
         ],
     ):
         return __type_of(res)()
@@ -148,6 +174,7 @@ struct Dimensions[
             __type_of(TH * p)(),
             __type_of(A * p)(),
             __type_of(CD * p)(),
+            Ang,
         ],
     ):
         return __type_of(res)()
@@ -217,6 +244,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         alias THR = OD.TH.R / D.TH.R
         alias AR = OD.A.R / D.A.R
         alias CDR = OD.CD.R / D.CD.R
+        alias AngR = D.Ang.R / OD.Ang.R
 
         val = _scale_value[D.L.Z, LR](val)
         val = _scale_value[D.M.Z, MR](val)
@@ -225,6 +253,10 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         val = _scale_value[D.TH.Z, THR](val)
         val = _scale_value[D.A.Z, AR](val)
         val = _scale_value[D.CD.Z, CDR](val)
+
+        @parameter
+        if AngR:
+            val = AngR * val
 
         self._value = val
 
@@ -321,6 +353,7 @@ fn _dimension_space_check[L: Dimensions, R: Dimensions]():
     constrained[L.TH.Z == R.TH.Z]()
     constrained[L.A.Z == R.A.Z]()
     constrained[L.CD.Z == R.CD.Z]()
+    constrained[Bool(L.Ang) == Bool(R.Ang)]()
 
 
 fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
@@ -336,6 +369,7 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     check[L.TH, R.TH]()
     check[L.A, R.A]()
     check[L.CD, R.CD]()
+    constrained[L.Ang.R == R.Ang.R]()
 
 
 @always_inline

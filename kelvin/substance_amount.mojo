@@ -9,6 +9,7 @@ alias Mole = Quantity[
         Dimension.Invalid,
         Dimension[1, Ratio.Unitary, "mol"](),
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]
