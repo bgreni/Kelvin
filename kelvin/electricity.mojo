@@ -9,6 +9,7 @@ alias Ampere = Quantity[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]
