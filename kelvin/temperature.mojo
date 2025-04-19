@@ -9,6 +9,7 @@ alias Kelvin = Quantity[
         Dimension[1, Ratio.Unitary, "K"](),
         Dimension.Invalid,
         Dimension.Invalid,
+        Angle.Invalid,
     ](),
     _,
 ]

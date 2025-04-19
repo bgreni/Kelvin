@@ -15,6 +15,9 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     alias Kilo = Ratio[10**3]()
     alias Mega = Ratio[10**6]()
     alias Giga = Ratio[10**9]()
+
+    alias PI = Ratio[355, 113]()
+
     alias _GCD = gcd(N, D)
 
     alias Invalid = Ratio[0, 0]()
