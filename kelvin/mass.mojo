@@ -1,3 +1,5 @@
+"""Mass related definitions."""
+
 from kelvin.quantity import *
 
 alias Kilogram = Quantity[

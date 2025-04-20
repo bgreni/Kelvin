@@ -1,3 +1,5 @@
+"""Time related definitions."""
+
 from kelvin.ratio import Ratio
 from kelvin.quantity import *
 

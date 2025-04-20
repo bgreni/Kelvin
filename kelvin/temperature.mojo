@@ -1,3 +1,5 @@
+"""Temperature related definitions."""
+
 from kelvin.quantity import *
 
 alias Kelvin = Quantity[

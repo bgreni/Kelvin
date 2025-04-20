@@ -1,6 +1,7 @@
 # Kelvin
 
 A powerful dimensional analysis library written in Mojo for all you scientific computing needs.
+Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
 
 
 ## Usage

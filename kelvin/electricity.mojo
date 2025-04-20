@@ -1,3 +1,5 @@
+"""Electricity related definitions."""
+
 from kelvin.quantity import *
 
 alias Ampere = Quantity[

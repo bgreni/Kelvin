@@ -95,7 +95,8 @@ struct Dimensions[
     CD: Dimension,
     Ang: Angle,
 ]:
-    """Represents the 7 SI unit dimension.
+    """Represents the 7 SI unit dimensions + angle, all within the parameter
+    domain.
 
     Params:
         L: Length dimension.
@@ -105,6 +106,7 @@ struct Dimensions[
         TH: Temperature dimension.
         A: Substance amount dimension.
         CD: Luminosity dimension.
+        Ang: The angle component of the quantity
     """
 
     @always_inline("builtin")
@@ -230,6 +232,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __init__(out self, *, cast_from: Quantity[DT = Self.DT]):
         """Cast the value from the incoming quanitity into this quantity.
         Both quantities must live in the same dimensional space (eg. velocity in, velocity out).
+
+        Args:
+            other: Some quantity of matching dimension to cast from.
         """
         _dimension_space_check[D, cast_from.D]()
         var val = cast_from.value()
@@ -270,6 +275,13 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         `m^1 / s^1 -> m^1 s^-1` (aka velocity).
 
         Inputs must have matching scale on all shared dimensions.
+        Uses floor division for integer data types.
+
+        Args:
+            other: A quantity with matching scale to use as the denominator.
+
+        Returns:
+            The quotient of self / other.
         """
         _dimension_scale_check[D, OD]()
 
@@ -289,6 +301,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         `m^1 * m^1 -> m^2` (aka area).
 
         Inputs must have matching scale on all shared dimensions.
+
+        Args:
+            other: A quantity of matching scale.
+
+        Returns:
+            The product of self * other.
         """
         _dimension_scale_check[D, OD]()
         return __type_of(res)(self._value * other._value)
@@ -297,6 +315,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __add__(self, other: Self) -> Self:
         """Compute sum of two quantities.
         Addition is only defined on quantities of matching types
+
+        Args:
+            other: A quantity of matching type.
+
+        Returns:
+            The sum of self + other.
         """
         return Self(self._value + other._value)
 
@@ -304,6 +328,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __iadd__(mut self, other: Self):
         """Compute sum of two quantities in place.
         Addition is only defined on quantities of matching types
+
+        Args:
+            other: A quantity of matching type.
         """
         self._value += other._value
 
@@ -311,6 +338,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __sub__(self, other: Self) -> Self:
         """Compute differecnce of two quantities.
         Subtraction is only defined on quantities of matching types
+
+        Args:
+            other: A quantity of matching type.
+
+        Returns:
+            The difference of self - other.
         """
         return Self(self._value - other._value)
 
@@ -318,30 +351,53 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     fn __isub__(mut self, other: Self):
         """Compute differecnce of two quantities in place.
         Subtraction is only defined on quantities of matching types
+
+        Args:
+            other: A quantity of matching type.
         """
         self._value -= other._value
 
     @always_inline
     fn __eq__(self, other: Self) -> Bool:
-        """Returns true of the two matching quantities have the same value."""
+        """Returns true of the two matching quantities have the same value.
+
+        Args:
+            other: A quantity of matching type.
+        """
         return self._value == other._value
 
     @always_inline
     fn __ne__(self, other: Self) -> Bool:
-        """Returns true of the two matching quantities have different values."""
+        """Returns true of the two matching quantities have different values.
+
+        Args:
+            other: A quantity of matching type.
+        """
         return self._value != other._value
 
     @always_inline
     fn __str__(self) -> String:
+        """
+        Returns:
+            The string representation of the quantity.
+        """
         return String.write(self)
 
     fn write_to[W: Writer](self, mut writer: W):
+        """Writes the representation of the quantity to the given writer.
+
+        Args:
+            writer: The writer to write to.
+        """
         writer.write(self._value)
         writer.write(D)
 
     @always_inline
     fn value(self) -> Self.DataType:
-        """Returns the value of the quantity"""
+        """
+        Returns:
+            the value of the quantity.
+        """
         return self._value
 
 

@@ -4,6 +4,10 @@ from math import gcd
 @value
 @register_passable("trivial")
 struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
+    """A compile time, known rational value, used to represent the scale
+    of a particular unit.
+    """
+
     alias Nano = Ratio[1, 10**9]()
     alias Micro = Ratio[1, 10**6]()
     alias Milli = Ratio[1, 10**3]()
@@ -67,6 +71,12 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
             max(D * other.D, max(D, other.D)),
         ],
     ):
+        """Bit of a hack so that Ratio[0, 0]() + Ratio[1, 2]() == Ratio[1, 2]().
+        As otherwise that is undefined in standard rational arithmetic, but we
+        need it so we can handle, and represent the lack of dimensions nicely.
+
+        Proof of equivalence to standard addition at misc/ratio_add_proof.py
+        """
         return __type_of(res)()
 
     @always_inline

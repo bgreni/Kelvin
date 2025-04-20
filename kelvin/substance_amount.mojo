@@ -1,3 +1,5 @@
+"""Substance Amount related definitions."""
+
 from kelvin.quantity import *
 
 alias Mole = Quantity[

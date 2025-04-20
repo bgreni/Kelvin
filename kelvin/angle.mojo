@@ -1,5 +1,6 @@
-from kelvin.quantity import *
+"""Angle related definitions."""
 
+from kelvin.quantity import *
 
 alias Radian = Quantity[
     Dimensions[
