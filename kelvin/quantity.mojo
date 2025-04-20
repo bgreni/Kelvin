@@ -25,7 +25,7 @@ struct Angle[R: Ratio](Boolable):
 
 @value
 @register_passable("trivial")
-struct Dimension[Z: IntLiteral, R: Ratio, suffix: String]:
+struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString]:
     """Represents a single dimension.
 
     Params:
