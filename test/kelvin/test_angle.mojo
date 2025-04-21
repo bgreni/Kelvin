@@ -25,3 +25,9 @@ def test_sub():
 def test_cast():
     assert_equal(Radian(cast_from=Degree(70)), Radian(1.22173058013766))
     assert_equal(Degree(cast_from=Radian(2)), Degree(114.59154929577464))
+
+
+def test_str():
+    assert_equal(String(Radian(10)), "10.0 rad")
+    assert_equal(String(Degree(30)), "30.0 °")
+    assert_equal(String(Radian(30) / Meter(5)), "6.0 m^-1 rad")

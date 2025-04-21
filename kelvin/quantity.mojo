@@ -3,8 +3,10 @@ from .ratio import Ratio
 
 @value
 @register_passable("trivial")
-struct Angle[R: Ratio](Boolable):
-    alias Invalid = Angle[Ratio.Invalid]()
+struct Angle[R: Ratio, suffix: StaticString](
+    Boolable, Writable, ImplicitlyBoolable
+):
+    alias Invalid = Angle[Ratio.Invalid, ""]()
 
     @always_inline("builtin")
     fn __init__(out self):
@@ -21,6 +23,14 @@ struct Angle[R: Ratio](Boolable):
     @always_inline("builtin")
     fn __bool__(self) -> Bool:
         return R.__bool__()
+
+    @always_inline("builtin")
+    fn __as_bool__(self) -> Bool:
+        return R.__bool__()
+
+    @always_inline
+    fn write_to[W: Writer](self, mut writer: W):
+        writer.write(suffix)
 
 
 @value
@@ -79,8 +89,9 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString]:
     fn __bool__(self) -> Bool:
         return Z != 0
 
+    @always_inline
     fn write_to[W: Writer](self, mut writer: W):
-        writer.write(" ", suffix, "^", Z)
+        writer.write(suffix, "^", Z)
 
 
 @value
@@ -187,7 +198,7 @@ struct Dimensions[
         fn write[d: Dimension]():
             @parameter
             if d:
-                writer.write(d)
+                writer.write(" ", d)
 
         write[L]()
         write[M]()
@@ -196,6 +207,10 @@ struct Dimensions[
         write[TH]()
         write[A]()
         write[CD]()
+
+        @parameter
+        if Ang:
+            writer.write(" ", Ang)
 
 
 @value
@@ -601,7 +616,10 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     check[L.TH, R.TH]()
     check[L.A, R.A]()
     check[L.CD, R.CD]()
-    constrained[L.Ang.R == R.Ang.R]()
+
+    @parameter
+    if Bool(L.Ang) and Bool(R.Ang):
+        constrained[L.Ang.R == R.Ang.R]()
 
 
 @always_inline
