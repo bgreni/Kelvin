@@ -63,6 +63,12 @@ def test_scalar_arithmetic():
     a /= 5
     assert_equal(a, Second(5))
 
+    a = Second(10)
+    assert_equal(10 + a, Second(20))
+    assert_equal(15 - a, Second(5))
+    assert_equal(5 * a, Second(50))
+    assert_equal(20 / a, Second(2))
+
 
 def test_cast():
     var a = Second(cast_from=Minute(10))

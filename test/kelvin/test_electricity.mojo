@@ -62,3 +62,9 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, Ampere(5))
     a /= 5
     assert_equal(a, Ampere(5))
+
+    a = Ampere(10)
+    assert_equal(10 + a, Ampere(20))
+    assert_equal(15 - a, Ampere(5))
+    assert_equal(5 * a, Ampere(50))
+    assert_equal(20 / a, Ampere(2))

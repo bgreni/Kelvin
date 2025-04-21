@@ -62,3 +62,9 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, MetersSquared(5))
     a /= 5
     assert_equal(a, MetersSquared(5))
+
+    a = MetersSquared(10)
+    assert_equal(10 + a, MetersSquared(20))
+    assert_equal(15 - a, MetersSquared(5))
+    assert_equal(5 * a, MetersSquared(50))
+    assert_equal(20 / a, MetersSquared(2))

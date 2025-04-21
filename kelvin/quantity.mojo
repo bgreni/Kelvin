@@ -409,6 +409,23 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             return Self(self._value / v)
 
     @always_inline
+    fn __rtruediv__(self, v: Self.ScalarType) -> Self:
+        """Divides the scalar by the value of self.
+
+        Args:
+            v: A scalar.
+
+        Returns:
+            The quotient of v / self.
+        """
+
+        @parameter
+        if DT.is_integral():
+            return Self(v // self.value())
+        else:
+            return Self(v / self.value())
+
+    @always_inline
     fn __itruediv__(mut self, v: Self.ScalarType):
         """Divides the value by the given scalar in place.
 
@@ -435,6 +452,18 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return Self(self.value() * v)
 
     @always_inline
+    fn __rmul__(self, v: Self.ScalarType) -> Self:
+        """Multiply the value but a given scalar.
+
+        Args:
+            v: The input scalar.
+
+        Returns
+            The product of v * self.
+        """
+        return Self(v * self.value())
+
+    @always_inline
     fn __imul__(mut self, v: Self.ScalarType):
         """Multiply the value but a given scalar in place.
 
@@ -456,6 +485,18 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return Self(self.value() + v)
 
     @always_inline
+    fn __radd__(self, v: Self.ScalarType) -> Self:
+        """Compute the sum of self and the give scalar.
+
+        Args:
+            v: A scalar.
+
+        Returns:
+            The sum of v + self.
+        """
+        return Self(v + self.value())
+
+    @always_inline
     fn __iadd__(mut self, v: Self.ScalarType):
         """Compute the sum of self and the give scalar in place.
 
@@ -475,6 +516,18 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             The difference of self - v.
         """
         return Self(self.value() - v)
+
+    @always_inline
+    fn __rsub__(self, v: Self.ScalarType) -> Self:
+        """Compute the difference of self and the give scalar.
+
+        Args:
+            v: A scalar.
+
+        Returns:
+            The difference of v - self.
+        """
+        return Self(v - self.value())
 
     @always_inline
     fn __isub__(mut self, v: Self.ScalarType):

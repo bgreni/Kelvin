@@ -63,6 +63,12 @@ def test_scalar_arithmetic():
     a /= 5
     assert_equal(a, Meter(5))
 
+    a = Meter(10)
+    assert_equal(10 + a, Meter(20))
+    assert_equal(15 - a, Meter(5))
+    assert_equal(5 * a, Meter(50))
+    assert_equal(20 / a, Meter(2))
+
 
 def test_cast():
     var a = Meter(cast_from=Kilometer(10))

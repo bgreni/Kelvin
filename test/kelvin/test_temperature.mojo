@@ -62,3 +62,9 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, Kelvin(5))
     a /= 5
     assert_equal(a, Kelvin(5))
+
+    a = Kelvin(10)
+    assert_equal(10 + a, Kelvin(20))
+    assert_equal(15 - a, Kelvin(5))
+    assert_equal(5 * a, Kelvin(50))
+    assert_equal(20 / a, Kelvin(2))

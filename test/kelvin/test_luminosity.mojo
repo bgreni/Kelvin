@@ -62,3 +62,9 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, Candela(5))
     a /= 5
     assert_equal(a, Candela(5))
+
+    a = Candela(10)
+    assert_equal(10 + a, Candela(20))
+    assert_equal(15 - a, Candela(5))
+    assert_equal(5 * a, Candela(50))
+    assert_equal(20 / a, Candela(2))

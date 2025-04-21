@@ -62,3 +62,9 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, Mole(5))
     a /= 5
     assert_equal(a, Mole(5))
+
+    a = Mole(10)
+    assert_equal(10 + a, Mole(20))
+    assert_equal(15 - a, Mole(5))
+    assert_equal(5 * a, Mole(50))
+    assert_equal(20 / a, Mole(2))

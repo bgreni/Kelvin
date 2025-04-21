@@ -58,6 +58,12 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, {0}(5))
     a /= 5
     assert_equal(a, {0}(5))
+
+    a = {0}(10)
+    assert_equal(10 + a, {0}(20))
+    assert_equal(15 - a, {0}(5))
+    assert_equal(5 * a, {0}(50))
+    assert_equal(20 / a, {0}(2))
 """
 
 cast_test_template = \

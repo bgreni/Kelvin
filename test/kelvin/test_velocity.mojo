@@ -63,6 +63,12 @@ def test_scalar_arithmetic():
     a /= 5
     assert_equal(a, MetersPerSecond(5))
 
+    a = MetersPerSecond(10)
+    assert_equal(10 + a, MetersPerSecond(20))
+    assert_equal(15 - a, MetersPerSecond(5))
+    assert_equal(5 * a, MetersPerSecond(50))
+    assert_equal(20 / a, MetersPerSecond(2))
+
 
 def test_cast():
     var a = MetersPerSecond(cast_from=MilesPerHour(10))

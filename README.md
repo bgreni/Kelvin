@@ -107,6 +107,14 @@ var b = Meter(10) + Mile(20) # Nope
 var c = Meter(10) + Second(10) # Nope
 ```
 
+You can also freely use scalar values in combinations with scalar values.
+
+```mojo
+var m = Meter(10)
+m = m * 5
+m += 10
+```
+
 ## Quantity Conversions
 
 Quantities with matching dimensions, but different scale can be casted to one

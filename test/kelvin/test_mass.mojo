@@ -62,3 +62,9 @@ def test_scalar_arithmetic():
     assert_equal(a / 5, Kilogram(5))
     a /= 5
     assert_equal(a, Kilogram(5))
+
+    a = Kilogram(10)
+    assert_equal(10 + a, Kilogram(20))
+    assert_equal(15 - a, Kilogram(5))
+    assert_equal(5 * a, Kilogram(50))
+    assert_equal(20 / a, Kilogram(2))
