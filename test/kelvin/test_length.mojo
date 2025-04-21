@@ -48,6 +48,22 @@ def test_eq():
     assert_not_equal(Meter(10), Meter(20))
 
 
+def test_scalar_arithmetic():
+    var a = Meter(10)
+    assert_equal(a + 10, Meter(20))
+    a += 10
+    assert_equal(a, Meter(20))
+    assert_equal(a - 15, Meter(5))
+    a -= 15
+    assert_equal(a, Meter(5))
+    assert_equal(a * 5, Meter(25))
+    a *= 5
+    assert_equal(a, Meter(25))
+    assert_equal(a / 5, Meter(5))
+    a /= 5
+    assert_equal(a, Meter(5))
+
+
 def test_cast():
     var a = Meter(cast_from=Kilometer(10))
     assert_equal(a.value(), 10000)

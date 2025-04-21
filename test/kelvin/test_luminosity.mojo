@@ -46,3 +46,19 @@ def test_str():
 def test_eq():
     assert_equal(Candela(10), Candela(10))
     assert_not_equal(Candela(10), Candela(20))
+
+
+def test_scalar_arithmetic():
+    var a = Candela(10)
+    assert_equal(a + 10, Candela(20))
+    a += 10
+    assert_equal(a, Candela(20))
+    assert_equal(a - 15, Candela(5))
+    a -= 15
+    assert_equal(a, Candela(5))
+    assert_equal(a * 5, Candela(25))
+    a *= 5
+    assert_equal(a, Candela(25))
+    assert_equal(a / 5, Candela(5))
+    a /= 5
+    assert_equal(a, Candela(5))

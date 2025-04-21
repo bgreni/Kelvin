@@ -48,6 +48,22 @@ def test_eq():
     assert_not_equal(MetersPerSecond(10), MetersPerSecond(20))
 
 
+def test_scalar_arithmetic():
+    var a = MetersPerSecond(10)
+    assert_equal(a + 10, MetersPerSecond(20))
+    a += 10
+    assert_equal(a, MetersPerSecond(20))
+    assert_equal(a - 15, MetersPerSecond(5))
+    a -= 15
+    assert_equal(a, MetersPerSecond(5))
+    assert_equal(a * 5, MetersPerSecond(25))
+    a *= 5
+    assert_equal(a, MetersPerSecond(25))
+    assert_equal(a / 5, MetersPerSecond(5))
+    a /= 5
+    assert_equal(a, MetersPerSecond(5))
+
+
 def test_cast():
     var a = MetersPerSecond(cast_from=MilesPerHour(10))
     assert_equal(a.value(), 4.4704)

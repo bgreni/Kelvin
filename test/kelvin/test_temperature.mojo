@@ -46,3 +46,19 @@ def test_str():
 def test_eq():
     assert_equal(Kelvin(10), Kelvin(10))
     assert_not_equal(Kelvin(10), Kelvin(20))
+
+
+def test_scalar_arithmetic():
+    var a = Kelvin(10)
+    assert_equal(a + 10, Kelvin(20))
+    a += 10
+    assert_equal(a, Kelvin(20))
+    assert_equal(a - 15, Kelvin(5))
+    a -= 15
+    assert_equal(a, Kelvin(5))
+    assert_equal(a * 5, Kelvin(25))
+    a *= 5
+    assert_equal(a, Kelvin(25))
+    assert_equal(a / 5, Kelvin(5))
+    a /= 5
+    assert_equal(a, Kelvin(5))

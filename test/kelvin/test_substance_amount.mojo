@@ -46,3 +46,19 @@ def test_str():
 def test_eq():
     assert_equal(Mole(10), Mole(10))
     assert_not_equal(Mole(10), Mole(20))
+
+
+def test_scalar_arithmetic():
+    var a = Mole(10)
+    assert_equal(a + 10, Mole(20))
+    a += 10
+    assert_equal(a, Mole(20))
+    assert_equal(a - 15, Mole(5))
+    a -= 15
+    assert_equal(a, Mole(5))
+    assert_equal(a * 5, Mole(25))
+    a *= 5
+    assert_equal(a, Mole(25))
+    assert_equal(a / 5, Mole(5))
+    a /= 5
+    assert_equal(a, Mole(5))

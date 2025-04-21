@@ -210,11 +210,11 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         DT: The numerical type of the value, defaults to Float64
     """
 
-    alias DataType = Scalar[DT]
-    var _value: Self.DataType
+    alias ScalarType = Scalar[DT]
+    var _value: Self.ScalarType
 
     @always_inline
-    fn __init__(out self, v: Self.DataType):
+    fn __init__(out self, v: Self.ScalarType):
         self._value = v
 
     @always_inline
@@ -234,7 +234,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Both quantities must live in the same dimensional space (eg. velocity in, velocity out).
 
         Args:
-            other: Some quantity of matching dimension to cast from.
+            cast_from: Some quantity of matching dimension to cast from.
         """
         _dimension_space_check[D, cast_from.D]()
         var val = cast_from.value()
@@ -264,6 +264,18 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             val = AngR * val
 
         self._value = val
+
+    @always_inline
+    fn value(self) -> Self.ScalarType:
+        """
+        Returns:
+            the value of the quantity.
+        """
+        return self._value
+
+    # ===------------------------------------------------------------------=== #
+    # Quantity operations
+    # ===------------------------------------------------------------------=== #
 
     @always_inline
     fn __truediv__[
@@ -312,13 +324,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return __type_of(res)(self._value * other._value)
 
     @always_inline
-    fn __pow__(self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT]):
-        return __type_of(res)(self.value() ** p)
-
-    @always_inline
     fn __add__(self, other: Self) -> Self:
         """Compute sum of two quantities.
-        Addition is only defined on quantities of matching types
+        Addition is only defined on quantities of matching types.
 
         Args:
             other: A quantity of matching type.
@@ -331,7 +339,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     @always_inline
     fn __iadd__(mut self, other: Self):
         """Compute sum of two quantities in place.
-        Addition is only defined on quantities of matching types
+        Addition is only defined on quantities of matching types.
 
         Args:
             other: A quantity of matching type.
@@ -341,7 +349,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     @always_inline
     fn __sub__(self, other: Self) -> Self:
         """Compute differecnce of two quantities.
-        Subtraction is only defined on quantities of matching types
+        Subtraction is only defined on quantities of matching types.
 
         Args:
             other: A quantity of matching type.
@@ -353,8 +361,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
 
     @always_inline
     fn __isub__(mut self, other: Self):
-        """Compute differecnce of two quantities in place.
-        Subtraction is only defined on quantities of matching types
+        """Compute difference of two quantities in place.
+        Subtraction is only defined on quantities of matching types.
 
         Args:
             other: A quantity of matching type.
@@ -379,6 +387,120 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         """
         return self._value != other._value
 
+    # ===------------------------------------------------------------------=== #
+    # Scalar operations
+    # ===------------------------------------------------------------------=== #
+
+    @always_inline
+    fn __truediv__(self, v: Self.ScalarType) -> Self:
+        """Divides the value by the given scalar.
+
+        Args:
+            v: A scalar.
+
+        Returns:
+            The quotient of self / v.
+        """
+
+        @parameter
+        if DT.is_integral():
+            return Self(self._value // v)
+        else:
+            return Self(self._value / v)
+
+    @always_inline
+    fn __itruediv__(mut self, v: Self.ScalarType):
+        """Divides the value by the given scalar in place.
+
+        Args:
+            v: A scalar.
+        """
+
+        @parameter
+        if DT.is_integral():
+            self._value //= v
+        else:
+            self._value /= v
+
+    @always_inline
+    fn __mul__(self, v: Self.ScalarType) -> Self:
+        """Multiply the value but a given scalar.
+
+        Args:
+            v: The input scalar.
+
+        Returns
+            The product of self * v.
+        """
+        return Self(self.value() * v)
+
+    @always_inline
+    fn __imul__(mut self, v: Self.ScalarType):
+        """Multiply the value but a given scalar in place.
+
+        Args:
+            v: The input scalar.
+        """
+        self._value *= v
+
+    @always_inline
+    fn __add__(self, v: Self.ScalarType) -> Self:
+        """Compute the sum of self and the give scalar.
+
+        Args:
+            v: A scalar.
+
+        Returns:
+            The sum of self + v.
+        """
+        return Self(self.value() + v)
+
+    @always_inline
+    fn __iadd__(mut self, v: Self.ScalarType):
+        """Compute the sum of self and the give scalar in place.
+
+        Args:
+            v: A scalar.
+        """
+        self._value += v
+
+    @always_inline
+    fn __sub__(self, v: Self.ScalarType) -> Self:
+        """Compute the difference of self and the give scalar.
+
+        Args:
+            v: A scalar.
+
+        Returns:
+            The difference of self - v.
+        """
+        return Self(self.value() - v)
+
+    @always_inline
+    fn __isub__(mut self, v: Self.ScalarType):
+        """Compute the difference of self and the give scalar in place.
+
+        Args:
+            v: A scalar.
+        """
+        self._value -= v
+
+    @always_inline
+    fn __pow__(self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT]):
+        """Compute self ** p.
+
+        Args:
+            p: A compile time known IntLiteral.
+
+        Returns:
+            The value raised to the power p, with the corresponding units transformed.
+        """
+        return __type_of(res)(self.value() ** p)
+
+    # ===------------------------------------------------------------------=== #
+    # Trait implementations
+    # ===------------------------------------------------------------------=== #
+
     @always_inline
     fn __str__(self) -> String:
         """
@@ -396,13 +518,10 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         writer.write(self._value)
         writer.write(D)
 
-    @always_inline
-    fn value(self) -> Self.DataType:
-        """
-        Returns:
-            the value of the quantity.
-        """
-        return self._value
+
+# ===------------------------------------------------------------------=== #
+# Private helpers
+# ===------------------------------------------------------------------=== #
 
 
 fn _dimension_space_check[L: Dimensions, R: Dimensions]():

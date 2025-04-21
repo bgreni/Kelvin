@@ -46,3 +46,19 @@ def test_str():
 def test_eq():
     assert_equal(Kilogram(10), Kilogram(10))
     assert_not_equal(Kilogram(10), Kilogram(20))
+
+
+def test_scalar_arithmetic():
+    var a = Kilogram(10)
+    assert_equal(a + 10, Kilogram(20))
+    a += 10
+    assert_equal(a, Kilogram(20))
+    assert_equal(a - 15, Kilogram(5))
+    a -= 15
+    assert_equal(a, Kilogram(5))
+    assert_equal(a * 5, Kilogram(25))
+    a *= 5
+    assert_equal(a, Kilogram(25))
+    assert_equal(a / 5, Kilogram(5))
+    a /= 5
+    assert_equal(a, Kilogram(5))

@@ -46,3 +46,19 @@ def test_str():
 def test_eq():
     assert_equal(Ampere(10), Ampere(10))
     assert_not_equal(Ampere(10), Ampere(20))
+
+
+def test_scalar_arithmetic():
+    var a = Ampere(10)
+    assert_equal(a + 10, Ampere(20))
+    a += 10
+    assert_equal(a, Ampere(20))
+    assert_equal(a - 15, Ampere(5))
+    a -= 15
+    assert_equal(a, Ampere(5))
+    assert_equal(a * 5, Ampere(25))
+    a *= 5
+    assert_equal(a, Ampere(25))
+    assert_equal(a / 5, Ampere(5))
+    a /= 5
+    assert_equal(a, Ampere(5))

@@ -43,6 +43,21 @@ def test_str():
 def test_eq():
     assert_equal({0}(10), {0}(10))
     assert_not_equal({0}(10), {0}(20))
+
+def test_scalar_arithmetic():
+    var a = {0}(10)
+    assert_equal(a + 10, {0}(20))
+    a += 10
+    assert_equal(a, {0}(20))
+    assert_equal(a - 15, {0}(5))
+    a -= 15
+    assert_equal(a, {0}(5))
+    assert_equal(a * 5, {0}(25))
+    a *= 5
+    assert_equal(a, {0}(25))
+    assert_equal(a / 5, {0}(5))
+    a /= 5
+    assert_equal(a, {0}(5))
 """
 
 cast_test_template = \

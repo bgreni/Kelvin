@@ -52,3 +52,19 @@ def test_str():
 def test_eq():
     assert_equal(MetersPerSecondSquared(10), MetersPerSecondSquared(10))
     assert_not_equal(MetersPerSecondSquared(10), MetersPerSecondSquared(20))
+
+
+def test_scalar_arithmetic():
+    var a = MetersPerSecondSquared(10)
+    assert_equal(a + 10, MetersPerSecondSquared(20))
+    a += 10
+    assert_equal(a, MetersPerSecondSquared(20))
+    assert_equal(a - 15, MetersPerSecondSquared(5))
+    a -= 15
+    assert_equal(a, MetersPerSecondSquared(5))
+    assert_equal(a * 5, MetersPerSecondSquared(25))
+    a *= 5
+    assert_equal(a, MetersPerSecondSquared(25))
+    assert_equal(a / 5, MetersPerSecondSquared(5))
+    a /= 5
+    assert_equal(a, MetersPerSecondSquared(5))

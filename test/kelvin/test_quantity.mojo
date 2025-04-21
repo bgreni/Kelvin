@@ -38,3 +38,7 @@ def test_integer_values():
     assert_equal(S(20).value(), Int64(20))
     assert_equal(M(5) / S(2), MPS(2))
     assert_equal(MPS(cast_from=MPH(10)), MPS(4))
+
+
+def test_pow():
+    assert_equal(Meter(10) ** 2, MetersSquared(100))
