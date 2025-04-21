@@ -312,6 +312,10 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return __type_of(res)(self._value * other._value)
 
     @always_inline
+    fn __pow__(self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT]):
+        return __type_of(res)(self.value() ** p)
+
+    @always_inline
     fn __add__(self, other: Self) -> Self:
         """Compute sum of two quantities.
         Addition is only defined on quantities of matching types

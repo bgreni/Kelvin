@@ -94,6 +94,9 @@ var velocity: MetersPerSecond = Meter(10) / Second(2)
 var area: MetersSquared = Meter(10) * Meter(20)
 
 var a = Meter(10) * Mile(20) # Nope
+
+# Power must be an IntLiteral so it's compile time known
+area = Meter(10) ** 2
 ```
 
 Addition and subtraction are only defined on matching quantities.
