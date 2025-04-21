@@ -3,26 +3,113 @@
 A powerful dimensional analysis library written in Mojo for all you scientific computing needs.
 Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
 
+## Defining a quantity
 
-## Usage
+To define a specific unit, you simply need to create an alias to `Quantity` with
+the particular dimensions defined. Each dimension also requires a `Ratio` and a
+suffix string. The ratio defines the relationship between it and the unitary amount.
+All dimensions that do not exist for a given quantity are given `Dimension.Invalid`.
 
 ```mojo
-from kelvin import *
+# Base unit for time, `Second`
+alias Meter = Quantity[
+    Dimensions[
+        Dimension[1, Ratio.Unitary, "m"](), # Length
+        Dimension.Invalid, # Mass
+        Dimension.Invalid, # Time
+        Dimension.Invalid, # Electric current
+        Dimension.Invalid, # Temperature
+        Dimension.Invalid, # Substance Amount
+        Dimension.Invalid, # Luminosity
+        Angle.Invalid, # Angle
+    ](),
+    _,
+]
 
-# time dimension
-var s = Seconds(10)
+# Use Ratio.Kilo to create a `Kilometer`
+alias Kilometer = Quantity[
+    Dimensions[
+        Dimension[1, Ratio.Kilo, "km"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    _,
+]
 
-# length dimension
-var m = Meter(10)
+# Quantity with a weird conversion ratio
+alias Mile = Quantity[
+    Dimensions[
+        Dimension[1, Ratio[1609344, 1000]().simplify(), "mile"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    _,
+]
+```
 
-# velocity
-var v = m / s
+With these simple units defined, we can use arithmetic syntax on the `Dimensions`
+struct to create derivative units very easily. Here we can define Velocity in
+a single line of code.
 
+```mojo
+alias MetersPerSecond = Quantity[Meter.D / Second.D, _]
+alias MetersSquared = Quantity[Meter.D**2, _]
 
-# Define arbitrary units
 alias kg = Kilogram.D
 alias m = Meter.D
 alias s = Second.D
 alias Newton = Quantity[kg * m * (s ** -2)]
-var n = Newton(10)
+```
+
+## Numerical Type
+
+Quantity accepts a `DType` parameter to define the numerical type and bitwidth
+of the underlying value. The default is `DType.float64`.
+
+```mojo
+var s = Second(10.0) # Will be a float64
+
+alias IntSecond = Second[DType.int64]
+var is = IntSecond(10) # will be int64
+```
+
+## Quantity arithmetic
+
+Since the dimensions of a quantity are a dynamic part of the type system,
+we can also do type-safe quantity multiplication and division. Though they
+must have matching scale on all valid dimensions
+
+```mojo
+var velocity: MetersPerSecond = Meter(10) / Second(2)
+var area: MetersSquared = Meter(10) * Meter(20)
+
+var a = Meter(10) * Mile(20) # Nope
+```
+
+Addition and subtraction are only defined on matching quantities.
+
+```mojo
+var a = Meter(10) + Meter(10)
+var b = Meter(10) + Mile(20) # Nope
+var c = Meter(10) + Second(10) # Nope
+```
+
+## Quantity Conversions
+
+Quantities with matching dimensions, but different scale can be casted to one
+another.
+
+```mojo
+var m = Minute(cast_from=Second(600))
+var s = Second(cast_from=m)
 ```
