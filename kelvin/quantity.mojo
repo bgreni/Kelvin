@@ -29,7 +29,9 @@ struct Angle[R: Ratio, suffix: StaticString](
         return R.__bool__()
 
     @always_inline("builtin")
-    fn pick_non_null(self, other: Angle, out res: Angle[R | other.R, suffix or other.suffix]):
+    fn pick_non_null(
+        self, other: Angle, out res: Angle[R | other.R, suffix or other.suffix]
+    ):
         return __type_of(res)()
 
     @always_inline
@@ -157,7 +159,7 @@ struct Dimensions[
     @always_inline("builtin")
     fn __truediv__(
         self,
-        other: Dimensions[Ang=Ang],
+        other: Dimensions,
         out res: Dimensions[
             L - other.L,
             M - other.M,
@@ -166,7 +168,7 @@ struct Dimensions[
             TH - other.TH,
             A - other.A,
             CD - other.CD,
-            Ang,
+            Ang.pick_non_null(other.Ang),
         ],
     ):
         return __type_of(res)()
@@ -183,9 +185,9 @@ struct Dimensions[
             TH + other.TH,
             A + other.A,
             CD + other.CD,
-            Ang.pick_non_null(other.Ang)
+            Ang.pick_non_null(other.Ang),
         ],
-    ):  
+    ):
         return __type_of(res)()
 
     @always_inline("builtin")
