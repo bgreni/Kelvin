@@ -120,6 +120,17 @@ struct Dimensions[
         Ang: The angle component of the quantity
     """
 
+    alias Null = Dimensions[
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ]()
+
     @always_inline("builtin")
     fn __init__(out self):
         pass

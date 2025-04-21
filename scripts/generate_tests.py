@@ -137,6 +137,11 @@ if __name__ == '__main__':
             'unit_name': 'Candela',
             'str_suffix': 'cd^1'
         },
+        {
+            'module_name': 'energy',
+            'unit_name': 'Joule',
+            'str_suffix': 'm^2 kg^1 s^-2'
+        },
     ]
 
     for config in test_configs:
