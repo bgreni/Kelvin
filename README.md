@@ -3,7 +3,7 @@
 A powerful dimensional analysis library written in Mojo for all you scientific computing needs.
 Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
 
-## Defining a quantity
+## Defining a Quantity
 
 To define a specific unit, you simply need to create an alias to `Quantity` with
 the particular dimensions defined. Each dimension also requires a `Ratio` and a
@@ -83,7 +83,7 @@ alias IntSecond = Second[DType.int64]
 var is = IntSecond(10) # will be int64
 ```
 
-## Quantity arithmetic
+## Quantity Arithmetic
 
 Since the dimensions of a quantity are a dynamic part of the type system,
 we can also do type-safe quantity multiplication and division. Though they
