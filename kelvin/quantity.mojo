@@ -28,6 +28,10 @@ struct Angle[R: Ratio, suffix: StaticString](
     fn __as_bool__(self) -> Bool:
         return R.__bool__()
 
+    @always_inline("builtin")
+    fn pick_non_null(self, other: Angle, out res: Angle[R | other.R, suffix or other.suffix]):
+        return __type_of(res)()
+
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(suffix)
@@ -59,22 +63,20 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString]:
     fn __ne__(self, other: Dimension) -> Bool:
         return not self == other
 
-    @always_inline
+    @always_inline("builtin")
     fn __add__(
         self,
         other: Dimension,
         out res: Dimension[Z + other.Z, R | other.R, suffix or other.suffix],
     ):
-        _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()
 
-    @always_inline
+    @always_inline("builtin")
     fn __sub__(
         self,
         other: Dimension,
         out res: Dimension[Z - other.Z, R | other.R, suffix or other.suffix],
     ):
-        _same_scale_or_one_null_check[R, other.R]()
         return __type_of(res)()
 
     @always_inline("builtin")
@@ -155,7 +157,7 @@ struct Dimensions[
     @always_inline("builtin")
     fn __truediv__(
         self,
-        other: Dimensions,
+        other: Dimensions[Ang=Ang],
         out res: Dimensions[
             L - other.L,
             M - other.M,
@@ -181,9 +183,9 @@ struct Dimensions[
             TH + other.TH,
             A + other.A,
             CD + other.CD,
-            Ang,
+            Ang.pick_non_null(other.Ang)
         ],
-    ):
+    ):  
         return __type_of(res)()
 
     @always_inline("builtin")
@@ -631,11 +633,6 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     @parameter
     if Bool(L.Ang) and Bool(R.Ang):
         constrained[L.Ang.R == R.Ang.R]()
-
-
-@always_inline
-fn _same_scale_or_one_null_check[L: Ratio, R: Ratio]():
-    constrained[not (Bool(L) and Bool(R))]()
 
 
 @always_inline
