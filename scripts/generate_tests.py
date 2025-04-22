@@ -142,6 +142,11 @@ if __name__ == '__main__':
             'unit_name': 'Joule',
             'str_suffix': 'm^2 kg^1 s^-2'
         },
+        {
+            'module_name': 'electric_charge',
+            'unit_name': 'Coulomb',
+            'str_suffix': 's^1 A^1'
+        },
     ]
 
     for config in test_configs:
