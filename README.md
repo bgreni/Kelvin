@@ -124,3 +124,19 @@ another.
 var m = Minute(cast_from=Second(600))
 var s = Second(cast_from=m)
 ```
+
+## Sharp Edges
+
+Dimensional type safety is only implemented at the `Quantity` level, due to
+the usage of `@always_inline('builtin')` throughout `Dimensions, Dimension, Ratio and Angle`
+to keep compile times fast, and there is currently no way of adding additional contraints
+to methods that use that decorator. The result is expressions like these are erroneously allowed.
+
+```mojo
+alias BadUnit = Meter.D * Mile.D # Bad
+
+var a = Meter(10) * Mile(10) # Reject properly due to using Quantity
+```
+
+You are still protected from surprising behavior when doing actual calculations, but
+care must be taken when defining new units.
