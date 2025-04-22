@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  CI:
+    strategy:
+      matrix:
+        include:
+          - { target: linux-64, os: ubuntu-latest }
+        #   - { target: osx-arm64, os: macos-14 }
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Build and Tests
+        env:
+          TARGET_PLATFORM: ${{ matrix.target }}
+        run: |
+          curl -ssL https://magic.modular.com | bash
+          source $HOME/.bash_profile
+          
+          echo "Running Tests"
+          magic run test || exit 1

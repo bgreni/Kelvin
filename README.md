@@ -1,5 +1,8 @@
 # Kelvin
 
+![license_badge](https://badgen.net/static/license/Apache2.0/blue)
+![ci_badge](https://github.com/bgreni/EmberJson/actions/workflows/CI.yml/badge.svg)
+
 A powerful dimensional analysis library written in Mojo for all you scientific computing needs.
 Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
 
