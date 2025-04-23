@@ -4,7 +4,7 @@ from .ratio import Ratio
 @value
 @register_passable("trivial")
 struct Angle[R: Ratio, suffix: StaticString](
-    Boolable, Writable, ImplicitlyBoolable
+    Boolable, Writable, ImplicitlyBoolable, Stringable
 ):
     alias Invalid = Angle[Ratio.Invalid, ""]()
 
@@ -38,10 +38,16 @@ struct Angle[R: Ratio, suffix: StaticString](
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(suffix)
 
+    @always_inline
+    fn __str__(self) -> String:
+        return String.write(self)
+
 
 @value
 @register_passable("trivial")
-struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString]:
+struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString](
+    Boolable, Writable, ImplicitlyBoolable, Stringable
+):
     """Represents a single dimension.
 
     Params:
@@ -94,8 +100,16 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString]:
         return Z != 0
 
     @always_inline("builtin")
+    fn __as_bool__(self) -> Bool:
+        return self.__bool__()
+
+    @always_inline("builtin")
     fn __neg__(self, out res: Dimension[-Z, R, suffix]):
         return __type_of(res)()
+
+    @always_inline
+    fn __str__(self) -> String:
+        return String.write(self)
 
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
@@ -113,7 +127,7 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
     Ang: Angle,
-]:
+](Writable, Stringable):
     """Represents the 7 SI unit dimensions + angle, all within the parameter
     domain.
 
@@ -215,6 +229,10 @@ struct Dimensions[
     fn __neg__(self, out res: Dimensions[-L, -M, -T, -EC, -TH, -A, -CD, Ang]):
         return __type_of(res)()
 
+    @always_inline
+    fn __str__(self) -> String:
+        return String.write(self)
+
     fn write_to[W: Writer](self, mut writer: W):
         @parameter
         @always_inline
@@ -239,7 +257,11 @@ struct Dimensions[
 @value
 @register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64](
-    EqualityComparableCollectionElement, Writable, Stringable
+    EqualityComparableCollectionElement,
+    Writable,
+    Stringable,
+    Boolable,
+    ImplicitlyBoolable,
 ):
     """Represents an abstract quantity over some given dimensions.
 
@@ -534,6 +556,14 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             The string representation of the quantity.
         """
         return String.write(self)
+
+    @always_inline
+    fn __bool__(self) -> Bool:
+        return Bool(self.value())
+
+    @always_inline
+    fn __as_bool__(self) -> Bool:
+        return Bool(self)
 
     fn write_to[W: Writer](self, mut writer: W):
         """Writes the representation of the quantity to the given writer.
