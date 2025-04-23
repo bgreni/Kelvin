@@ -50,24 +50,16 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = Second(10)
-    assert_equal(a + 10, Second(20))
-    a += 10
-    assert_equal(a, Second(20))
-    assert_equal(a - 15, Second(5))
-    a -= 15
-    assert_equal(a, Second(5))
-    assert_equal(a * 5, Second(25))
+    assert_equal(a * 5, Second(50))
     a *= 5
-    assert_equal(a, Second(25))
-    assert_equal(a / 5, Second(5))
+    assert_equal(a, Second(50))
+    assert_equal(a / 5, Second(10))
     a /= 5
-    assert_equal(a, Second(5))
+    assert_equal(a, Second(10))
 
     a = Second(10)
-    assert_equal(10 + a, Second(20))
-    assert_equal(15 - a, Second(5))
     assert_equal(5 * a, Second(50))
-    assert_equal(20 / a, Second(2))
+    assert_equal(20 / a, Quantity[-Second.D](2))
 
 
 def test_cast():

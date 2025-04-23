@@ -50,21 +50,13 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = MetersSquared(10)
-    assert_equal(a + 10, MetersSquared(20))
-    a += 10
-    assert_equal(a, MetersSquared(20))
-    assert_equal(a - 15, MetersSquared(5))
-    a -= 15
-    assert_equal(a, MetersSquared(5))
-    assert_equal(a * 5, MetersSquared(25))
+    assert_equal(a * 5, MetersSquared(50))
     a *= 5
-    assert_equal(a, MetersSquared(25))
-    assert_equal(a / 5, MetersSquared(5))
+    assert_equal(a, MetersSquared(50))
+    assert_equal(a / 5, MetersSquared(10))
     a /= 5
-    assert_equal(a, MetersSquared(5))
+    assert_equal(a, MetersSquared(10))
 
     a = MetersSquared(10)
-    assert_equal(10 + a, MetersSquared(20))
-    assert_equal(15 - a, MetersSquared(5))
     assert_equal(5 * a, MetersSquared(50))
-    assert_equal(20 / a, MetersSquared(2))
+    assert_equal(20 / a, Quantity[-MetersSquared.D](2))

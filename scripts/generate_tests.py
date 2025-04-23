@@ -46,24 +46,16 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = {0}(10)
-    assert_equal(a + 10, {0}(20))
-    a += 10
-    assert_equal(a, {0}(20))
-    assert_equal(a - 15, {0}(5))
-    a -= 15
-    assert_equal(a, {0}(5))
-    assert_equal(a * 5, {0}(25))
+    assert_equal(a * 5, {0}(50))
     a *= 5
-    assert_equal(a, {0}(25))
-    assert_equal(a / 5, {0}(5))
+    assert_equal(a, {0}(50))
+    assert_equal(a / 5, {0}(10))
     a /= 5
-    assert_equal(a, {0}(5))
+    assert_equal(a, {0}(10))
 
     a = {0}(10)
-    assert_equal(10 + a, {0}(20))
-    assert_equal(15 - a, {0}(5))
     assert_equal(5 * a, {0}(50))
-    assert_equal(20 / a, {0}(2))
+    assert_equal(20 / a, Quantity[-{0}.D](2))
 """
 
 cast_test_template = \

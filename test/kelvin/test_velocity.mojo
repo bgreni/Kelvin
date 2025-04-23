@@ -50,24 +50,16 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = MetersPerSecond(10)
-    assert_equal(a + 10, MetersPerSecond(20))
-    a += 10
-    assert_equal(a, MetersPerSecond(20))
-    assert_equal(a - 15, MetersPerSecond(5))
-    a -= 15
-    assert_equal(a, MetersPerSecond(5))
-    assert_equal(a * 5, MetersPerSecond(25))
+    assert_equal(a * 5, MetersPerSecond(50))
     a *= 5
-    assert_equal(a, MetersPerSecond(25))
-    assert_equal(a / 5, MetersPerSecond(5))
+    assert_equal(a, MetersPerSecond(50))
+    assert_equal(a / 5, MetersPerSecond(10))
     a /= 5
-    assert_equal(a, MetersPerSecond(5))
+    assert_equal(a, MetersPerSecond(10))
 
     a = MetersPerSecond(10)
-    assert_equal(10 + a, MetersPerSecond(20))
-    assert_equal(15 - a, MetersPerSecond(5))
     assert_equal(5 * a, MetersPerSecond(50))
-    assert_equal(20 / a, MetersPerSecond(2))
+    assert_equal(20 / a, Quantity[-MetersPerSecond.D](2))
 
 
 def test_cast():

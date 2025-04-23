@@ -50,21 +50,13 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = Kelvin(10)
-    assert_equal(a + 10, Kelvin(20))
-    a += 10
-    assert_equal(a, Kelvin(20))
-    assert_equal(a - 15, Kelvin(5))
-    a -= 15
-    assert_equal(a, Kelvin(5))
-    assert_equal(a * 5, Kelvin(25))
+    assert_equal(a * 5, Kelvin(50))
     a *= 5
-    assert_equal(a, Kelvin(25))
-    assert_equal(a / 5, Kelvin(5))
+    assert_equal(a, Kelvin(50))
+    assert_equal(a / 5, Kelvin(10))
     a /= 5
-    assert_equal(a, Kelvin(5))
+    assert_equal(a, Kelvin(10))
 
     a = Kelvin(10)
-    assert_equal(10 + a, Kelvin(20))
-    assert_equal(15 - a, Kelvin(5))
     assert_equal(5 * a, Kelvin(50))
-    assert_equal(20 / a, Kelvin(2))
+    assert_equal(20 / a, Quantity[-Kelvin.D](2))

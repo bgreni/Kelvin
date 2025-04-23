@@ -50,21 +50,13 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = Ampere(10)
-    assert_equal(a + 10, Ampere(20))
-    a += 10
-    assert_equal(a, Ampere(20))
-    assert_equal(a - 15, Ampere(5))
-    a -= 15
-    assert_equal(a, Ampere(5))
-    assert_equal(a * 5, Ampere(25))
+    assert_equal(a * 5, Ampere(50))
     a *= 5
-    assert_equal(a, Ampere(25))
-    assert_equal(a / 5, Ampere(5))
+    assert_equal(a, Ampere(50))
+    assert_equal(a / 5, Ampere(10))
     a /= 5
-    assert_equal(a, Ampere(5))
+    assert_equal(a, Ampere(10))
 
     a = Ampere(10)
-    assert_equal(10 + a, Ampere(20))
-    assert_equal(15 - a, Ampere(5))
     assert_equal(5 * a, Ampere(50))
-    assert_equal(20 / a, Ampere(2))
+    assert_equal(20 / a, Quantity[-Ampere.D](2))

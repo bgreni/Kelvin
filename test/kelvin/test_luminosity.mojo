@@ -50,21 +50,13 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = Candela(10)
-    assert_equal(a + 10, Candela(20))
-    a += 10
-    assert_equal(a, Candela(20))
-    assert_equal(a - 15, Candela(5))
-    a -= 15
-    assert_equal(a, Candela(5))
-    assert_equal(a * 5, Candela(25))
+    assert_equal(a * 5, Candela(50))
     a *= 5
-    assert_equal(a, Candela(25))
-    assert_equal(a / 5, Candela(5))
+    assert_equal(a, Candela(50))
+    assert_equal(a / 5, Candela(10))
     a /= 5
-    assert_equal(a, Candela(5))
+    assert_equal(a, Candela(10))
 
     a = Candela(10)
-    assert_equal(10 + a, Candela(20))
-    assert_equal(15 - a, Candela(5))
     assert_equal(5 * a, Candela(50))
-    assert_equal(20 / a, Candela(2))
+    assert_equal(20 / a, Quantity[-Candela.D](2))

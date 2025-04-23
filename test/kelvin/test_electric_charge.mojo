@@ -50,21 +50,13 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = Coulomb(10)
-    assert_equal(a + 10, Coulomb(20))
-    a += 10
-    assert_equal(a, Coulomb(20))
-    assert_equal(a - 15, Coulomb(5))
-    a -= 15
-    assert_equal(a, Coulomb(5))
-    assert_equal(a * 5, Coulomb(25))
+    assert_equal(a * 5, Coulomb(50))
     a *= 5
-    assert_equal(a, Coulomb(25))
-    assert_equal(a / 5, Coulomb(5))
+    assert_equal(a, Coulomb(50))
+    assert_equal(a / 5, Coulomb(10))
     a /= 5
-    assert_equal(a, Coulomb(5))
+    assert_equal(a, Coulomb(10))
 
     a = Coulomb(10)
-    assert_equal(10 + a, Coulomb(20))
-    assert_equal(15 - a, Coulomb(5))
     assert_equal(5 * a, Coulomb(50))
-    assert_equal(20 / a, Coulomb(2))
+    assert_equal(20 / a, Quantity[-Coulomb.D](2))

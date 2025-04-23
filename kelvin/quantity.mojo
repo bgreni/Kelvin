@@ -93,6 +93,10 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString]:
     fn __bool__(self) -> Bool:
         return Z != 0
 
+    @always_inline("builtin")
+    fn __neg__(self, out res: Dimension[-Z, R, suffix]):
+        return __type_of(res)()
+
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(suffix, "^", Z)
@@ -205,6 +209,10 @@ struct Dimensions[
             Ang,
         ],
     ):
+        return __type_of(res)()
+
+    @always_inline("builtin")
+    fn __neg__(self, out res: Dimensions[-L, -M, -T, -EC, -TH, -A, -CD, Ang]):
         return __type_of(res)()
 
     fn write_to[W: Writer](self, mut writer: W):
@@ -439,7 +447,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             return Self(self._value / v)
 
     @always_inline
-    fn __rtruediv__(self, v: Self.ScalarType) -> Self:
+    fn __rtruediv__(self, v: Self.ScalarType, out res: Quantity[-D, DT]):
         """Divides the scalar by the value of self.
 
         Args:
@@ -448,12 +456,13 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             The quotient of v / self.
         """
+        alias Ret = __type_of(res)
 
         @parameter
         if DT.is_integral():
-            return Self(v // self.value())
+            return Ret(v // self.value())
         else:
-            return Self(v / self.value())
+            return Ret(v / self.value())
 
     @always_inline
     fn __itruediv__(mut self, v: Self.ScalarType):
@@ -501,72 +510,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             v: The input scalar.
         """
         self._value *= v
-
-    @always_inline
-    fn __add__(self, v: Self.ScalarType) -> Self:
-        """Compute the sum of self and the give scalar.
-
-        Args:
-            v: A scalar.
-
-        Returns:
-            The sum of self + v.
-        """
-        return Self(self.value() + v)
-
-    @always_inline
-    fn __radd__(self, v: Self.ScalarType) -> Self:
-        """Compute the sum of self and the give scalar.
-
-        Args:
-            v: A scalar.
-
-        Returns:
-            The sum of v + self.
-        """
-        return Self(v + self.value())
-
-    @always_inline
-    fn __iadd__(mut self, v: Self.ScalarType):
-        """Compute the sum of self and the give scalar in place.
-
-        Args:
-            v: A scalar.
-        """
-        self._value += v
-
-    @always_inline
-    fn __sub__(self, v: Self.ScalarType) -> Self:
-        """Compute the difference of self and the give scalar.
-
-        Args:
-            v: A scalar.
-
-        Returns:
-            The difference of self - v.
-        """
-        return Self(self.value() - v)
-
-    @always_inline
-    fn __rsub__(self, v: Self.ScalarType) -> Self:
-        """Compute the difference of self and the give scalar.
-
-        Args:
-            v: A scalar.
-
-        Returns:
-            The difference of v - self.
-        """
-        return Self(v - self.value())
-
-    @always_inline
-    fn __isub__(mut self, v: Self.ScalarType):
-        """Compute the difference of self and the give scalar in place.
-
-        Args:
-            v: A scalar.
-        """
-        self._value -= v
 
     @always_inline
     fn __pow__(self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT]):

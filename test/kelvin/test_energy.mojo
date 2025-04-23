@@ -50,21 +50,13 @@ def test_eq():
 
 def test_scalar_arithmetic():
     var a = Joule(10)
-    assert_equal(a + 10, Joule(20))
-    a += 10
-    assert_equal(a, Joule(20))
-    assert_equal(a - 15, Joule(5))
-    a -= 15
-    assert_equal(a, Joule(5))
-    assert_equal(a * 5, Joule(25))
+    assert_equal(a * 5, Joule(50))
     a *= 5
-    assert_equal(a, Joule(25))
-    assert_equal(a / 5, Joule(5))
+    assert_equal(a, Joule(50))
+    assert_equal(a / 5, Joule(10))
     a /= 5
-    assert_equal(a, Joule(5))
+    assert_equal(a, Joule(10))
 
     a = Joule(10)
-    assert_equal(10 + a, Joule(20))
-    assert_equal(15 - a, Joule(5))
     assert_equal(5 * a, Joule(50))
-    assert_equal(20 / a, Joule(2))
+    assert_equal(20 / a, Quantity[-Joule.D](2))
