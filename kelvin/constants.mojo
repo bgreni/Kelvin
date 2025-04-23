@@ -1,6 +1,14 @@
 """Definitions of the universal constants."""
 
-from kelvin import *
+from .velocity import MetersPerSecond
+from .quantity import Quantity, Dimensions
+from .frequency import Hertz
+from .electric_charge import Coulomb
+from .substance_amount import Mole
+from .luminosity import Candela
+from .time import Second
+from .mass import Kilogram
+from .energy import Joule
 
 # ===------------------------------------------------------------------=== #
 # SI Defining Constants
