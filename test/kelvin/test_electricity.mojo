@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Ampere(10)
     assert_equal(5 * a, Ampere(50))
     assert_equal(20 / a, Quantity[-Ampere.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Ampere(10)))
+    assert_false(Bool(Ampere(0)))
+
+    if not Ampere(10):
+        assert_true(False)
+
+    if Ampere(0):
+        assert_true(False)

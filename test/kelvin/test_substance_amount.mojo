@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Mole(10)
     assert_equal(5 * a, Mole(50))
     assert_equal(20 / a, Quantity[-Mole.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Mole(10)))
+    assert_false(Bool(Mole(0)))
+
+    if not Mole(10):
+        assert_true(False)
+
+    if Mole(0):
+        assert_true(False)

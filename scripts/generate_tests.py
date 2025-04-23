@@ -56,6 +56,16 @@ def test_scalar_arithmetic():
     a = {0}(10)
     assert_equal(5 * a, {0}(50))
     assert_equal(20 / a, Quantity[-{0}.D](2))
+
+def test_bool():
+    assert_true(Bool({0}(10)))
+    assert_false(Bool({0}(0)))
+
+    if not {0}(10):
+        assert_true(False)
+    
+    if {0}(0):
+        assert_true(False)
 """
 
 cast_test_template = \

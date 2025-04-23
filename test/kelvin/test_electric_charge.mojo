@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Coulomb(10)
     assert_equal(5 * a, Coulomb(50))
     assert_equal(20 / a, Quantity[-Coulomb.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Coulomb(10)))
+    assert_false(Bool(Coulomb(0)))
+
+    if not Coulomb(10):
+        assert_true(False)
+
+    if Coulomb(0):
+        assert_true(False)

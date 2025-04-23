@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Kilogram(10)
     assert_equal(5 * a, Kilogram(50))
     assert_equal(20 / a, Quantity[-Kilogram.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Kilogram(10)))
+    assert_false(Bool(Kilogram(0)))
+
+    if not Kilogram(10):
+        assert_true(False)
+
+    if Kilogram(0):
+        assert_true(False)

@@ -62,6 +62,17 @@ def test_scalar_arithmetic():
     assert_equal(20 / a, Quantity[-Meter.D](2))
 
 
+def test_bool():
+    assert_true(Bool(Meter(10)))
+    assert_false(Bool(Meter(0)))
+
+    if not Meter(10):
+        assert_true(False)
+
+    if Meter(0):
+        assert_true(False)
+
+
 def test_cast():
     var a = Meter(cast_from=Kilometer(10))
     assert_equal(a.value(), 10000)

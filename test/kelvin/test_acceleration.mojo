@@ -66,3 +66,14 @@ def test_scalar_arithmetic():
     a = MetersPerSecondSquared(10)
     assert_equal(5 * a, MetersPerSecondSquared(50))
     assert_equal(20 / a, Quantity[-MetersPerSecondSquared.D](2))
+
+
+def test_bool():
+    assert_true(Bool(MetersPerSecondSquared(10)))
+    assert_false(Bool(MetersPerSecondSquared(0)))
+
+    if not MetersPerSecondSquared(10):
+        assert_true(False)
+
+    if MetersPerSecondSquared(0):
+        assert_true(False)

@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Joule(10)
     assert_equal(5 * a, Joule(50))
     assert_equal(20 / a, Quantity[-Joule.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Joule(10)))
+    assert_false(Bool(Joule(0)))
+
+    if not Joule(10):
+        assert_true(False)
+
+    if Joule(0):
+        assert_true(False)

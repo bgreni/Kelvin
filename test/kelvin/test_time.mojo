@@ -62,6 +62,17 @@ def test_scalar_arithmetic():
     assert_equal(20 / a, Quantity[-Second.D](2))
 
 
+def test_bool():
+    assert_true(Bool(Second(10)))
+    assert_false(Bool(Second(0)))
+
+    if not Second(10):
+        assert_true(False)
+
+    if Second(0):
+        assert_true(False)
+
+
 def test_cast():
     var a = Second(cast_from=Minute(10))
     assert_equal(a.value(), 600)

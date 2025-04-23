@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Kelvin(10)
     assert_equal(5 * a, Kelvin(50))
     assert_equal(20 / a, Quantity[-Kelvin.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Kelvin(10)))
+    assert_false(Bool(Kelvin(0)))
+
+    if not Kelvin(10):
+        assert_true(False)
+
+    if Kelvin(0):
+        assert_true(False)

@@ -60,3 +60,14 @@ def test_scalar_arithmetic():
     a = Candela(10)
     assert_equal(5 * a, Candela(50))
     assert_equal(20 / a, Quantity[-Candela.D](2))
+
+
+def test_bool():
+    assert_true(Bool(Candela(10)))
+    assert_false(Bool(Candela(0)))
+
+    if not Candela(10):
+        assert_true(False)
+
+    if Candela(0):
+        assert_true(False)

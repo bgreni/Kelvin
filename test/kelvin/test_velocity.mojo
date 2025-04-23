@@ -62,6 +62,17 @@ def test_scalar_arithmetic():
     assert_equal(20 / a, Quantity[-MetersPerSecond.D](2))
 
 
+def test_bool():
+    assert_true(Bool(MetersPerSecond(10)))
+    assert_false(Bool(MetersPerSecond(0)))
+
+    if not MetersPerSecond(10):
+        assert_true(False)
+
+    if MetersPerSecond(0):
+        assert_true(False)
+
+
 def test_cast():
     var a = MetersPerSecond(cast_from=MilesPerHour(10))
     assert_equal(a.value(), 4.4704)
