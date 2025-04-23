@@ -6,6 +6,12 @@ from .ratio import Ratio
 struct Angle[R: Ratio, suffix: StaticString](
     Boolable, Writable, ImplicitlyBoolable, Stringable
 ):
+    """Represents the angle component of a quantity.
+
+    This is not treated as a proper dimension, but is meant to prevent you
+    from mixing angular, and non-angular values, as well as mixing angular units.
+    """
+
     alias Invalid = Angle[Ratio.Invalid, ""]()
 
     @always_inline("builtin")
