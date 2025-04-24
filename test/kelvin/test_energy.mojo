@@ -71,3 +71,13 @@ def test_bool():
 
     if Joule(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(Joule(10) == Joule(10))
+    assert_true(Joule(10) < Joule(20))
+    assert_true(Joule(20) > Joule(10))
+    assert_true(Joule(10) <= Joule(10))
+    assert_true(Joule(10) <= Joule(20))
+    assert_true(Joule(10) >= Joule(10))
+    assert_true(Joule(20) >= Joule(10))

@@ -73,6 +73,16 @@ def test_bool():
         assert_true(False)
 
 
+def test_compare():
+    assert_true(Meter(10) == Meter(10))
+    assert_true(Meter(10) < Meter(20))
+    assert_true(Meter(20) > Meter(10))
+    assert_true(Meter(10) <= Meter(10))
+    assert_true(Meter(10) <= Meter(20))
+    assert_true(Meter(10) >= Meter(10))
+    assert_true(Meter(20) >= Meter(10))
+
+
 def test_cast():
     var a = Meter(cast_from=Kilometer(10))
     assert_equal(a.value(), 10000)

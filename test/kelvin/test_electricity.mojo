@@ -71,3 +71,13 @@ def test_bool():
 
     if Ampere(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(Ampere(10) == Ampere(10))
+    assert_true(Ampere(10) < Ampere(20))
+    assert_true(Ampere(20) > Ampere(10))
+    assert_true(Ampere(10) <= Ampere(10))
+    assert_true(Ampere(10) <= Ampere(20))
+    assert_true(Ampere(10) >= Ampere(10))
+    assert_true(Ampere(20) >= Ampere(10))

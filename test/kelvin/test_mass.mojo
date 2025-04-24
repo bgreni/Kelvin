@@ -71,3 +71,13 @@ def test_bool():
 
     if Kilogram(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(Kilogram(10) == Kilogram(10))
+    assert_true(Kilogram(10) < Kilogram(20))
+    assert_true(Kilogram(20) > Kilogram(10))
+    assert_true(Kilogram(10) <= Kilogram(10))
+    assert_true(Kilogram(10) <= Kilogram(20))
+    assert_true(Kilogram(10) >= Kilogram(10))
+    assert_true(Kilogram(20) >= Kilogram(10))

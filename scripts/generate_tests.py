@@ -66,6 +66,15 @@ def test_bool():
     
     if {0}(0):
         assert_true(False)
+
+def test_compare():
+    assert_true({0}(10) == {0}(10))
+    assert_true({0}(10) < {0}(20))
+    assert_true({0}(20) > {0}(10))
+    assert_true({0}(10) <= {0}(10))
+    assert_true({0}(10) <= {0}(20))
+    assert_true({0}(10) >= {0}(10))
+    assert_true({0}(20) >= {0}(10))
 """
 
 cast_test_template = \

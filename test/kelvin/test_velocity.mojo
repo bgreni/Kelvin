@@ -73,6 +73,16 @@ def test_bool():
         assert_true(False)
 
 
+def test_compare():
+    assert_true(MetersPerSecond(10) == MetersPerSecond(10))
+    assert_true(MetersPerSecond(10) < MetersPerSecond(20))
+    assert_true(MetersPerSecond(20) > MetersPerSecond(10))
+    assert_true(MetersPerSecond(10) <= MetersPerSecond(10))
+    assert_true(MetersPerSecond(10) <= MetersPerSecond(20))
+    assert_true(MetersPerSecond(10) >= MetersPerSecond(10))
+    assert_true(MetersPerSecond(20) >= MetersPerSecond(10))
+
+
 def test_cast():
     var a = MetersPerSecond(cast_from=MilesPerHour(10))
     assert_equal(a.value(), 4.4704)

@@ -77,3 +77,13 @@ def test_bool():
 
     if MetersPerSecondSquared(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(MetersPerSecondSquared(10) == MetersPerSecondSquared(10))
+    assert_true(MetersPerSecondSquared(10) < MetersPerSecondSquared(20))
+    assert_true(MetersPerSecondSquared(20) > MetersPerSecondSquared(10))
+    assert_true(MetersPerSecondSquared(10) <= MetersPerSecondSquared(10))
+    assert_true(MetersPerSecondSquared(10) <= MetersPerSecondSquared(20))
+    assert_true(MetersPerSecondSquared(10) >= MetersPerSecondSquared(10))
+    assert_true(MetersPerSecondSquared(20) >= MetersPerSecondSquared(10))

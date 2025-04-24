@@ -71,3 +71,13 @@ def test_bool():
 
     if Coulomb(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(Coulomb(10) == Coulomb(10))
+    assert_true(Coulomb(10) < Coulomb(20))
+    assert_true(Coulomb(20) > Coulomb(10))
+    assert_true(Coulomb(10) <= Coulomb(10))
+    assert_true(Coulomb(10) <= Coulomb(20))
+    assert_true(Coulomb(10) >= Coulomb(10))
+    assert_true(Coulomb(20) >= Coulomb(10))

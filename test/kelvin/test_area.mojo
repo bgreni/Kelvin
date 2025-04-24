@@ -71,3 +71,13 @@ def test_bool():
 
     if MetersSquared(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(MetersSquared(10) == MetersSquared(10))
+    assert_true(MetersSquared(10) < MetersSquared(20))
+    assert_true(MetersSquared(20) > MetersSquared(10))
+    assert_true(MetersSquared(10) <= MetersSquared(10))
+    assert_true(MetersSquared(10) <= MetersSquared(20))
+    assert_true(MetersSquared(10) >= MetersSquared(10))
+    assert_true(MetersSquared(20) >= MetersSquared(10))

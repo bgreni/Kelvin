@@ -71,3 +71,13 @@ def test_bool():
 
     if Kelvin(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(Kelvin(10) == Kelvin(10))
+    assert_true(Kelvin(10) < Kelvin(20))
+    assert_true(Kelvin(20) > Kelvin(10))
+    assert_true(Kelvin(10) <= Kelvin(10))
+    assert_true(Kelvin(10) <= Kelvin(20))
+    assert_true(Kelvin(10) >= Kelvin(10))
+    assert_true(Kelvin(20) >= Kelvin(10))

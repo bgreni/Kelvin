@@ -71,3 +71,13 @@ def test_bool():
 
     if Candela(0):
         assert_true(False)
+
+
+def test_compare():
+    assert_true(Candela(10) == Candela(10))
+    assert_true(Candela(10) < Candela(20))
+    assert_true(Candela(20) > Candela(10))
+    assert_true(Candela(10) <= Candela(10))
+    assert_true(Candela(10) <= Candela(20))
+    assert_true(Candela(10) >= Candela(10))
+    assert_true(Candela(20) >= Candela(10))

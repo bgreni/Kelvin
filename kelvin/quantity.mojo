@@ -263,7 +263,8 @@ struct Dimensions[
 @value
 @register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64](
-    EqualityComparableCollectionElement,
+    CollectionElement,
+    Comparable,
     Writable,
     Stringable,
     Boolable,
@@ -435,24 +436,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         """
         self._value -= other._value
 
-    @always_inline
-    fn __eq__(self, other: Self) -> Bool:
-        """Returns true of the two matching quantities have the same value.
-
-        Args:
-            other: A quantity of matching type.
-        """
-        return self._value == other._value
-
-    @always_inline
-    fn __ne__(self, other: Self) -> Bool:
-        """Returns true of the two matching quantities have different values.
-
-        Args:
-            other: A quantity of matching type.
-        """
-        return self._value != other._value
-
     # ===------------------------------------------------------------------=== #
     # Scalar operations
     # ===------------------------------------------------------------------=== #
@@ -554,6 +537,66 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     # ===------------------------------------------------------------------=== #
     # Trait implementations
     # ===------------------------------------------------------------------=== #
+
+    @always_inline
+    fn __eq__(self, other: Self) -> Bool:
+        """
+        Args:
+            other: A quantity of matching type.
+        Returns:
+            True of the two matching quantities have the same value.
+        """
+        return self._value == other._value
+
+    @always_inline
+    fn __ne__(self, other: Self) -> Bool:
+        """
+        Args:
+            other: A quantity of matching type.
+        Returns:
+            True of the two matching quantities have different values.
+        """
+        return self._value != other._value
+
+    @always_inline
+    fn __lt__(self, other: Self) -> Bool:
+        """
+        Args:
+            other: A quantity of matching type.
+        Returns:
+            True of the value of self is less than other.
+        """
+        return self._value < other._value
+
+    @always_inline
+    fn __le__(self, other: Self) -> Bool:
+        """
+        Args:
+            other: A quantity of matching type.
+        Returns:
+            True of the value of self is less than or equal to other.
+        """
+        return self._value <= other._value
+
+    @always_inline
+    fn __gt__(self, other: Self) -> Bool:
+        """
+        Args:
+            other: A quantity of matching type.
+        Returns:
+            True of the value of self is greater than other.
+        """
+        return self._value > other._value
+
+    @always_inline
+    fn __ge__(self, other: Self) -> Bool:
+        """
+        Args:
+            other: A quantity of matching type.
+        Returns:
+            True of the value of self is greater than or equal to other.
+        """
+        return self._value >= other._value
 
     @always_inline
     fn __str__(self) -> String:

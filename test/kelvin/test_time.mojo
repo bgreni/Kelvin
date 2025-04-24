@@ -73,6 +73,16 @@ def test_bool():
         assert_true(False)
 
 
+def test_compare():
+    assert_true(Second(10) == Second(10))
+    assert_true(Second(10) < Second(20))
+    assert_true(Second(20) > Second(10))
+    assert_true(Second(10) <= Second(10))
+    assert_true(Second(10) <= Second(20))
+    assert_true(Second(10) >= Second(10))
+    assert_true(Second(20) >= Second(10))
+
+
 def test_cast():
     var a = Second(cast_from=Minute(10))
     assert_equal(a.value(), 600)
