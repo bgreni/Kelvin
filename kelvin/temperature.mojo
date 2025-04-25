@@ -14,4 +14,5 @@ alias Kelvin = Quantity[
         Angle.Invalid,
     ](),
     _,
+    _,
 ]

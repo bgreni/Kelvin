@@ -81,3 +81,14 @@ def test_compare():
     assert_true(Candela(10) <= Candela(20))
     assert_true(Candela(10) >= Candela(10))
     assert_true(Candela(20) >= Candela(10))
+
+
+def test_simd():
+    alias Vec = SIMD[DType.int64, 4]
+    alias S = Candela[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))

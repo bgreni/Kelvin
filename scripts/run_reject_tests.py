@@ -8,7 +8,8 @@ if __name__ == '__main__':
     test_configs = {
         'test_reject_mismatched_units.mojo': ['add', 'sub'],
         'test_reject_mismatched_scale.mojo': ['mul', 'div'],
-        'test_reject_scalar_ops.mojo': ['add', 'iadd', 'sub', 'isub']
+        'test_reject_scalar_ops.mojo': ['add', 'iadd', 'sub', 'isub'],
+        'test_reject_mismatched_vec_size.mojo': ['']
     }
 
     print('RUNNING COMPILER REJECTION CASES\n')

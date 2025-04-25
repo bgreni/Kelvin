@@ -75,6 +75,16 @@ def test_compare():
     assert_true({0}(10) <= {0}(20))
     assert_true({0}(10) >= {0}(10))
     assert_true({0}(20) >= {0}(10))
+
+def test_simd():
+    alias Vec = SIMD[DType.int64, 4]
+    alias S = {0}[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))
 """
 
 cast_test_template = \

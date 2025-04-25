@@ -3,7 +3,7 @@
 ![license_badge](https://badgen.net/static/license/Apache2.0/blue)
 ![ci_badge](https://github.com/bgreni/Kelvin/actions/workflows/CI.yml/badge.svg)
 
-A powerful dimensional analysis library written in Mojo for all you scientific computing needs.
+A powerful dimensional analysis library written in Mojo for all your scientific computing needs.
 Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
 
 ## Defining a Quantity

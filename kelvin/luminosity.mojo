@@ -14,4 +14,5 @@ alias Candela = Quantity[
         Angle.Invalid,
     ](),
     _,
+    _,
 ]

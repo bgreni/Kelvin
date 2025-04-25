@@ -14,4 +14,5 @@ alias Ampere = Quantity[
         Angle.Invalid,
     ](),
     _,
+    _,
 ]

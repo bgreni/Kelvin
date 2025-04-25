@@ -262,7 +262,7 @@ struct Dimensions[
 
 @value
 @register_passable("trivial")
-struct Quantity[D: Dimensions, DT: DType = DType.float64](
+struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
     CollectionElement,
     Comparable,
     Writable,
@@ -277,16 +277,16 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         DT: The numerical type of the value, defaults to Float64
     """
 
-    alias ScalarType = Scalar[DT]
-    var _value: Self.ScalarType
+    alias ValueType = SIMD[DT, DSize]
+    var _value: Self.ValueType
 
     @always_inline
-    fn __init__(out self, v: Self.ScalarType):
+    fn __init__(out self, v: Self.ValueType):
         self._value = v
 
     @always_inline
     @implicit
-    fn __init__(out self, other: Quantity[DT = Self.DT]):
+    fn __init__(out self, other: Quantity[DT = Self.DT, DSize = Self.DSize]):
         """This exists to give a more helpful error message when one tries to use the
         wrong type implicitly.
         """
@@ -296,7 +296,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         ]()
         self._value = other._value
 
-    fn __init__(out self, *, cast_from: Quantity[DT = Self.DT]):
+    fn __init__(
+        out self, *, cast_from: Quantity[DT = Self.DT, DSize = Self.DSize]
+    ):
         """Cast the value from the incoming quanitity into this quantity.
         Both quantities must live in the same dimensional space (eg. velocity in, velocity out).
 
@@ -336,7 +338,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         self._value = val
 
     @always_inline
-    fn value(self) -> Self.ScalarType:
+    fn value(self) -> Self.ValueType:
         """
         Returns:
             the value of the quantity.
@@ -350,7 +352,11 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     @always_inline
     fn __truediv__[
         OD: Dimensions
-    ](self, other: Quantity[OD, DT], out res: Quantity[D / OD, DT]):
+    ](
+        self,
+        other: Quantity[OD, DT, DSize],
+        out res: Quantity[D / OD, DT, DSize],
+    ):
         """Divide on quantity by another.
         Output dimensions are the difference of the inputs.
 
@@ -371,7 +377,11 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     @always_inline
     fn __mul__[
         OD: Dimensions
-    ](self, other: Quantity[OD, DT], out res: Quantity[D * OD, DT]):
+    ](
+        self,
+        other: Quantity[OD, DT, DSize],
+        out res: Quantity[D * OD, DT, DSize],
+    ):
         """Compute the product between two quantities
         Output dimensions are the sum of the inputs.
 
@@ -439,7 +449,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
     # ===------------------------------------------------------------------=== #
 
     @always_inline
-    fn __truediv__(self, v: Self.ScalarType) -> Self:
+    fn __truediv__(self, v: Self.ValueType) -> Self:
         """Divides the value by the given scalar.
 
         Args:
@@ -451,7 +461,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return Self(self._value / v)
 
     @always_inline
-    fn __rtruediv__(self, v: Self.ScalarType, out res: Quantity[-D, DT]):
+    fn __rtruediv__(self, v: Self.ValueType, out res: Quantity[-D, DT, DSize]):
         """Divides the scalar by the value of self.
 
         Args:
@@ -463,7 +473,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return __type_of(res)(v / self.value())
 
     @always_inline
-    fn __itruediv__(mut self, v: Self.ScalarType):
+    fn __itruediv__(mut self, v: Self.ValueType):
         """Divides the value by the given scalar in place.
 
         Args:
@@ -472,7 +482,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         self._value /= v
 
     @always_inline
-    fn __mul__(self, v: Self.ScalarType) -> Self:
+    fn __mul__(self, v: Self.ValueType) -> Self:
         """Multiply the value but a given scalar.
 
         Args:
@@ -484,7 +494,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return Self(self.value() * v)
 
     @always_inline
-    fn __rmul__(self, v: Self.ScalarType) -> Self:
+    fn __rmul__(self, v: Self.ValueType) -> Self:
         """Multiply the value but a given scalar.
 
         Args:
@@ -496,7 +506,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         return Self(v * self.value())
 
     @always_inline
-    fn __imul__(mut self, v: Self.ScalarType):
+    fn __imul__(mut self, v: Self.ValueType):
         """Multiply the value but a given scalar in place.
 
         Args:
@@ -505,7 +515,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         self._value *= v
 
     @always_inline
-    fn __pow__(self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT]):
+    fn __pow__(
+        self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT, DSize]
+    ):
         """Compute self ** p.
 
         Args:
@@ -528,7 +540,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             True of the two matching quantities have the same value.
         """
-        return self._value == other._value
+        return all(self._value == other._value)
 
     @always_inline
     fn __ne__(self, other: Self) -> Bool:
@@ -538,7 +550,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             True of the two matching quantities have different values.
         """
-        return self._value != other._value
+        return all(self._value != other._value)
 
     @always_inline
     fn __lt__(self, other: Self) -> Bool:
@@ -548,7 +560,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             True of the value of self is less than other.
         """
-        return self._value < other._value
+        return all(self._value < other._value)
 
     @always_inline
     fn __le__(self, other: Self) -> Bool:
@@ -558,7 +570,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             True of the value of self is less than or equal to other.
         """
-        return self._value <= other._value
+        return all(self._value <= other._value)
 
     @always_inline
     fn __gt__(self, other: Self) -> Bool:
@@ -568,7 +580,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             True of the value of self is greater than other.
         """
-        return self._value > other._value
+        return all(self._value > other._value)
 
     @always_inline
     fn __ge__(self, other: Self) -> Bool:
@@ -578,7 +590,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             True of the value of self is greater than or equal to other.
         """
-        return self._value >= other._value
+        return all(self._value >= other._value)
 
     @always_inline
     fn __str__(self) -> String:
@@ -590,7 +602,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
 
     @always_inline
     fn __bool__(self) -> Bool:
-        return Bool(self.value())
+        return any(self.value())
 
     @always_inline
     fn __as_bool__(self) -> Bool:

@@ -81,3 +81,14 @@ def test_compare():
     assert_true(Coulomb(10) <= Coulomb(20))
     assert_true(Coulomb(10) >= Coulomb(10))
     assert_true(Coulomb(20) >= Coulomb(10))
+
+
+def test_simd():
+    alias Vec = SIMD[DType.int64, 4]
+    alias S = Coulomb[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))

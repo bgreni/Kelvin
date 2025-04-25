@@ -83,6 +83,17 @@ def test_compare():
     assert_true(MetersPerSecond(20) >= MetersPerSecond(10))
 
 
+def test_simd():
+    alias Vec = SIMD[DType.int64, 4]
+    alias S = MetersPerSecond[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))
+
+
 def test_cast():
     var a = MetersPerSecond(cast_from=MilesPerHour(10))
     assert_equal(a.value(), 4.4704)

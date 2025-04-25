@@ -81,3 +81,14 @@ def test_compare():
     assert_true(Joule(10) <= Joule(20))
     assert_true(Joule(10) >= Joule(10))
     assert_true(Joule(20) >= Joule(10))
+
+
+def test_simd():
+    alias Vec = SIMD[DType.int64, 4]
+    alias S = Joule[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))

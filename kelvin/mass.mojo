@@ -14,4 +14,5 @@ alias Kilogram = Quantity[
         Angle.Invalid,
     ](),
     _,
+    _,
 ]

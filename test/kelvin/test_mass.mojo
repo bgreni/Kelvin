@@ -81,3 +81,14 @@ def test_compare():
     assert_true(Kilogram(10) <= Kilogram(20))
     assert_true(Kilogram(10) >= Kilogram(10))
     assert_true(Kilogram(20) >= Kilogram(10))
+
+
+def test_simd():
+    alias Vec = SIMD[DType.int64, 4]
+    alias S = Kilogram[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))

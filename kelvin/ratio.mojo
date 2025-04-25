@@ -80,11 +80,11 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         return __type_of(res)()
 
     @always_inline
-    fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
+    fn __mul__(self, other: SIMD) -> __type_of(other):
         return (other * N) / D
 
     @always_inline
-    fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
+    fn __rmul__(self, other: SIMD) -> __type_of(other):
         return self.__mul__(other)
 
     @always_inline("builtin")
@@ -100,11 +100,11 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         return __type_of(res)()
 
     @always_inline
-    fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
+    fn __truediv__(self, other: SIMD) -> __type_of(other):
         return N / (other * D)
 
     @always_inline
-    fn __rtruediv__(self, other: Scalar) -> Scalar[other.dtype]:
+    fn __rtruediv__(self, other: SIMD) -> __type_of(other):
         return other * Ratio[D, N]()
 
     @always_inline
