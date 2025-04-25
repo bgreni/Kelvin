@@ -366,12 +366,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             The quotient of self / other.
         """
         _dimension_scale_check[D, OD]()
-
-        @parameter
-        if DT.is_integral():
-            return __type_of(res)(self._value // other._value)
-        else:
-            return __type_of(res)(self._value / other._value)
+        return __type_of(res)(self._value / other._value)
 
     @always_inline
     fn __mul__[
@@ -453,12 +448,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             The quotient of self / v.
         """
-
-        @parameter
-        if DT.is_integral():
-            return Self(self._value // v)
-        else:
-            return Self(self._value / v)
+        return Self(self._value / v)
 
     @always_inline
     fn __rtruediv__(self, v: Self.ScalarType, out res: Quantity[-D, DT]):
@@ -470,13 +460,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Returns:
             The quotient of v / self.
         """
-        alias Ret = __type_of(res)
-
-        @parameter
-        if DT.is_integral():
-            return Ret(v // self.value())
-        else:
-            return Ret(v / self.value())
+        return __type_of(res)(v / self.value())
 
     @always_inline
     fn __itruediv__(mut self, v: Self.ScalarType):
@@ -485,12 +469,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         Args:
             v: A scalar.
         """
-
-        @parameter
-        if DT.is_integral():
-            self._value //= v
-        else:
-            self._value /= v
+        self._value /= v
 
     @always_inline
     fn __mul__(self, v: Self.ScalarType) -> Self:

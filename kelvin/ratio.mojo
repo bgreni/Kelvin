@@ -81,11 +81,7 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
 
     @always_inline
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
-        @parameter
-        if other.dtype.is_integral():
-            return (other * N) // D
-        else:
-            return (other * N) / D
+        return (other * N) / D
 
     @always_inline
     fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
@@ -105,11 +101,7 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
 
     @always_inline
     fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
-        @parameter
-        if other.dtype.is_integral():
-            return N // (other * D)
-        else:
-            return N / (other * D)
+        return N / (other * D)
 
     @always_inline
     fn __rtruediv__(self, other: Scalar) -> Scalar[other.dtype]:
