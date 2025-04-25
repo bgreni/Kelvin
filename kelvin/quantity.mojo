@@ -316,7 +316,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
         alias THR = OD.TH.R / D.TH.R
         alias AR = OD.A.R / D.A.R
         alias CDR = OD.CD.R / D.CD.R
-        alias AngR = D.Ang.R / OD.Ang.R
+        alias AngR = OD.Ang.R / D.Ang.R
 
         val = _scale_value[D.L.Z, LR](val)
         val = _scale_value[D.M.Z, MR](val)

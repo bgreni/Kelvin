@@ -25,7 +25,7 @@ alias Degree = Quantity[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
-        Angle[(Ratio[180]() / Ratio.PI).simplify(), "°"](),
+        Angle[(Ratio.PI / Ratio[180]()).simplify(), "°"](),
     ](),
     _,
 ]
