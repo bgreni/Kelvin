@@ -83,9 +83,13 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
         @parameter
         if other.dtype.is_integral():
-            return other * N // D
+            return (other * N) // D
         else:
-            return other * N / D
+            return (other * N) / D
+
+    @always_inline
+    fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
+        return self.__mul__(other)
 
     @always_inline("builtin")
     fn __mul__(self, other: Ratio, out res: Ratio[N * other.N, D * other.D]):
@@ -100,16 +104,27 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
         return __type_of(res)()
 
     @always_inline
-    fn divide_scalar(self, owned v: Scalar) -> __type_of(v):
-        var OD = 1
-        v *= D
-        OD *= N
-
+    fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
         @parameter
-        if v.dtype.is_integral():
-            return v // OD
+        if other.dtype.is_integral():
+            return N // (other * D)
         else:
-            return v / OD
+            return N / (other * D)
+
+    @always_inline
+    fn __rtruediv__(self, other: Scalar) -> Scalar[other.dtype]:
+        return other * Ratio[D, N]()
+
+    @always_inline
+    fn __pow__(
+        self,
+        p: IntLiteral,
+        out res: Ratio[
+            (N if __type_of(p)() >= 0 else D) ** abs(__type_of(p)()),
+            (D if __type_of(p)() >= 0 else N) ** abs(__type_of(p)()),
+        ],
+    ):
+        return __type_of(res)()
 
     @always_inline("builtin")
     fn __or__(self, other: Ratio, out res: Ratio[N | other.N, D | other.D]):

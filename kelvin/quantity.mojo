@@ -304,27 +304,30 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64](
             cast_from: Some quantity of matching dimension to cast from.
         """
         _dimension_space_check[D, cast_from.D]()
-        var val = cast_from.value()
 
         alias OD = cast_from.D
 
         # Calculate the difference between the ratios on each dimension
-        alias LR = OD.L.R / D.L.R
-        alias MR = OD.M.R / D.M.R
-        alias TR = OD.T.R / D.T.R
-        alias ECR = OD.EC.R / D.EC.R
-        alias THR = OD.TH.R / D.TH.R
-        alias AR = OD.A.R / D.A.R
-        alias CDR = OD.CD.R / D.CD.R
-        alias AngR = OD.Ang.R / D.Ang.R
+        # and scale them by the exponent
+        # simplifying avoids large divisions and potential overflow
+        alias LR = ((OD.L.R / D.L.R) ** D.L.Z).simplify()
+        alias MR = ((OD.M.R / D.M.R) ** D.M.Z).simplify()
+        alias TR = ((OD.T.R / D.T.R) ** D.T.Z).simplify()
+        alias ECR = ((OD.EC.R / D.EC.R) ** D.EC.Z).simplify()
+        alias THR = ((OD.TH.R / D.TH.R) ** D.TH.Z).simplify()
+        alias AR = ((OD.A.R / D.A.R) ** D.A.Z).simplify()
+        alias CDR = ((OD.CD.R / D.CD.R) ** D.CD.Z).simplify()
+        alias AngR = (OD.Ang.R / D.Ang.R).simplify()
 
-        val = _scale_value[D.L.Z, LR](val)
-        val = _scale_value[D.M.Z, MR](val)
-        val = _scale_value[D.T.Z, TR](val)
-        val = _scale_value[D.EC.Z, ECR](val)
-        val = _scale_value[D.TH.Z, THR](val)
-        val = _scale_value[D.A.Z, AR](val)
-        val = _scale_value[D.CD.Z, CDR](val)
+        # Calculate the scale of the value
+        # fmt: off
+        alias Scale = (
+            ((((((LR * MR).simplify() * TR).simplify() * ECR).simplify()
+            * THR).simplify() * AR).simplify() * CDR).simplify()
+        )
+        # fmt: on
+
+        var val = cast_from.value() * Scale
 
         @parameter
         if AngR:
@@ -657,23 +660,3 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     @parameter
     if Bool(L.Ang) and Bool(R.Ang):
         constrained[L.Ang.R == R.Ang.R]()
-
-
-@always_inline
-fn _scale_value[Z: IntLiteral, R: Ratio](v: Scalar) -> __type_of(v):
-    @parameter
-    if Z > 0:
-        var res = v
-
-        @parameter
-        for _ in range(Z):
-            res = R * res
-        return res
-    elif Z < 0:
-        var res = v
-
-        @parameter
-        for _ in range(-Z):
-            res = R.divide_scalar(res)
-        return res
-    return v
