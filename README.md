@@ -27,6 +27,7 @@ alias Meter = Quantity[
         Angle.Invalid, # Angle
     ](),
     _,
+    _,
 ]
 
 # Use Ratio.Kilo to create a `Kilometer`
@@ -41,6 +42,7 @@ alias Kilometer = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
+    _,
     _,
 ]
 
@@ -57,6 +59,7 @@ alias Mile = Quantity[
         Angle.Invalid,
     ](),
     _,
+    _,
 ]
 ```
 
@@ -65,13 +68,22 @@ struct to create derivative units very easily. Here we can define Velocity in
 a single line of code.
 
 ```mojo
-alias MetersPerSecond = Quantity[Meter.D / Second.D, _]
-alias MetersSquared = Quantity[Meter.D**2, _]
+alias MetersPerSecond = Quantity[Meter.D / Second.D, _, _]
+alias MetersSquared = Quantity[Meter.D**2, _, _]
 
 alias kg = Kilogram.D
 alias m = Meter.D
 alias s = Second.D
 alias Newton = Quantity[kg * m * (s ** -2)]
+```
+
+`Quantity` uses the mojo builtin `SIMD` type, so users can also supply a vector width
+parameter after the DType.
+
+```mojo
+alias SIMDSeconds = Second[_, 4]
+alias SIMDMeter = Meter[_, 4]
+print(SIMDMeter(40) / SIMDSeconds(10)) # [4.0, 4.0, 4.0, 4.0] m^1 s^-1
 ```
 
 ## Numerical Type
@@ -130,6 +142,8 @@ var s = Second(cast_from=m)
 
 ## Sharp Edges
 
+### Dimensions operations are unchecked
+
 Dimensional type safety is only implemented at the `Quantity` level, due to
 the usage of `@always_inline('builtin')` throughout `Dimensions, Dimension, Ratio and Angle`
 to keep compile times fast, and there is currently no way of adding additional contraints
@@ -143,3 +157,14 @@ var a = Meter(10) * Mile(10) # Reject properly due to using Quantity
 
 You are still protected from surprising behavior when doing actual calculations, but
 care must be taken when defining new units.
+
+### Integer Rounding
+
+When using integer value representations, operations are subject to integer rounding
+rules. If precision is important, please use a float point representation
+
+```mojo
+alias IntSeconds = Second[DType.int64]
+
+var a = IntSeconds(11) / IntSeconds(3) # returns IntSeconds(3)
+```
