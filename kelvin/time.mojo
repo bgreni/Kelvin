@@ -22,7 +22,7 @@ alias Minute = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,
-        Dimension[1, Ratio[60](), "min"](),
+        Dimension[1, Ratio[60, 1](), "min"](),
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
@@ -37,7 +37,7 @@ alias Hour = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,
-        Dimension[1, Ratio[3600](), "h"](),
+        Dimension[1, Ratio[3600, 1](), "h"](),
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,

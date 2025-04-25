@@ -305,31 +305,60 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
         Args:
             cast_from: Some quantity of matching dimension to cast from.
         """
+        # _dimension_space_check[D, cast_from.D]()
+
+        #     alias OD = cast_from.D
+
+        #     # Calculate the difference between the ratios on each dimension
+        #     # and scale them by the exponent
+        #     # simplifying avoids large divisions and potential overflow
+        #     alias LR = ((OD.L.R / D.L.R) ** D.L.Z).simplify()
+        #     alias MR = ((OD.M.R / D.M.R) ** D.M.Z).simplify()
+        #     alias TR = ((OD.T.R / D.T.R) ** D.T.Z).simplify()
+        #     alias ECR = ((OD.EC.R / D.EC.R) ** D.EC.Z).simplify()
+        #     alias THR = ((OD.TH.R / D.TH.R) ** D.TH.Z).simplify()
+        #     alias AR = ((OD.A.R / D.A.R) ** D.A.Z).simplify()
+        #     alias CDR = ((OD.CD.R / D.CD.R) ** D.CD.Z).simplify()
+        #     alias AngR = (OD.Ang.R / D.Ang.R).simplify()
+
+        #     # Calculate the scale of the value
+        #     # fmt: off
+        #     alias Scale = (
+        #         ((((((LR * MR).simplify() * TR).simplify() * ECR).simplify()
+        #         * THR).simplify() * AR).simplify() * CDR).simplify()
+        #     )
+        #     # fmt: on
+
+        #     var val = cast_from.value() * Scale
+
+        #     @parameter
+        #     if AngR:
+        #         val = AngR * val
+
+        #     self._value = val
+
         _dimension_space_check[D, cast_from.D]()
+        var val = cast_from.value()
 
         alias OD = cast_from.D
 
         # Calculate the difference between the ratios on each dimension
-        # and scale them by the exponent
-        # simplifying avoids large divisions and potential overflow
-        alias LR = ((OD.L.R / D.L.R) ** D.L.Z).simplify()
-        alias MR = ((OD.M.R / D.M.R) ** D.M.Z).simplify()
-        alias TR = ((OD.T.R / D.T.R) ** D.T.Z).simplify()
-        alias ECR = ((OD.EC.R / D.EC.R) ** D.EC.Z).simplify()
-        alias THR = ((OD.TH.R / D.TH.R) ** D.TH.Z).simplify()
-        alias AR = ((OD.A.R / D.A.R) ** D.A.Z).simplify()
-        alias CDR = ((OD.CD.R / D.CD.R) ** D.CD.Z).simplify()
-        alias AngR = (OD.Ang.R / D.Ang.R).simplify()
+        alias LR = OD.L.R / D.L.R
+        alias MR = OD.M.R / D.M.R
+        alias TR = OD.T.R / D.T.R
+        alias ECR = OD.EC.R / D.EC.R
+        alias THR = OD.TH.R / D.TH.R
+        alias AR = OD.A.R / D.A.R
+        alias CDR = OD.CD.R / D.CD.R
+        alias AngR = OD.Ang.R / D.Ang.R
 
-        # Calculate the scale of the value
-        # fmt: off
-        alias Scale = (
-            ((((((LR * MR).simplify() * TR).simplify() * ECR).simplify()
-            * THR).simplify() * AR).simplify() * CDR).simplify()
-        )
-        # fmt: on
-
-        var val = cast_from.value() * Scale
+        val = _scale_value[D.L.Z, LR](val)
+        val = _scale_value[D.M.Z, MR](val)
+        val = _scale_value[D.T.Z, TR](val)
+        val = _scale_value[D.EC.Z, ECR](val)
+        val = _scale_value[D.TH.Z, THR](val)
+        val = _scale_value[D.A.Z, AR](val)
+        val = _scale_value[D.CD.Z, CDR](val)
 
         @parameter
         if AngR:
@@ -621,6 +650,26 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
 # ===------------------------------------------------------------------=== #
 # Private helpers
 # ===------------------------------------------------------------------=== #
+
+
+@always_inline
+fn _scale_value[Z: IntLiteral, R: Ratio](v: SIMD) -> __type_of(v):
+    @parameter
+    if Z > 0:
+        var res = v
+
+        @parameter
+        for _ in range(Z):
+            res = R * res
+        return res
+    elif Z < 0:
+        var res = v
+
+        @parameter
+        for _ in range(-Z):
+            res = res / R
+        return res
+    return v
 
 
 fn _dimension_space_check[L: Dimensions, R: Dimensions]():
