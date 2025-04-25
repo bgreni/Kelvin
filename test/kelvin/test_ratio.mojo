@@ -3,7 +3,7 @@ from testing import assert_equal
 
 
 def test_simplify():
-    def _test[N1: UInt, D1: UInt, N2: UInt, D2: UInt]():
+    def _test[N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral]():
         var r1 = Ratio[N1, D1]()
         assert_equal(r1.N, N1)
         assert_equal(r1.D, D1)
@@ -73,12 +73,12 @@ def test_scalar_mul():
     assert_equal(Ratio[3 * 999, 2 * 1000]() * Int64(1), 1)
 
 
-def test_pow():
-    assert_equal(String(Ratio[2, 3]() ** 1), String(Ratio[2, 3]()))
-    assert_equal(String(Ratio[2, 3]() ** 2), String(Ratio[4, 9]()))
-    assert_equal(String(Ratio[2, 3]() ** 0), String(Ratio[1, 1]()))
-    assert_equal(String(Ratio[2, 3]() ** -1), String(Ratio[3, 2]()))
-    assert_equal(String(Ratio[2, 3]() ** -2), String(Ratio[9, 4]()))
+# def test_pow():
+#     assert_equal(String(Ratio[2, 3]() ** 1), String(Ratio[2, 3]()))
+#     assert_equal(String(Ratio[2, 3]() ** 2), String(Ratio[4, 9]()))
+#     assert_equal(String(Ratio[2, 3]() ** 0), String(Ratio[1, 1]()))
+#     assert_equal(String(Ratio[2, 3]() ** -1), String(Ratio[3, 2]()))
+#     assert_equal(String(Ratio[2, 3]() ** -2), String(Ratio[9, 4]()))
 
 
 def test_ratio_div():

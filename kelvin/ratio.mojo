@@ -1,28 +1,25 @@
-from math import gcd
-
-
 @value
 @register_passable("trivial")
-struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
+struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
     """A compile time, known rational value, used to represent the scale
     of a particular unit.
     """
 
-    alias Nano = Ratio[1, 10**9]()
-    alias Micro = Ratio[1, 10**6]()
-    alias Milli = Ratio[1, 10**3]()
+    alias Nano = Ratio[1, 1000000000]()
+    alias Micro = Ratio[1, 1000000]()
+    alias Milli = Ratio[1, 1000]()
     alias Centi = Ratio[1, 100]()
     alias Deci = Ratio[1, 10]()
-    alias Unitary = Ratio[1]()
-    alias Deca = Ratio[10]()
-    alias Hecto = Ratio[100]()
-    alias Kilo = Ratio[10**3]()
-    alias Mega = Ratio[10**6]()
-    alias Giga = Ratio[10**9]()
+    alias Unitary = Ratio[1, 1]()
+    alias Deca = Ratio[10, 1]()
+    alias Hecto = Ratio[100, 1]()
+    alias Kilo = Ratio[1000, 1]()
+    alias Mega = Ratio[1000000, 1]()
+    alias Giga = Ratio[1000000000, 1]()
 
     alias PI = Ratio[355, 113]()
 
-    alias _GCD = gcd(N, D)
+    alias _GCD = gcd[N, D]()
 
     alias Invalid = Ratio[0, 0]()
 
@@ -62,13 +59,15 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     fn __le__(self, other: Ratio) -> Bool:
         return other >= self
 
-    @always_inline("builtin")
+    @always_inline
     fn __add__(
         self,
         other: Ratio,
         out res: Ratio[
-            max(N * other.D + other.N * D, N + other.N),
-            max(D * other.D, max(D, other.D)),
+            max[N * other.D + other.N * D, N + other.N](),
+            IntLiteral[
+                _max[(D * other.D).value, _max[D.value, other.D.value]()]()
+            ](),
         ],
     ):
         """Bit of a hack so that Ratio[0, 0]() + Ratio[1, 2]() == Ratio[1, 2]().
@@ -107,16 +106,16 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     fn __rtruediv__(self, other: SIMD) -> __type_of(other):
         return other * Ratio[D, N]()
 
-    @always_inline
-    fn __pow__(
-        self,
-        p: IntLiteral,
-        out res: Ratio[
-            (N if __type_of(p)() >= 0 else D) ** abs(__type_of(p)()),
-            (D if __type_of(p)() >= 0 else N) ** abs(__type_of(p)()),
-        ],
-    ):
-        return __type_of(res)()
+    # @always_inline
+    # fn __pow__(
+    #     self,
+    #     p: IntLiteral,
+    #     out res: Ratio[
+    #         (N if __type_of(p)() >= 0 else D) ** abs(__type_of(p)()),
+    #         (D if __type_of(p)() >= 0 else N) ** abs(__type_of(p)()),
+    #     ],
+    # ):
+    #     return __type_of(res)()
 
     @always_inline("builtin")
     fn __or__(self, other: Ratio, out res: Ratio[N | other.N, D | other.D]):
@@ -133,3 +132,41 @@ struct Ratio[N: UInt, D: UInt = 1](Stringable, Writable):
     @always_inline
     fn __str__(self) -> String:
         return String.write(self)
+
+
+# ===------------------------------------------------------------------=== #
+# Private Helpers
+# ===------------------------------------------------------------------=== #
+
+alias _pop_int_literal = __mlir_type.`!pop.int_literal`
+
+
+@always_inline("nodebug")
+fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
+    alias a_ = IntLiteral[a]()
+    alias b_ = IntLiteral[b]()
+    return _gcd[b, (a_ % b_).value]() if b_ else a
+
+
+@always_inline("nodebug")
+fn gcd[
+    a: IntLiteral, b: IntLiteral
+](out res: IntLiteral[_gcd[a.value, b.value]()]):
+    res = __type_of(res)()
+
+
+@always_inline("nodebug")
+fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
+    alias a_ = IntLiteral[a]()
+    alias b_ = IntLiteral[b]()
+    if a_ > b_:
+        return a
+    else:
+        return b
+
+
+@always_inline("nodebug")
+fn max[
+    a: IntLiteral, b: IntLiteral
+](out res: IntLiteral[_max[a.value, b.value]()]):
+    res = __type_of(res)()
