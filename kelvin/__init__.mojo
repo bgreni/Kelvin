@@ -2,6 +2,7 @@ from .time import *
 from .length import *
 from .velocity import *
 from .ratio import Ratio
+from .scale import Scale
 from .quantity import Quantity, Dimensions, Dimension, Angle
 from .mass import *
 from .temperature import *
