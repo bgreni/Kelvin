@@ -5,17 +5,17 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
     of a particular unit.
     """
 
-    alias Nano = Ratio[1, 1000000000]()
-    alias Micro = Ratio[1, 1000000]()
-    alias Milli = Ratio[1, 1000]()
+    alias Nano = Ratio[1, 1_000_000_000]()
+    alias Micro = Ratio[1, 1_000_000]()
+    alias Milli = Ratio[1, 1_000]()
     alias Centi = Ratio[1, 100]()
     alias Deci = Ratio[1, 10]()
     alias Unitary = Ratio[1, 1]()
     alias Deca = Ratio[10, 1]()
     alias Hecto = Ratio[100, 1]()
-    alias Kilo = Ratio[1000, 1]()
-    alias Mega = Ratio[1000000, 1]()
-    alias Giga = Ratio[1000000000, 1]()
+    alias Kilo = Ratio[1_000, 1]()
+    alias Mega = Ratio[1_000_000, 1]()
+    alias Giga = Ratio[1_000_000_000, 1]()
 
     alias PI = Ratio[355, 113]()
 
