@@ -1,7 +1,6 @@
 """Length related definitions."""
 
 from kelvin.quantity import *
-from kelvin.ratio import Ratio
 
 alias Meter = Quantity[
     Dimensions[
