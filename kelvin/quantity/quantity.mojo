@@ -281,7 +281,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
     alias ValueType = SIMD[DT, Width]
     var _value: Self.ValueType
 
-    @always_inline
+    @always_inline("builtin")
     fn __init__(out self, v: Self.ValueType):
         self._value = v
 
@@ -367,7 +367,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
 
         self._value = val
 
-    @always_inline
+    @always_inline("builtin")
     fn value(self) -> Self.ValueType:
         """
         Returns:
@@ -653,7 +653,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
 # ===------------------------------------------------------------------=== #
 
 
-@always_inline
 fn _scale_value[Z: IntLiteral, R: Ratio](v: SIMD) -> __type_of(v):
     @parameter
     if Z > 0:
