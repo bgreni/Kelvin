@@ -262,7 +262,7 @@ struct Dimensions[
 
 @value
 @register_passable("trivial")
-struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
+struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
     CollectionElement,
     Comparable,
     Writable,
@@ -275,9 +275,10 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
     Params:
         D: The dimension which the value exists in eg. (meters per second)
         DT: The numerical type of the value, defaults to Float64
+        Width: The SIMD width of the value representation.
     """
 
-    alias ValueType = SIMD[DT, DSize]
+    alias ValueType = SIMD[DT, Width]
     var _value: Self.ValueType
 
     @always_inline
@@ -286,7 +287,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
 
     @always_inline
     @implicit
-    fn __init__(out self, other: Quantity[DT = Self.DT, DSize = Self.DSize]):
+    fn __init__(out self, other: Quantity[DT = Self.DT, Width = Self.Width]):
         """This exists to give a more helpful error message when one tries to use the
         wrong type implicitly.
         """
@@ -297,7 +298,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
         self._value = other._value
 
     fn __init__(
-        out self, *, cast_from: Quantity[DT = Self.DT, DSize = Self.DSize]
+        out self, *, cast_from: Quantity[DT = Self.DT, Width = Self.Width]
     ):
         """Cast the value from the incoming quanitity into this quantity.
         Both quantities must live in the same dimensional space (eg. velocity in, velocity out).
@@ -383,8 +384,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
         OD: Dimensions
     ](
         self,
-        other: Quantity[OD, DT, DSize],
-        out res: Quantity[D / OD, DT, DSize],
+        other: Quantity[OD, DT, Width],
+        out res: Quantity[D / OD, DT, Width],
     ):
         """Divide on quantity by another.
         Output dimensions are the difference of the inputs.
@@ -408,8 +409,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
         OD: Dimensions
     ](
         self,
-        other: Quantity[OD, DT, DSize],
-        out res: Quantity[D * OD, DT, DSize],
+        other: Quantity[OD, DT, Width],
+        out res: Quantity[D * OD, DT, Width],
     ):
         """Compute the product between two quantities
         Output dimensions are the sum of the inputs.
@@ -490,7 +491,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
         return Self(self._value / v)
 
     @always_inline
-    fn __rtruediv__(self, v: Self.ValueType, out res: Quantity[-D, DT, DSize]):
+    fn __rtruediv__(self, v: Self.ValueType, out res: Quantity[-D, DT, Width]):
         """Divides the scalar by the value of self.
 
         Args:
@@ -545,7 +546,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, DSize: UInt = 1](
 
     @always_inline
     fn __pow__(
-        self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT, DSize]
+        self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT, Width]
     ):
         """Compute self ** p.
 
