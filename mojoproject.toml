@@ -12,6 +12,7 @@ format = "mojo format -l 80 kelvin test"
 format_quiet = "magic run format -q"
 package = "mojo package kelvin -o kelvin.mojopkg"
 generate_tests = "python3 ./scripts/generate_tests.py"
+update_and_test = "magic update && magic run test"
 
 
 [dependencies]

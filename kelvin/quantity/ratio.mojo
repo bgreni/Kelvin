@@ -5,17 +5,17 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
     of a particular unit.
     """
 
-    alias Nano = Ratio[1, 1_000_000_000]()
-    alias Micro = Ratio[1, 1_000_000]()
-    alias Milli = Ratio[1, 1_000]()
+    alias Nano = Ratio[1, pow[10, 9]()]()
+    alias Micro = Ratio[1, pow[10, 6]()]()
+    alias Milli = Ratio[1, pow[10, 3]()]()
     alias Centi = Ratio[1, 100]()
     alias Deci = Ratio[1, 10]()
     alias Unitary = Ratio[1, 1]()
     alias Deca = Ratio[10, 1]()
     alias Hecto = Ratio[100, 1]()
-    alias Kilo = Ratio[1_000, 1]()
-    alias Mega = Ratio[1_000_000, 1]()
-    alias Giga = Ratio[1_000_000_000, 1]()
+    alias Kilo = Ratio[pow[10, 3](), 1]()
+    alias Mega = Ratio[pow[10, 6](), 1]()
+    alias Giga = Ratio[pow[10, 9](), 1]()
 
     alias PI = Ratio[355, 113]()
 
@@ -145,7 +145,12 @@ alias _pop_int_literal = __mlir_type.`!pop.int_literal`
 fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
     alias a_ = IntLiteral[a]()
     alias b_ = IntLiteral[b]()
-    return _gcd[b, (a_ % b_).value]() if b_ else a
+
+    @parameter
+    if b_:
+        return _gcd[b, (a_ % b_).value]()
+    else:
+        return a
 
 
 @always_inline("nodebug")
@@ -159,6 +164,8 @@ fn gcd[
 fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
     alias a_ = IntLiteral[a]()
     alias b_ = IntLiteral[b]()
+
+    @parameter
     if a_ > b_:
         return a
     else:
@@ -169,4 +176,26 @@ fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
 fn max[
     a: IntLiteral, b: IntLiteral
 ](out res: IntLiteral[_max[a.value, b.value]()]):
+    res = __type_of(res)()
+
+
+@always_inline("nodebug")
+fn _pow[
+    x: _pop_int_literal, n: _pop_int_literal, acc: _pop_int_literal
+]() -> _pop_int_literal:
+    alias x_ = IntLiteral[x]()
+    alias n_ = IntLiteral[n]()
+    alias acc_ = IntLiteral[acc]()
+
+    @parameter
+    if n_ <= 0:
+        return acc
+    else:
+        return _pow[x, (n_ - 1).value, (acc_ * x_).value]()
+
+
+@always_inline("nodebug")
+fn pow[
+    x: IntLiteral, n: IntLiteral
+](out res: IntLiteral[_pow[x.value, n.value, (1).value]()]):
     res = __type_of(res)()
