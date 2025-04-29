@@ -106,13 +106,14 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
     fn __rtruediv__(self, other: SIMD) -> __type_of(other):
         return other * Ratio[D, N]()
 
+    # TODO: Not sure why this doesn't work
     # @always_inline
     # fn __pow__(
     #     self,
     #     p: IntLiteral,
     #     out res: Ratio[
-    #         (N if __type_of(p)() >= 0 else D) ** abs(__type_of(p)()),
-    #         (D if __type_of(p)() >= 0 else N) ** abs(__type_of(p)()),
+    #         pow[ternary[N, D, __type_of(p)() >= 0](), abs(__type_of(p)())](),
+    #         pow[ternary[D, N, __type_of(p)() >= 0](), abs(__type_of(p)())](),
     #     ],
     # ):
     #     return __type_of(res)()
@@ -199,3 +200,17 @@ fn pow[
     x: IntLiteral, n: IntLiteral
 ](out res: IntLiteral[_pow[x.value, n.value, (1).value]()]):
     res = __type_of(res)()
+
+
+@always_inline("nodebug")
+fn ternary[
+    a: IntLiteral, b: IntLiteral, cond: Bool
+](out res: IntLiteral[_ternary[a.value, b.value, cond]()]):
+    return __type_of(res)()
+
+
+@always_inline("nodebug")
+fn _ternary[
+    a: _pop_int_literal, b: _pop_int_literal, cond: Bool
+]() -> _pop_int_literal:
+    return a if cond else b
