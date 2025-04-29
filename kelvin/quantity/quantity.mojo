@@ -263,12 +263,15 @@ struct Dimensions[
 @value
 @register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
-    CollectionElement,
+    Representable,
+    Copyable,
+    Movable,
     Comparable,
     Writable,
     Stringable,
     Boolable,
     ImplicitlyBoolable,
+    Hashable,
 ):
     """Represents an abstract quantity over some given dimensions.
 
@@ -631,12 +634,24 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         return String.write(self)
 
     @always_inline
+    fn __repr__(self) -> String:
+        """
+        Returns:
+            The string representation of the quantity.
+        """
+        return String.write(self)
+
+    @always_inline
     fn __bool__(self) -> Bool:
         return any(self.value())
 
     @always_inline
     fn __as_bool__(self) -> Bool:
         return Bool(self)
+
+    @always_inline
+    fn __hash__(self) -> UInt:
+        return hash(self.value())
 
     fn write_to[W: Writer](self, mut writer: W):
         """Writes the representation of the quantity to the given writer.
