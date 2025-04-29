@@ -187,9 +187,10 @@ fn _pow[
     alias x_ = IntLiteral[x]()
     alias n_ = IntLiteral[n]()
     alias acc_ = IntLiteral[acc]()
+    constrained[n_ >= 0, "Cannot use negative power"]()
 
     @parameter
-    if n_ <= 0:
+    if n_ == 0:
         return acc
     else:
         return _pow[x, (n_ - 1).value, (acc_ * x_).value]()
