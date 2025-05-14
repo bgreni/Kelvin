@@ -145,7 +145,7 @@ struct Dimensions[
         TH: Temperature dimension.
         A: Substance amount dimension.
         CD: Luminosity dimension.
-        Ang: The angle component of the quantity
+        Ang: The angle component of the quantity.
     """
 
     alias Null = Dimensions[
@@ -272,6 +272,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
     Boolable,
     ImplicitlyBoolable,
     Hashable,
+    KeyElement,
 ):
     """Represents an abstract quantity over some given dimensions.
 

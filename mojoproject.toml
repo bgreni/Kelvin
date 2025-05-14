@@ -16,7 +16,7 @@ update_and_test = "magic update && magic run test"
 
 
 [dependencies]
-max = ">=25.4.0.dev2025050605,<26"
+max = "*"
 
 [environments]
 default = { solve-group = "default" }
