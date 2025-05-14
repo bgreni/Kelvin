@@ -2,6 +2,7 @@
 
 ![license_badge](https://badgen.net/static/license/Apache-2.0/blue)
 ![ci_badge](https://github.com/bgreni/Kelvin/actions/workflows/CI.yml/badge.svg)
+![CodeQL](https://github.com/bgreni/Kelvin/workflows/CodeQL/badge.svg)
 
 A powerful dimensional analysis library written in Mojo for all your scientific computing needs.
 Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
