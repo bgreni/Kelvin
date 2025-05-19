@@ -61,22 +61,20 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
 
     @always_inline
     fn __add__(
-        self,
-        other: Ratio,
-        out res: Ratio[
-            max[N * other.D + other.N * D, N + other.N](),
-            IntLiteral[
-                _max[(D * other.D).value, _max[D.value, other.D.value]()]()
-            ](),
-        ],
-    ):
+        self, other: Ratio
+    ) -> Ratio[
+        max[N * other.D + other.N * D, N + other.N](),
+        IntLiteral[
+            _max[(D * other.D).value, _max[D.value, other.D.value]()]()
+        ](),
+    ]:
         """Bit of a hack so that Ratio[0, 0]() + Ratio[1, 2]() == Ratio[1, 2]().
         As otherwise that is undefined in standard rational arithmetic, but we
         need it so we can handle, and represent the lack of dimensions nicely.
 
         Proof of equivalence to standard addition at misc/ratio_add_proof.py
         """
-        return __type_of(res)()
+        return {}
 
     @always_inline
     fn __mul__(self, other: SIMD) -> __type_of(other):
@@ -87,16 +85,14 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
         return self.__mul__(other)
 
     @always_inline("builtin")
-    fn __mul__(self, other: Ratio, out res: Ratio[N * other.N, D * other.D]):
-        return __type_of(res)()
+    fn __mul__(self, other: Ratio) -> Ratio[N * other.N, D * other.D]:
+        return {}
 
     @always_inline("builtin")
     fn __truediv__(
-        self,
-        other: Ratio,
-        out res: Ratio[Self.N * other.D, Self.D * other.N],
-    ):
-        return __type_of(res)()
+        self, other: Ratio
+    ) -> Ratio[Self.N * other.D, Self.D * other.N]:
+        return {}
 
     @always_inline
     fn __truediv__(self, other: SIMD) -> __type_of(other):
@@ -119,12 +115,12 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable):
     #     return __type_of(res)()
 
     @always_inline("builtin")
-    fn __or__(self, other: Ratio, out res: Ratio[N | other.N, D | other.D]):
-        return __type_of(res)()
+    fn __or__(self, other: Ratio) -> Ratio[N | other.N, D | other.D]:
+        return {}
 
     @always_inline("builtin")
-    fn simplify(self, out res: Ratio[N // Self._GCD, D // Self._GCD]):
-        return __type_of(res)()
+    fn simplify(self) -> Ratio[N // Self._GCD, D // Self._GCD]:
+        return {}
 
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
@@ -155,10 +151,8 @@ fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
 
 
 @always_inline("nodebug")
-fn gcd[
-    a: IntLiteral, b: IntLiteral
-](out res: IntLiteral[_gcd[a.value, b.value]()]):
-    res = __type_of(res)()
+fn gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_gcd[a.value, b.value]()]:
+    return {}
 
 
 @always_inline("nodebug")
@@ -174,10 +168,8 @@ fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
 
 
 @always_inline("nodebug")
-fn max[
-    a: IntLiteral, b: IntLiteral
-](out res: IntLiteral[_max[a.value, b.value]()]):
-    res = __type_of(res)()
+fn max[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_max[a.value, b.value]()]:
+    return {}
 
 
 @always_inline("nodebug")
@@ -199,15 +191,15 @@ fn _pow[
 @always_inline("nodebug")
 fn pow[
     x: IntLiteral, n: IntLiteral
-](out res: IntLiteral[_pow[x.value, n.value, (1).value]()]):
-    res = __type_of(res)()
+]() -> IntLiteral[_pow[x.value, n.value, (1).value]()]:
+    return {}
 
 
 @always_inline("nodebug")
 fn ternary[
     a: IntLiteral, b: IntLiteral, cond: Bool
-](out res: IntLiteral[_ternary[a.value, b.value, cond]()]):
-    return __type_of(res)()
+]() -> IntLiteral[_ternary[a.value, b.value, cond]()]:
+    return {}
 
 
 @always_inline("nodebug")

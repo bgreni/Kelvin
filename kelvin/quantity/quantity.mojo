@@ -3,7 +3,7 @@ from .ratio import Ratio
 
 @value
 @register_passable("trivial")
-struct Angle[R: Ratio, suffix: StaticString](
+struct Angle[R: Ratio, suffix: String](
     Boolable, Writable, ImplicitlyBoolable, Stringable
 ):
     """Represents the angle component of a quantity.
@@ -36,9 +36,9 @@ struct Angle[R: Ratio, suffix: StaticString](
 
     @always_inline("builtin")
     fn pick_non_null(
-        self, other: Angle, out res: Angle[R | other.R, suffix or other.suffix]
-    ):
-        return __type_of(res)()
+        self, other: Angle
+    ) -> Angle[R | other.R, suffix or other.suffix]:
+        return {}
 
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
@@ -51,7 +51,7 @@ struct Angle[R: Ratio, suffix: StaticString](
 
 @value
 @register_passable("trivial")
-struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString](
+struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     Boolable, Writable, ImplicitlyBoolable, Stringable
 ):
     """Represents a single dimension.
@@ -79,27 +79,19 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString](
 
     @always_inline("builtin")
     fn __add__(
-        self,
-        other: Dimension,
-        out res: Dimension[Z + other.Z, R | other.R, suffix or other.suffix],
-    ):
-        return __type_of(res)()
+        self, other: Dimension
+    ) -> Dimension[Z + other.Z, R | other.R, suffix or other.suffix]:
+        return {}
 
     @always_inline("builtin")
     fn __sub__(
-        self,
-        other: Dimension,
-        out res: Dimension[Z - other.Z, R | other.R, suffix or other.suffix],
-    ):
-        return __type_of(res)()
+        self, other: Dimension
+    ) -> Dimension[Z - other.Z, R | other.R, suffix or other.suffix]:
+        return {}
 
     @always_inline("builtin")
-    fn __mul__(
-        self,
-        m: IntLiteral,
-        out res: Dimension[Z * __type_of(m)(), R, suffix],
-    ):
-        return __type_of(res)()
+    fn __mul__(self, m: IntLiteral) -> Dimension[Z * __type_of(m)(), R, suffix]:
+        return {}
 
     @always_inline("builtin")
     fn __bool__(self) -> Bool:
@@ -110,8 +102,8 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: StaticString](
         return self.__bool__()
 
     @always_inline("builtin")
-    fn __neg__(self, out res: Dimension[-Z, R, suffix]):
-        return __type_of(res)()
+    fn __neg__(self) -> Dimension[-Z, R, suffix]:
+        return {}
 
     @always_inline
     fn __str__(self) -> String:
@@ -182,58 +174,52 @@ struct Dimensions[
 
     @always_inline("builtin")
     fn __truediv__(
-        self,
-        other: Dimensions,
-        out res: Dimensions[
-            L - other.L,
-            M - other.M,
-            T - other.T,
-            EC - other.EC,
-            TH - other.TH,
-            A - other.A,
-            CD - other.CD,
-            Ang.pick_non_null(other.Ang),
-        ],
-    ):
-        return __type_of(res)()
+        self, other: Dimensions
+    ) -> Dimensions[
+        L - other.L,
+        M - other.M,
+        T - other.T,
+        EC - other.EC,
+        TH - other.TH,
+        A - other.A,
+        CD - other.CD,
+        Ang.pick_non_null(other.Ang),
+    ]:
+        return {}
 
     @always_inline("builtin")
     fn __mul__(
-        self,
-        other: Dimensions,
-        out res: Dimensions[
-            L + other.L,
-            M + other.M,
-            T + other.T,
-            EC + other.EC,
-            TH + other.TH,
-            A + other.A,
-            CD + other.CD,
-            Ang.pick_non_null(other.Ang),
-        ],
-    ):
-        return __type_of(res)()
+        self, other: Dimensions
+    ) -> Dimensions[
+        L + other.L,
+        M + other.M,
+        T + other.T,
+        EC + other.EC,
+        TH + other.TH,
+        A + other.A,
+        CD + other.CD,
+        Ang.pick_non_null(other.Ang),
+    ]:
+        return {}
 
     @always_inline("builtin")
     fn __pow__(
-        self,
-        p: IntLiteral,
-        out res: Dimensions[
-            __type_of(L * p)(),
-            __type_of(M * p)(),
-            __type_of(T * p)(),
-            __type_of(EC * p)(),
-            __type_of(TH * p)(),
-            __type_of(A * p)(),
-            __type_of(CD * p)(),
-            Ang,
-        ],
-    ):
-        return __type_of(res)()
+        self, p: IntLiteral
+    ) -> Dimensions[
+        __type_of(L * p)(),
+        __type_of(M * p)(),
+        __type_of(T * p)(),
+        __type_of(EC * p)(),
+        __type_of(TH * p)(),
+        __type_of(A * p)(),
+        __type_of(CD * p)(),
+        Ang,
+    ]:
+        return {}
 
     @always_inline("builtin")
-    fn __neg__(self, out res: Dimensions[-L, -M, -T, -EC, -TH, -A, -CD, Ang]):
-        return __type_of(res)()
+    fn __neg__(self) -> Dimensions[-L, -M, -T, -EC, -TH, -A, -CD, Ang]:
+        return {}
 
     @always_inline
     fn __str__(self) -> String:
@@ -386,11 +372,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
     @always_inline
     fn __truediv__[
         OD: Dimensions
-    ](
-        self,
-        other: Quantity[OD, DT, Width],
-        out res: Quantity[D / OD, DT, Width],
-    ):
+    ](self, other: Quantity[OD, DT, Width]) -> Quantity[D / OD, DT, Width]:
         """Divide on quantity by another.
         Output dimensions are the difference of the inputs.
 
@@ -406,16 +388,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
             The quotient of self / other.
         """
         _dimension_scale_check[D, OD]()
-        return __type_of(res)(self._value / other._value)
+        return {self._value / other._value}
 
     @always_inline
     fn __mul__[
         OD: Dimensions
-    ](
-        self,
-        other: Quantity[OD, DT, Width],
-        out res: Quantity[D * OD, DT, Width],
-    ):
+    ](self, other: Quantity[OD, DT, Width]) -> Quantity[D * OD, DT, Width]:
         """Compute the product between two quantities
         Output dimensions are the sum of the inputs.
 
@@ -430,7 +408,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
             The product of self * other.
         """
         _dimension_scale_check[D, OD]()
-        return __type_of(res)(self._value * other._value)
+        return {self._value * other._value}
 
     @always_inline
     fn __add__(self, other: Self) -> Self:
@@ -495,7 +473,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         return Self(self._value / v)
 
     @always_inline
-    fn __rtruediv__(self, v: Self.ValueType, out res: Quantity[-D, DT, Width]):
+    fn __rtruediv__(self, v: Self.ValueType) -> Quantity[-D, DT, Width]:
         """Divides the scalar by the value of self.
 
         Args:
@@ -504,7 +482,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             The quotient of v / self.
         """
-        return __type_of(res)(v / self.value())
+        return {v / self.value()}
 
     @always_inline
     fn __itruediv__(mut self, v: Self.ValueType):
@@ -549,9 +527,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         self._value *= v
 
     @always_inline
-    fn __pow__(
-        self, p: IntLiteral, out res: Quantity[D ** __type_of(p)(), DT, Width]
-    ):
+    fn __pow__(self, p: IntLiteral) -> Quantity[D ** __type_of(p)(), DT, Width]:
         """Compute self ** p.
 
         Args:
@@ -560,7 +536,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             The value raised to the power p, with the corresponding units transformed.
         """
-        return __type_of(res)(self.value() ** p)
+        return {self.value() ** p}
 
     # ===------------------------------------------------------------------=== #
     # Trait implementations
