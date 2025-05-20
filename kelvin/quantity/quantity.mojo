@@ -421,7 +421,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             The sum of self + other.
         """
-        return Self(self._value + other._value)
+        return {self._value + other._value}
 
     @always_inline
     fn __iadd__(mut self, other: Self):
@@ -444,7 +444,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             The difference of self - other.
         """
-        return Self(self._value - other._value)
+        return {self._value - other._value}
 
     @always_inline
     fn __isub__(mut self, other: Self):
@@ -470,7 +470,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             The quotient of self / v.
         """
-        return Self(self._value / v)
+        return {self._value / v}
 
     @always_inline
     fn __rtruediv__(self, v: Self.ValueType) -> Quantity[-D, DT, Width]:
@@ -503,7 +503,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns
             The product of self * v.
         """
-        return Self(self.value() * v)
+        return {self.value() * v}
 
     @always_inline
     fn __rmul__(self, v: Self.ValueType) -> Self:
@@ -515,7 +515,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns
             The product of v * self.
         """
-        return Self(v * self.value())
+        return {v * self.value()}
 
     @always_inline
     fn __imul__(mut self, v: Self.ValueType):
@@ -624,7 +624,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
 
     @always_inline
     fn __as_bool__(self) -> Bool:
-        return Bool(self)
+        return {self}
 
     @always_inline
     fn __hash__(self) -> UInt:

@@ -2,8 +2,10 @@ from kelvin import *
 from testing import assert_equal
 
 
-def test_simplify():
-    def _test[N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral]():
+fn test_simplify() -> raises:
+    fn _test[
+        N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral
+    ]() -> raises:
         var r1 = Ratio[N1, D1]()
         assert_equal(r1.N, N1)
         assert_equal(r1.D, D1)
