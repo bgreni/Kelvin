@@ -1,7 +1,6 @@
 from .ratio import Ratio
 
 
-@value
 @register_passable("trivial")
 struct Angle[R: Ratio, suffix: String](
     Boolable, Writable, ImplicitlyBoolable, Stringable
@@ -49,7 +48,6 @@ struct Angle[R: Ratio, suffix: String](
         return String.write(self)
 
 
-@value
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     Boolable, Writable, ImplicitlyBoolable, Stringable
@@ -114,7 +112,6 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         writer.write(suffix, "^", Z)
 
 
-@value
 @register_passable("trivial")
 struct Dimensions[
     L: Dimension,
@@ -246,7 +243,6 @@ struct Dimensions[
             writer.write(" ", Ang)
 
 
-@value
 @register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
     Representable,

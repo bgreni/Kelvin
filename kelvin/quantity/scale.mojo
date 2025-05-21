@@ -1,7 +1,6 @@
 from math import pi
 
 
-@value
 @register_passable("trivial")
 struct Scale[value: FloatLiteral](Stringable, Writable):
     """A compile time, known value, used to represent the scale of a particular
