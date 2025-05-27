@@ -7,12 +7,12 @@ version = "0.1.1"
 
 [tasks]
 test_reject = { cmd = "python3 ./scripts/run_reject_tests.py", depends-on=["package"] }
-test = { cmd = "mojo test -D ASSERT=all", depends-on=["generate_tests", "format_quiet", "test_reject"] }
+test = { cmd = "mojo test -D ASSERT=all -I . test", depends-on=["generate_tests", "format_quiet", "test_reject"] }
 format = "mojo format -l 80 kelvin test"
-format_quiet = "magic run format -q"
+format_quiet = "pixi run format -q"
 package = "mojo package kelvin -o kelvin.mojopkg"
 generate_tests = "python3 ./scripts/generate_tests.py"
-update_and_test = "magic update && magic run test"
+update_and_test = "pixi update && pixi run test"
 
 
 [dependencies]
