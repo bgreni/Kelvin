@@ -17,18 +17,12 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Download Magic CLI
-        run: |
-          curl -ssL https://magic.modular.com/cfba4c92-2390-4b86-93de-04b2f47114d5 | bash
-          # Add magic to PATH
-          echo "$HOME/.modular/bin" >> $GITHUB_PATH
-
-      - name: Install pre-commit
+      
+      - name: Run pre-commit
         run: |
           pip install pre-commit
           pre-commit install
-      
-      - name: Run pre-commit
-        run: magic run pre-commit run --all-files
+          curl -fsSL https://pixi.sh/install.sh | sh
+          export PATH="$HOME/.pixi/bin:$PATH"
+          pixi run pre-commit run --all-files
 
