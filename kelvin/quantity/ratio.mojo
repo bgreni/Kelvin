@@ -99,7 +99,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable, Copyable):
 
     @always_inline
     fn __rtruediv__(self, other: SIMD) -> __type_of(other):
-        return other * Ratio[D, N]()
+        return other * self.inverse()
 
     # TODO: Not sure why this doesn't work
     # @always_inline
@@ -115,6 +115,10 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Stringable, Writable, Copyable):
 
     @always_inline("builtin")
     fn __or__(self, other: Ratio) -> Ratio[N | other.N, D | other.D]:
+        return {}
+
+    @always_inline("builtin")
+    fn inverse(self) -> Ratio[D, N]:
         return {}
 
     @always_inline("builtin")

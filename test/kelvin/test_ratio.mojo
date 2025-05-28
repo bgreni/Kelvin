@@ -129,3 +129,8 @@ def test_or():
     assert_equal(String(r1 | r2), String(r2))
     assert_equal(String(r2 | r1), String(r2))
     assert_equal(String(r2 | r2), String(r2))
+
+
+def test_inverse():
+    var r = Ratio[3, 5]()
+    assert_equal(String(r.inverse()), String(Ratio[5, 3]()))
