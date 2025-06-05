@@ -4,4 +4,7 @@ from kelvin.quantity import *
 from .time import Second
 
 
-alias Hertz = Quantity[Dimensions.Null / Second.D, _, _]
+alias Hertz = Quantity[
+    Dimensions.Null / Second.D,
+    *_,
+]

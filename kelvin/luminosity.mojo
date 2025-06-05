@@ -13,6 +13,5 @@ alias Candela = Quantity[
         Dimension[1, Ratio.Unitary, "cd"](),
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]

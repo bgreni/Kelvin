@@ -13,8 +13,7 @@ alias Second = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]
 
 alias Minute = Quantity[
@@ -28,8 +27,7 @@ alias Minute = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]
 
 alias Hour = Quantity[
@@ -43,6 +41,5 @@ alias Hour = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]

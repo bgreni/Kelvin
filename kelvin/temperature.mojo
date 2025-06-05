@@ -13,6 +13,5 @@ alias Kelvin = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]

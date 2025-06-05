@@ -13,6 +13,5 @@ alias Mole = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]

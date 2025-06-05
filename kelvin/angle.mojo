@@ -13,8 +13,7 @@ alias Radian = Quantity[
         Dimension.Invalid,
         Angle[Ratio.Unitary, "rad"](),
     ](),
-    _,
-    _,
+    *_,
 ]
 
 alias Degree = Quantity[
@@ -28,6 +27,5 @@ alias Degree = Quantity[
         Dimension.Invalid,
         Angle[(Ratio.PI / Ratio[180, 1]()).simplify(), "°"](),
     ](),
-    _,
-    _,
+    *_,
 ]
