@@ -3,7 +3,7 @@ from .ratio import Ratio
 
 @register_passable("trivial")
 struct Angle[R: Ratio, suffix: String](
-    Boolable, Writable, ImplicitlyBoolable, Stringable
+    Boolable, ImplicitlyBoolable, Stringable, Writable
 ):
     """Represents the angle component of a quantity.
 
@@ -50,7 +50,7 @@ struct Angle[R: Ratio, suffix: String](
 
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
-    Boolable, Writable, ImplicitlyBoolable, Stringable
+    Boolable, ImplicitlyBoolable, Stringable, Writable
 ):
     """Represents a single dimension.
 
@@ -122,7 +122,7 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
     Ang: Angle,
-](Writable, Stringable):
+](Stringable, Writable):
     """Represents the 7 SI unit dimensions + angle, all within the parameter
     domain.
 
@@ -245,16 +245,16 @@ struct Dimensions[
 
 @register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
-    Representable,
-    Copyable,
-    Movable,
-    Comparable,
-    Writable,
-    Stringable,
     Boolable,
-    ImplicitlyBoolable,
+    Comparable,
+    Copyable,
     Hashable,
+    ImplicitlyBoolable,
     KeyElement,
+    Movable,
+    Representable,
+    Stringable,
+    Writable,
 ):
     """Represents an abstract quantity over some given dimensions.
 
