@@ -1,4 +1,5 @@
 from .ratio import Ratio
+from hashlib.hasher import Hasher
 
 
 @register_passable("trivial")
@@ -591,8 +592,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         return {self}
 
     @always_inline
-    fn __hash__(self) -> UInt:
-        return hash(self.value())
+    fn __hash__[H: Hasher](self, mut hasher: H):
+        return hasher.update(self.value())
 
     fn write_to[W: Writer](self, mut writer: W):
         """Writes the representation of the quantity to the given writer.
