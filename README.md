@@ -27,8 +27,7 @@ alias Meter = Quantity[
         Dimension.Invalid, # Luminosity
         Angle.Invalid, # Angle
     ](),
-    _,
-    _,
+    *_,
 ]
 
 # Use Ratio.Kilo to create a `Kilometer`
@@ -43,8 +42,7 @@ alias Kilometer = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]
 
 # Quantity with a weird conversion ratio
@@ -59,8 +57,7 @@ alias Mile = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    _,
-    _,
+    *_,
 ]
 ```
 
@@ -69,8 +66,8 @@ struct to create derivative units very easily. Here we can define Velocity in
 a single line of code.
 
 ```mojo
-alias MetersPerSecond = Quantity[Meter.D / Second.D, _, _]
-alias MetersSquared = Quantity[Meter.D**2, _, _]
+alias MetersPerSecond = Quantity[Meter.D / Second.D, *_,]
+alias MetersSquared = Quantity[Meter.D**2, *_,]
 
 alias kg = Kilogram.D
 alias m = Meter.D

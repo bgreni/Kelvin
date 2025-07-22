@@ -3,11 +3,11 @@ authors = ["Brian Grenier <grenierb96@gmail.com>"]
 channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
 name = "Kelvin"
 platforms = ["linux-64", "linux-aarch64", "osx-arm64"]
-version = "0.1.1"
+version = "0.1.2"
 
 [tasks]
 test_reject = { cmd = "python3 ./scripts/run_reject_tests.py && rm kelvin.mojopkg", depends-on=["package"] }
-test = { cmd = "mojo test -D ASSERT=all", depends-on=["generate_tests", "format_quiet", "test_reject"] }
+test = { cmd = "mojo test -D ASSERT=all -I . test", depends-on=["generate_tests", "format_quiet", "test_reject"] }
 format = "mojo format -l 80 kelvin test"
 format_quiet = "pixi run format -q"
 package = "mojo package kelvin -o kelvin.mojopkg"
