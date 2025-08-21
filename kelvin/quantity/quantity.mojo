@@ -41,7 +41,7 @@ struct Angle[R: Ratio, suffix: String](
         return {}
 
     @always_inline
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         writer.write(suffix)
 
     @always_inline
@@ -223,7 +223,7 @@ struct Dimensions[
     fn __str__(self) -> String:
         return String.write(self)
 
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         @parameter
         @always_inline
         fn write[d: Dimension]():
@@ -515,7 +515,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             True of the two matching quantities have the same value.
         """
-        return all(self._value == other._value)
+        return all(self._value.eq(other._value))
 
     @always_inline
     fn __ne__(self, other: Self) -> Bool:
@@ -525,7 +525,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             True of the two matching quantities have different values.
         """
-        return all(self._value != other._value)
+        return all(self._value.ne(other._value))
 
     @always_inline
     fn __lt__(self, other: Self) -> Bool:
@@ -535,7 +535,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             True of the value of self is less than other.
         """
-        return all(self._value < other._value)
+        return all(self._value.lt(other._value))
 
     @always_inline
     fn __le__(self, other: Self) -> Bool:
@@ -545,7 +545,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             True of the value of self is less than or equal to other.
         """
-        return all(self._value <= other._value)
+        return all(self._value.le(other._value))
 
     @always_inline
     fn __gt__(self, other: Self) -> Bool:
@@ -555,7 +555,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             True of the value of self is greater than other.
         """
-        return all(self._value > other._value)
+        return all(self._value.gt(other._value))
 
     @always_inline
     fn __ge__(self, other: Self) -> Bool:
@@ -565,7 +565,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         Returns:
             True of the value of self is greater than or equal to other.
         """
-        return all(self._value >= other._value)
+        return all(self._value.ge(other._value))
 
     @always_inline
     fn __str__(self) -> String:
@@ -592,7 +592,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         return {self}
 
     @always_inline
-    fn __hash__[H: Hasher](self, mut hasher: H):
+    fn __hash__(self, mut hasher: Some[Hasher]):
         return hasher.update(self.value())
 
     fn write_to[W: Writer](self, mut writer: W):

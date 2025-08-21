@@ -119,7 +119,7 @@ struct Scale[value: FloatLiteral](Stringable, Writable):
     #     return __type_of(res)()
 
     @always_inline
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         writer.write(value)
 
     @always_inline

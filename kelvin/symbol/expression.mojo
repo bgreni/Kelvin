@@ -66,7 +66,7 @@ struct Expr(
     fn is_binary_add(self) -> Bool:
         return self.is_binary_op() and self.binary_op().is_add()
 
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         if self.is_number():
             writer.write(self.number())
         elif self.is_unary_op():

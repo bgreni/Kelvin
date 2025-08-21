@@ -3,23 +3,23 @@ from .expression import Expr
 from os import abort
 
 
-fn Add(owned left: Expr, owned right: Expr) -> BinaryOp:
+fn Add(var left: Expr, var right: Expr) -> BinaryOp:
     return BinaryOp(left, BinaryOpType.Add, right)
 
 
-fn Sub(owned left: Expr, owned right: Expr) -> BinaryOp:
+fn Sub(var left: Expr, var right: Expr) -> BinaryOp:
     return BinaryOp(left, BinaryOpType.Sub, right)
 
 
-fn Mul(owned left: Expr, owned right: Expr) -> BinaryOp:
+fn Mul(var left: Expr, var right: Expr) -> BinaryOp:
     return BinaryOp(left, BinaryOpType.Mult, right)
 
 
-fn Div(owned left: Expr, owned right: Expr) -> BinaryOp:
+fn Div(var left: Expr, var right: Expr) -> BinaryOp:
     return BinaryOp(left, BinaryOpType.Div, right)
 
 
-fn Pow(owned left: Expr, owned right: Expr) -> BinaryOp:
+fn Pow(var left: Expr, var right: Expr) -> BinaryOp:
     return BinaryOp(left, BinaryOpType.Pow, right)
 
 
@@ -40,7 +40,7 @@ struct BinaryOpType(Copyable, Movable, Writable):
     fn __ne__(self, other: Self) -> Bool:
         return not self == other
 
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         if self == Self.Add:
             writer.write("+")
         elif self == Self.Sub:
@@ -58,7 +58,7 @@ struct BinaryOp(Copyable, EqualityComparable, Movable, Writable):
     var op: BinaryOpType
     var right_expr: ArcPointer[Expr]
 
-    fn __init__(out self, owned l: Expr, op: BinaryOpType, owned r: Expr):
+    fn __init__(out self, var l: Expr, op: BinaryOpType, var r: Expr):
         self.left_expr = ArcPointer(l^)
         self.right_expr = ArcPointer(r^)
         self.op = op
@@ -94,7 +94,6 @@ struct BinaryOp(Copyable, EqualityComparable, Movable, Writable):
     fn __ne__(self, other: Self) -> Bool:
         return not self == other
 
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         writer.write(self.left())
         writer.write(self.op)
-        writer.write(self.right())

@@ -25,7 +25,7 @@ struct UnaryOp(Copyable, EqualityComparable, Movable, Writable):
     var op: UnaryOpType
     var _expr: ArcPointer[Expr]
 
-    fn __init__(out self, op: UnaryOpType, owned expr: Expr):
+    fn __init__(out self, op: UnaryOpType, var expr: Expr):
         self.op = op
         self._expr = ArcPointer(expr^)
 

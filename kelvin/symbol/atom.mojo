@@ -27,7 +27,7 @@ struct Number(Copyable, EqualityComparable, Movable, Stringable, Writable):
     fn __pow__(self, other: Self) -> Self:
         return Self(self.value**other.value)
 
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         writer.write(self.value)
 
     fn __str__(self, out s: String):
@@ -50,7 +50,7 @@ struct Symbol(
     fn __ne__(self, other: Self) -> Bool:
         return not self == other
 
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         writer.write(self.name)
 
     fn __str__(self) -> String:

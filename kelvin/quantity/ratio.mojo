@@ -126,7 +126,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](Copyable, Stringable, Writable):
         return {}
 
     @always_inline
-    fn write_to[W: Writer](self, mut writer: W):
+    fn write_to(self, mut writer: Some[Writer]):
         writer.write(N, "/", D)
 
     @always_inline
