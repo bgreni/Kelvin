@@ -31,8 +31,7 @@ struct Number(Copyable, EqualityComparable, Movable, Stringable, Writable):
         writer.write(self.value)
 
     fn __str__(self, out s: String):
-        s = String()
-        s.write(self)
+        return String.write(self)
 
     fn __repr__(self) -> String:
         return self.__str__()

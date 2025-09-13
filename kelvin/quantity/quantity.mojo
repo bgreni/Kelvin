@@ -4,7 +4,7 @@ from hashlib.hasher import Hasher
 
 @register_passable("trivial")
 struct Angle[R: Ratio, suffix: String](
-    Boolable, ImplicitlyBoolable, Stringable, Writable
+    Boolable, ImplicitlyBoolable, ImplicitlyCopyable, Stringable, Writable
 ):
     """Represents the angle component of a quantity.
 
@@ -51,7 +51,7 @@ struct Angle[R: Ratio, suffix: String](
 
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
-    Boolable, ImplicitlyBoolable, Stringable, Writable
+    Boolable, ImplicitlyBoolable, ImplicitlyCopyable, Stringable, Writable
 ):
     """Represents a single dimension.
 
@@ -123,7 +123,7 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
     Ang: Angle,
-](Stringable, Writable):
+](ImplicitlyCopyable, Stringable, Writable):
     """Represents the 7 SI unit dimensions + angle, all within the parameter
     domain.
 
@@ -248,9 +248,9 @@ struct Dimensions[
 struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
     Boolable,
     Comparable,
-    Copyable,
     Hashable,
     ImplicitlyBoolable,
+    ImplicitlyCopyable,
     KeyElement,
     Movable,
     Representable,

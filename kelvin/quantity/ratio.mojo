@@ -1,5 +1,7 @@
 @register_passable("trivial")
-struct Ratio[N: IntLiteral, D: IntLiteral](Copyable, Stringable, Writable):
+struct Ratio[N: IntLiteral, D: IntLiteral](
+    ImplicitlyCopyable, Stringable, Writable
+):
     """A compile time, known rational value, used to represent the scale
     of a particular unit.
     """

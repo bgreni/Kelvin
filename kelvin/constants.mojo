@@ -22,3 +22,4 @@ alias avogandro_constant = Quantity[Dimensions.Null / Mole.D](6.02214076e23)
 alias K_cd = Quantity[
     Candela.D * (Second.D**3) * (Kilogram.D**-1) * (Meter.D**-2)
 ](683)
+alias gravity = MetersPerSecondSquared(9.81)
