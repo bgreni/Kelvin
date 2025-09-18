@@ -16,7 +16,7 @@ update_and_test = "pixi update && pixi run test"
 
 
 [dependencies]
-mojo = ">=25.6.0.dev2025073007,<26"
+mojo = ">=0.25.6.0.dev2025091705,<0.26.0.0"
 
 
 [environments]

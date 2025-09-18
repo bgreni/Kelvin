@@ -28,7 +28,7 @@ struct Parser:
 
     fn curr_token(self) -> Optional[Token]:
         if self.pos < len(self.tokens):
-            return self.tokens[self.pos]
+            return self.tokens[self.pos].copy()
         return None
 
     fn consume_token[Expected: Copyable & Movable](mut self) raises -> Token:
@@ -42,7 +42,7 @@ struct Parser:
 
         self.pos += 1
 
-        return t.value()
+        return t.take()
 
     fn consume_token(mut self) raises -> Token:
         var t = self.curr_token()
@@ -50,7 +50,7 @@ struct Parser:
             raise "Unexpected end of expression"
         self.pos += 1
 
-        return t.value()
+        return t.take()
 
     fn parse(mut self, out e: Expr) raises:
         self.tokens = lex(self.expr)
@@ -69,12 +69,12 @@ struct Parser:
             var op = self.consume_token()
             var right = self.parse_term()
             left = BinaryOp(
-                left,
+                left^,
                 BinaryOpType.Add if op.is_add() else BinaryOpType.Sub,
-                right,
+                right^,
             )
 
-        return left
+        return left^
 
     fn parse_term(mut self) raises -> Expr:
         var left = self.parse_power()
@@ -86,12 +86,12 @@ struct Parser:
             var op = self.consume_token()
             var right = self.parse_power()
             return BinaryOp(
-                left,
+                left^,
                 BinaryOpType.Mult if op.is_mult() else BinaryOpType.Div,
-                right,
+                right^,
             )
 
-        return left
+        return left^
 
     fn parse_power(mut self) raises -> Expr:
         var left = self.parse_factor()
@@ -101,9 +101,9 @@ struct Parser:
         if curr and curr.value().is_power():
             self.pos += 1
             var right = self.parse_power()
-            return BinaryOp(left, BinaryOpType.Pow, right)
+            return BinaryOp(left^, BinaryOpType.Pow, right^)
 
-        return left
+        return left^
 
     fn parse_factor(mut self) raises -> Expr:
         var tok_opt = self.curr_token()
@@ -111,7 +111,7 @@ struct Parser:
         if not tok_opt:
             raise "Unexpected end of expression"
 
-        var token = tok_opt.value()
+        var token = tok_opt.take()
 
         if token.is_sub():
             self.pos += 1
@@ -131,6 +131,6 @@ struct Parser:
             self.pos += 1
             var result = self.parse_expression()
             _ = self.consume_token[RParenToken]()
-            return result
+            return result^
 
         raise "Unexpected token: " + String(self.consume_token())

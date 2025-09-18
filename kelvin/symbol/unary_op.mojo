@@ -44,7 +44,7 @@ struct UnaryOp(Copyable, EqualityComparable, Movable, Writable):
     fn simplify(self) -> Expr:
         if self.expr().is_number():
             return Number(-self.expr().number().value)
-        return self
+        return self.copy()
 
     fn write_to[W: Writer](self, mut writer: W):
         writer.write(self.op)

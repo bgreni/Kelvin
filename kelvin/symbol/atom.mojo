@@ -1,5 +1,7 @@
 @register_passable("trivial")
-struct Number(Copyable, EqualityComparable, Movable, Stringable, Writable):
+struct Number(
+    EqualityComparable, ImplicitlyCopyable, Movable, Stringable, Writable
+):
     var value: Int
 
     @implicit

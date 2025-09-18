@@ -2,19 +2,19 @@ from kelvin.symbol import *
 
 
 fn simplify(orig: Expr, out e: Expr):
-    var before = orig
+    var before = orig.copy()
     while True:
         e = expand(orig)
         e = apply_arithmetic_rules(e)
 
         if e == before:
             break
-        before = e
+        before = e.copy()
 
 
 fn expand(e: Expr) -> Expr:
     if e.is_binary_op():
-        var op = e.binary_op()
+        ref op = e.binary_op()
 
         var left = expand(op.left())
         var right = expand(op.right())
@@ -22,28 +22,28 @@ fn expand(e: Expr) -> Expr:
         if op.is_mult():
             if left.is_binary_add():
                 # (a + b) * c = a*c + b*c
-                var t1 = Mul(left.binary_op().left(), right)
-                var t2 = Mul(left.binary_op().right(), right)
-                return expand(Add(t1, t2))
+                var t1 = Mul(left.binary_op().left().copy(), right.copy())
+                var t2 = Mul(left.binary_op().right().copy(), right^)
+                return expand(Add(t1^, t2^))
 
             elif right.is_binary_add():
                 # a * (b + c) = a*b + a*c
-                var t1 = Mul(left, right.binary_op().left())
-                var t2 = Mul(left, right.binary_op().right())
-                return expand(Add(t1, t2))
+                var t1 = Mul(left.copy(), right.binary_op().left().copy())
+                var t2 = Mul(left^, right.binary_op().right().copy())
+                return expand(Add(t1^, t2^))
 
-        return BinaryOp(left, op.op, right)
+        return BinaryOp(left^, op.op, right^)
 
     elif e.is_unary_op():
-        var op = e.unary_op()
+        ref op = e.unary_op()
         return UnaryOp(op.op, expand(op.expr()))
 
-    return e
+    return e.copy()
 
 
 fn apply_arithmetic_rules(e: Expr) -> Expr:
     if e.is_binary_op():
-        var op = e.binary_op()
+        ref op = e.binary_op()
 
         var left = apply_arithmetic_rules(op.left())
         var right = apply_arithmetic_rules(op.right())
@@ -64,33 +64,33 @@ fn apply_arithmetic_rules(e: Expr) -> Expr:
         # Identity rules
         if op.is_add():
             if left.is_zero():
-                return right
+                return right^
             elif right.is_zero():
-                return left
+                return left^
 
         elif op.is_mult():
             if left.is_number():
                 if left.number() == 0:
                     return Number(0)
                 elif left.number() == 1:
-                    return right
+                    return right^
 
             if right.is_number():
                 if right.number() == 0:
                     return Number(0)
                 elif right.number() == 1:
-                    return left
-        return BinaryOp(left, op.op, right)
+                    return left^
+        return BinaryOp(left^, op.op, right^)
     elif e.is_unary_op():
-        var op = e.unary_op()
+        ref op = e.unary_op()
         var operand = apply_arithmetic_rules(op.expr())
 
         if op.op == UnaryOpType.Neg and operand.is_number():
             return Number(-operand.number().value)
 
-        return UnaryOp(op.op, operand)
+        return UnaryOp(op.op, operand^)
 
-    return e
+    return e.copy()
 
 
 fn _collect_like_terms(e: Expr) -> Expr:

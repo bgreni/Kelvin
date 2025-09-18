@@ -95,8 +95,8 @@ struct Token(
         self.value = n
 
     @implicit
-    fn __init__(out self, n: SymbolToken):
-        self.value = n
+    fn __init__(out self, var n: SymbolToken):
+        self.value = n^
 
     @implicit
     fn __init__(out self, n: LParenToken):
@@ -136,7 +136,7 @@ struct Token(
     fn is_power(self) -> Bool:
         return self.isa[PowerToken]()
 
-    fn symbol(self) -> SymbolToken:
+    fn symbol(self) -> ref [self.value] SymbolToken:
         return self.value[SymbolToken]
 
     fn isa[T: Copyable & Movable](self) -> Bool:
@@ -233,5 +233,5 @@ fn lex(src: String) raises -> List[Token]:
         else:
             raise "Invalid token"
 
-        output.append(node)
-    return output
+        output.append(node^)
+    return output^

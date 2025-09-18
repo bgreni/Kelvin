@@ -1,23 +1,25 @@
 from kelvin.symbol import *
 from testing import *
 
-alias a = Symbol("a")
-alias b = Symbol("b")
-alias c = Symbol("c")
-
 
 def test_expand():
-    var expr: Expr = Mul(Add(a, b), c)
-    var expected: Expr = Add(Mul(a, c), Mul(b, c))
+    var a = Symbol("a")
+    var b = Symbol("b")
+    var c = Symbol("c")
+
+    var expr: Expr = Mul(Add(a.copy(), b.copy()), c.copy())
+    var expected: Expr = Add(Mul(a.copy(), c.copy()), Mul(b.copy(), c.copy()))
 
     assert_equal(expected, expand(expr))
 
-    expr = Mul(a, Add(b, c))
-    expected = Add(Mul(a, b), Mul(a, c))
+    expr = Mul(a.copy(), Add(b.copy(), c.copy()))
+    expected = Add(Mul(a.copy(), b.copy()), Mul(a.copy(), c.copy()))
     assert_equal(expected, expand(expr))
 
-    expr = UnaryOp(UnaryOpType.Neg, Mul(a, Add(b, c)))
-    expected = UnaryOp(UnaryOpType.Neg, Add(Mul(a, b), Mul(a, c)))
+    expr = UnaryOp(UnaryOpType.Neg, Mul(a.copy(), Add(b.copy(), c.copy())))
+    expected = UnaryOp(
+        UnaryOpType.Neg, Add(Mul(a.copy(), b.copy()), Mul(a.copy(), c.copy()))
+    )
     assert_equal(expected, expand(expr))
 
 

@@ -14,16 +14,16 @@ struct Expr(
         self.value = n
 
     @implicit
-    fn __init__(out self, a: BinaryOp):
-        self.value = a
+    fn __init__(out self, var a: BinaryOp):
+        self.value = a^
 
     @implicit
-    fn __init__(out self, a: Symbol):
-        self.value = a
+    fn __init__(out self, var a: Symbol):
+        self.value = a^
 
     @implicit
-    fn __init__(out self, a: UnaryOp):
-        self.value = a
+    fn __init__(out self, var a: UnaryOp):
+        self.value = a^
 
     fn is_atom(self) -> Bool:
         return self.is_number() or self.is_symbol()
@@ -37,7 +37,7 @@ struct Expr(
         return self.value.isa[BinaryOp]()
 
     @always_inline
-    fn binary_op(self) -> BinaryOp:
+    fn binary_op(self) -> ref [self.value] BinaryOp:
         return self.value[BinaryOp]
 
     @always_inline
@@ -45,7 +45,7 @@ struct Expr(
         return self.value.isa[UnaryOp]()
 
     @always_inline
-    fn unary_op(self) -> UnaryOp:
+    fn unary_op(self) -> ref [self.value] UnaryOp:
         return self.value[UnaryOp]
 
     @always_inline
@@ -53,7 +53,7 @@ struct Expr(
         return self.value.isa[Symbol]()
 
     @always_inline
-    fn symbol(self) -> Symbol:
+    fn symbol(self) -> ref [self.value] Symbol:
         return self.value[Symbol]
 
     @always_inline

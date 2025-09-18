@@ -4,7 +4,7 @@ from os import abort
 
 fn evaluate(e: Expr, vars: Dict[String, Number]) raises -> Number:
     if e.is_binary_op():
-        var op = e.binary_op()
+        ref op = e.binary_op()
         var left = evaluate(op.left(), vars)
         var right = evaluate(op.right(), vars)
 
@@ -22,7 +22,7 @@ fn evaluate(e: Expr, vars: Dict[String, Number]) raises -> Number:
         abort("unreachable: evaluate binary op")
 
     elif e.is_unary_op():
-        var op = e.unary_op()
+        ref op = e.unary_op()
         var operand = evaluate(op.expr(), vars)
 
         if op.is_neg():

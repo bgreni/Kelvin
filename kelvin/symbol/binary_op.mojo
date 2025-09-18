@@ -4,23 +4,23 @@ from os import abort
 
 
 fn Add(var left: Expr, var right: Expr) -> BinaryOp:
-    return BinaryOp(left, BinaryOpType.Add, right)
+    return BinaryOp(left^, BinaryOpType.Add, right^)
 
 
 fn Sub(var left: Expr, var right: Expr) -> BinaryOp:
-    return BinaryOp(left, BinaryOpType.Sub, right)
+    return BinaryOp(left^, BinaryOpType.Sub, right^)
 
 
 fn Mul(var left: Expr, var right: Expr) -> BinaryOp:
-    return BinaryOp(left, BinaryOpType.Mult, right)
+    return BinaryOp(left^, BinaryOpType.Mult, right^)
 
 
 fn Div(var left: Expr, var right: Expr) -> BinaryOp:
-    return BinaryOp(left, BinaryOpType.Div, right)
+    return BinaryOp(left^, BinaryOpType.Div, right^)
 
 
 fn Pow(var left: Expr, var right: Expr) -> BinaryOp:
-    return BinaryOp(left, BinaryOpType.Pow, right)
+    return BinaryOp(left^, BinaryOpType.Pow, right^)
 
 
 @fieldwise_init
