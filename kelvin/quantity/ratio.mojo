@@ -78,11 +78,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline
-    fn __mul__(self, other: SIMD) -> __type_of(other):
+    fn __mul__(self, other: SIMD) -> type_of(other):
         return (other * N) / D
 
     @always_inline
-    fn __rmul__(self, other: SIMD) -> __type_of(other):
+    fn __rmul__(self, other: SIMD) -> type_of(other):
         return self.__mul__(other)
 
     @always_inline("builtin")
@@ -96,11 +96,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline
-    fn __truediv__(self, other: SIMD) -> __type_of(other):
+    fn __truediv__(self, other: SIMD) -> type_of(other):
         return N / (other * D)
 
     @always_inline
-    fn __rtruediv__(self, other: SIMD) -> __type_of(other):
+    fn __rtruediv__(self, other: SIMD) -> type_of(other):
         return other * self.inverse()
 
     # TODO: Not sure why this doesn't work
@@ -109,11 +109,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     #     self,
     #     p: IntLiteral,
     #     out res: Ratio[
-    #         pow[ternary[N, D, __type_of(p)() >= 0](), abs(__type_of(p)())](),
-    #         pow[ternary[D, N, __type_of(p)() >= 0](), abs(__type_of(p)())](),
+    #         pow[ternary[N, D, type_of(p)() >= 0](), abs(type_of(p)())](),
+    #         pow[ternary[D, N, type_of(p)() >= 0](), abs(type_of(p)())](),
     #     ],
     # ):
-    #     return __type_of(res)()
+    #     return type_of(res)()
 
     @always_inline("builtin")
     fn __or__(self, other: Ratio) -> Ratio[N | other.N, D | other.D]:

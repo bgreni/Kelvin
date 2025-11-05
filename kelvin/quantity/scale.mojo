@@ -75,11 +75,11 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline("builtin")
     fn __add__(self, other: Scale, out res: Scale[value + other.value]):
-        return __type_of(res)()
+        return type_of(res)()
 
     @always_inline("builtin")
     fn __mul__(self, other: Scale, out res: Scale[value * other.value]):
-        return __type_of(res)()
+        return type_of(res)()
 
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
         constrained[other.dtype.is_floating_point()]()
@@ -92,7 +92,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline("builtin")
     fn __truediv__(self, other: Scale, out res: Scale[value / other.value]):
-        return __type_of(res)()
+        return type_of(res)()
 
     @always_inline
     fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
@@ -110,13 +110,13 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
     # TODO: ? stdlib doesn't have FloatLiteral**FloatLiteral implemented yet
     # @always_inline
     # fn __pow__(self, p: FloatLiteral, out res: Scale[value**p]):
-    #     return __type_of(res)()
+    #     return type_of(res)()
 
     # TODO: ? is this even defined?
     # @always_inline("builtin")
-    # fn __or__(self, other: Scale, out res: Scale[max(value, __type_of(other).value)]):
+    # fn __or__(self, other: Scale, out res: Scale[max(value, type_of(other).value)]):
     #     constrained[value == 0 or other.value == 0]()
-    #     return __type_of(res)()
+    #     return type_of(res)()
 
     @always_inline
     fn write_to(self, mut writer: Some[Writer]):

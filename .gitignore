@@ -8,3 +8,4 @@
 playground.mojo
 kelvin.mojopkg
 .DS_Store
+kgen.trace**

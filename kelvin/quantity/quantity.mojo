@@ -89,7 +89,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         return {}
 
     @always_inline("builtin")
-    fn __mul__(self, m: IntLiteral) -> Dimension[Z * __type_of(m)(), R, suffix]:
+    fn __mul__(self, m: IntLiteral) -> Dimension[Z * type_of(m)(), R, suffix]:
         return {}
 
     @always_inline("builtin")
@@ -204,13 +204,13 @@ struct Dimensions[
     fn __pow__(
         self, p: IntLiteral
     ) -> Dimensions[
-        __type_of(L * p)(),
-        __type_of(M * p)(),
-        __type_of(T * p)(),
-        __type_of(EC * p)(),
-        __type_of(TH * p)(),
-        __type_of(A * p)(),
-        __type_of(CD * p)(),
+        type_of(L * p)(),
+        type_of(M * p)(),
+        type_of(T * p)(),
+        type_of(EC * p)(),
+        type_of(TH * p)(),
+        type_of(A * p)(),
+        type_of(CD * p)(),
         Ang,
     ]:
         return {}
@@ -245,7 +245,7 @@ struct Dimensions[
 
 
 @register_passable("trivial")
-struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
+struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Boolable,
     Comparable,
     Hashable,
@@ -492,7 +492,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
         self._value *= v
 
     @always_inline
-    fn __pow__(self, p: IntLiteral) -> Quantity[D ** __type_of(p)(), DT, Width]:
+    fn __pow__(self, p: IntLiteral) -> Quantity[D ** type_of(p)(), DT, Width]:
         """Compute self ** p.
 
         Args:
@@ -610,7 +610,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: UInt = 1](
 # ===------------------------------------------------------------------=== #
 
 
-fn _scale_value[Z: IntLiteral, R: Ratio](v: SIMD) -> __type_of(v):
+fn _scale_value[Z: IntLiteral, R: Ratio](v: SIMD) -> type_of(v):
     @parameter
     if Z > 0:
         var res = v
