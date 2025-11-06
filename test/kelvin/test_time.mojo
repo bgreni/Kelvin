@@ -97,3 +97,8 @@ def test_simd():
 def test_cast():
     var a = Second(cast_from=Minute(10))
     assert_equal(a.value(), 600)
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

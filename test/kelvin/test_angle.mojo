@@ -32,3 +32,8 @@ def test_str():
     assert_equal(String(Degree(30)), "30.0 °")
     assert_equal(String(Radian(30) / Meter(5)), "6.0 m^-1 rad")
     assert_equal(String(Radian.D * Second.D), " s^1 rad")
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

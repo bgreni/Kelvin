@@ -97,3 +97,8 @@ def test_simd():
 def test_cast():
     var a = Meter(cast_from=Kilometer(10))
     assert_equal(a.value(), 10000)
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

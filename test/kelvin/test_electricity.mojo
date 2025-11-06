@@ -92,3 +92,8 @@ def test_simd():
     assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
     assert_true(S(Vec(1, 2, 3, 4)))
     assert_false(S(Vec(0, 0, 0, 0)))
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

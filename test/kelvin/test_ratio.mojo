@@ -1,11 +1,11 @@
 from kelvin import *
-from testing import assert_equal
+from testing import assert_equal, TestSuite
 
 
-fn test_simplify() -> raises:
+fn test_simplify() raises:
     fn _test[
         N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral
-    ]() -> raises:
+    ]() raises:
         var r1 = Ratio[N1, D1]()
         assert_equal(r1.N, N1)
         assert_equal(r1.D, D1)
@@ -134,3 +134,8 @@ def test_or():
 def test_inverse():
     var r = Ratio[3, 5]()
     assert_equal(String(r.inverse()), String(Ratio[5, 3]()))
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

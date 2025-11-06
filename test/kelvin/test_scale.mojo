@@ -1,5 +1,5 @@
 from kelvin import *
-from testing import assert_equal
+from testing import assert_equal, TestSuite
 
 
 def test_add():
@@ -44,3 +44,8 @@ def test_multiply():
         String(Scale[(2.0 * 3.0) / (3.0 * 5.0)]() * Scale[5.0 / 2.0]()),
         String(Scale[1.0 / 1.0]()),
     )
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

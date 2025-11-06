@@ -97,3 +97,8 @@ def test_simd():
 def test_cast():
     var a = MetersPerSecond(cast_from=MilesPerHour(10))
     assert_equal(a.value(), 4.4704)
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())

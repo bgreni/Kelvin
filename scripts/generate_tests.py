@@ -179,6 +179,11 @@ if __name__ == '__main__':
                 c = config['cast_test_config']
                 s = cast_test_template.format(config['unit_name'], c['other_type'], c['expected_value'])
                 f.write('\n' + s)
+            
+            f.write("""
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())""")
 
 
 

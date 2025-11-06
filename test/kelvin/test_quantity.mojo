@@ -52,3 +52,8 @@ def test_can_be_used_in_container():
     var d = Dict[Second, Meter]()
     d[Second(1)] = Meter(10)
     assert_equal(d[Second(1)], Meter(10))
+
+
+def main():
+    var s = TestSuite.discover_tests[__functions_in_module()]()
+    print(s.generate_report())
