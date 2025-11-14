@@ -44,19 +44,19 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     fn __ne__(self, other: Ratio) -> Bool:
         return not self == other
 
-    @always_inline
+    @always_inline("builtin")
     fn __gt__(self, other: Ratio) -> Bool:
         return N * other.D > D * other.N
 
-    @always_inline
+    @always_inline("builtin")
     fn __lt__(self, other: Ratio) -> Bool:
         return other > self
 
-    @always_inline
+    @always_inline("builtin")
     fn __ge__(self, other: Ratio) -> Bool:
         return N * other.D >= D * other.N
 
-    @always_inline
+    @always_inline("builtin")
     fn __le__(self, other: Ratio) -> Bool:
         return other >= self
 

@@ -35,5 +35,4 @@ def test_str():
 
 
 def main():
-    var s = TestSuite.discover_tests[__functions_in_module()]()
-    print(s.generate_report())
+    TestSuite.discover_tests[__functions_in_module()]().run()
