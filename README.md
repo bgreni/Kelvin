@@ -1,6 +1,6 @@
 # Kelvin
 
-![license_badge](https://badgen.net/static/license/Apache-2.0/blue)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![ci_badge](https://github.com/bgreni/Kelvin/actions/workflows/CI.yml/badge.svg)
 ![CodeQL](https://github.com/bgreni/Kelvin/workflows/CodeQL/badge.svg)
 
