@@ -4,6 +4,7 @@ channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
 name = "Kelvin"
 platforms = ["linux-64", "linux-aarch64", "osx-arm64"]
 version = "0.1.3"
+preview = ["pixi-build"]
 
 [tasks]
 test_reject = { cmd = "python3 ./scripts/run_reject_tests.py && rm kelvin.mojopkg", depends-on=["package"] }
@@ -27,3 +28,20 @@ run_proofs = "python3 ./misc/ratio_add_proof.py"
 
 [feature.proof.pypi-dependencies]
 z3-solver = ">=4.14.1.0, <5"
+
+
+[package]
+name = "kelvin"
+version = "0.1.3"
+
+[package.build]
+backend = { name = "pixi-build-mojo", version = "0.1.*" }
+
+[package.host-dependencies]
+mojo-compiler = ">=0.25.7.0.dev2025102220,<0.26"
+
+[package.build-dependencies]
+mojo-compiler = ">=0.25.7.0.dev2025102220,<0.26"
+
+[package.run-dependencies]
+mojo-compiler = ">=0.25.7.0.dev2025102220,<0.26"
