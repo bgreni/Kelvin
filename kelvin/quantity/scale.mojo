@@ -51,7 +51,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline("builtin")
     fn __eq__(self, other: Scale) -> Bool:
-        return value == other.value
+        return Self.value == other.value
 
     @always_inline("builtin")
     fn __ne__(self, other: Scale) -> Bool:
@@ -59,7 +59,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline
     fn __gt__(self, other: Scale) -> Bool:
-        return value > other.value
+        return Self.value > other.value
 
     @always_inline
     fn __lt__(self, other: Scale) -> Bool:
@@ -67,37 +67,39 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline
     fn __ge__(self, other: Scale) -> Bool:
-        return value >= other.value
+        return Self.value >= other.value
 
     @always_inline
     fn __le__(self, other: Scale) -> Bool:
         return other >= self
 
     @always_inline("builtin")
-    fn __add__(self, other: Scale, out res: Scale[value + other.value]):
+    fn __add__(self, other: Scale, out res: Scale[Self.value + other.value]):
         return type_of(res)()
 
     @always_inline("builtin")
-    fn __mul__(self, other: Scale, out res: Scale[value * other.value]):
+    fn __mul__(self, other: Scale, out res: Scale[Self.value * other.value]):
         return type_of(res)()
 
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
         constrained[other.dtype.is_floating_point()]()
-        return other * value
+        return other * Self.value
 
     @always_inline
     fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
         constrained[other.dtype.is_floating_point()]()
-        return other * value
+        return other * Self.value
 
     @always_inline("builtin")
-    fn __truediv__(self, other: Scale, out res: Scale[value / other.value]):
+    fn __truediv__(
+        self, other: Scale, out res: Scale[Self.value / other.value]
+    ):
         return type_of(res)()
 
     @always_inline
     fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
         constrained[other.dtype.is_floating_point()]()
-        return value / other
+        return Self.value / other
 
     @always_inline
     fn __rtruediv__(
@@ -105,7 +107,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
         other: Scalar,
     ) -> Scalar[other.dtype]:
         constrained[other.dtype.is_floating_point()]()
-        return other / value
+        return other / Self.value
 
     # TODO: ? stdlib doesn't have FloatLiteral**FloatLiteral implemented yet
     # @always_inline
@@ -120,7 +122,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline
     fn write_to(self, mut writer: Some[Writer]):
-        writer.write(value)
+        writer.write(Self.value)
 
     @always_inline
     fn __str__(self) -> String:

@@ -13,6 +13,12 @@ def test_ctor():
     assert_equal(b.value(), 10)
     assert_equal(b.DT, DType.int64)
 
+    var c: MetersPerSecond[Width=4] = [1, 2, 3, 4]
+    var d = MetersPerSecond[Width=4](1, 2, 3, 4)
+    assert_equal(c, d)
+    for i in range(4):
+        assert_equal(c[i], i + 1)
+
 
 def test_add():
     assert_equal(MetersPerSecond(10) + MetersPerSecond(5), MetersPerSecond(15))
@@ -82,10 +88,19 @@ def test_compare():
     assert_true(MetersPerSecond(10) >= MetersPerSecond(10))
     assert_true(MetersPerSecond(20) >= MetersPerSecond(10))
 
+    comptime T = MetersPerSecond[Width=4]
+    comptime B = SIMD[DType.bool, 4]
+    assert_equal(T(1, 2, 3, 4).eq(T(1, 4, 3, 12)), B(True, False, True, False))
+    assert_equal(T(1, 2, 3, 4).ne(T(4, 3, 3, 1)), B(True, True, False, True))
+    assert_equal(T(1, 2, 3, 4).lt(T(1, 4, 5, 2)), B(False, True, True, False))
+    assert_equal(T(1, 2, 3, 4).le(T(1, 4, 5, 2)), B(True, True, True, False))
+    assert_equal(T(1, 2, 3, 4).gt(T(1, 4, 5, 2)), B(False, False, False, True))
+    assert_equal(T(1, 2, 3, 4).ge(T(1, 4, 5, 2)), B(True, False, False, True))
+
 
 def test_simd():
-    alias Vec = SIMD[DType.int64, 4]
-    alias S = MetersPerSecond[DType.int64, 4]
+    comptime Vec = SIMD[DType.int64, 4]
+    comptime S = MetersPerSecond[DType.int64, 4]
 
     assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
     assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))

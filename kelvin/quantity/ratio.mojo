@@ -20,7 +20,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     alias PI = Ratio[355, 113]()
 
-    alias _GCD = gcd[N, D]()
+    alias _GCD = gcd[Self.N, Self.D]()
 
     alias Invalid = Ratio[0, 0]()
 
@@ -38,7 +38,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     @always_inline("builtin")
     fn __eq__(self, other: Ratio) -> Bool:
-        return N == other.N and D == other.D
+        return Self.N == other.N and Self.D == other.D
 
     @always_inline("builtin")
     fn __ne__(self, other: Ratio) -> Bool:
@@ -46,7 +46,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     @always_inline("builtin")
     fn __gt__(self, other: Ratio) -> Bool:
-        return N * other.D > D * other.N
+        return Self.N * other.D > Self.D * other.N
 
     @always_inline("builtin")
     fn __lt__(self, other: Ratio) -> Bool:
@@ -54,7 +54,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     @always_inline("builtin")
     fn __ge__(self, other: Ratio) -> Bool:
-        return N * other.D >= D * other.N
+        return Self.N * other.D >= Self.D * other.N
 
     @always_inline("builtin")
     fn __le__(self, other: Ratio) -> Bool:
@@ -64,9 +64,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     fn __add__(
         self, other: Ratio
     ) -> Ratio[
-        max[N * other.D + other.N * D, N + other.N](),
+        max[Self.N * other.D + other.N * Self.D, Self.N + other.N](),
         IntLiteral[
-            _max[(D * other.D).value, _max[D.value, other.D.value]()]()
+            _max[
+                (Self.D * other.D).value, _max[Self.D.value, other.D.value]()
+            ]()
         ](),
     ]:
         """Bit of a hack so that Ratio[0, 0]() + Ratio[1, 2]() == Ratio[1, 2]().
@@ -79,14 +81,14 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     @always_inline
     fn __mul__(self, other: SIMD) -> type_of(other):
-        return (other * N) / D
+        return (other * Self.N) / Self.D
 
     @always_inline
     fn __rmul__(self, other: SIMD) -> type_of(other):
         return self.__mul__(other)
 
     @always_inline("builtin")
-    fn __mul__(self, other: Ratio) -> Ratio[N * other.N, D * other.D]:
+    fn __mul__(self, other: Ratio) -> Ratio[Self.N * other.N, Self.D * other.D]:
         return {}
 
     @always_inline("builtin")
@@ -97,7 +99,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     @always_inline
     fn __truediv__(self, other: SIMD) -> type_of(other):
-        return N / (other * D)
+        return Self.N / (other * Self.D)
 
     @always_inline
     fn __rtruediv__(self, other: SIMD) -> type_of(other):
@@ -116,20 +118,20 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     #     return type_of(res)()
 
     @always_inline("builtin")
-    fn __or__(self, other: Ratio) -> Ratio[N | other.N, D | other.D]:
+    fn __or__(self, other: Ratio) -> Ratio[Self.N | other.N, Self.D | other.D]:
         return {}
 
     @always_inline("builtin")
-    fn inverse(self) -> Ratio[D, N]:
+    fn inverse(self) -> Ratio[Self.D, Self.N]:
         return {}
 
     @always_inline("builtin")
-    fn simplify(self) -> Ratio[N // Self._GCD, D // Self._GCD]:
+    fn simplify(self) -> Ratio[Self.N // Self._GCD, Self.D // Self._GCD]:
         return {}
 
     @always_inline
     fn write_to(self, mut writer: Some[Writer]):
-        writer.write(N, "/", D)
+        writer.write(Self.N, "/", Self.D)
 
     @always_inline
     fn __str__(self) -> String:
