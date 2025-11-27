@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Kelvin = Quantity[
+comptime Kelvin = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,

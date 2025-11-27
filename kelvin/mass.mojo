@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Kilogram = Quantity[
+comptime Kilogram = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension[1, Ratio.Unitary, "kg"](),

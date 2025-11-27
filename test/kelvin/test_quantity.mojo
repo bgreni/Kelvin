@@ -15,8 +15,8 @@ from collections import Dict
 
 
 # def test_unit_squared():
-#     alias S2 = Quantity[Second.D * Second.D]
-#     alias M2 = Quantity[Minute.D * Minute.D]
+#     comptime S2 = Quantity[Second.D * Second.D]
+#     comptime M2 = Quantity[Minute.D * Minute.D]
 #     assert_equal(S2(cast_from=M2(1)), S2(3600))
 #     assert_equal(M2(cast_from=S2(1)), M2(1 / 3600))
 
@@ -30,11 +30,11 @@ from collections import Dict
 
 
 # def test_integer_values():
-#     alias DT = DType.int64
-#     alias S = Second[DT]
-#     alias M = Meter[DT]
-#     alias MPS = Quantity[M.D / S.D, DT]
-#     alias MPH = Quantity[Mile.D / Hour.D, DT]
+#     comptime DT = DType.int64
+#     comptime S = Second[DT]
+#     comptime M = Meter[DT]
+#     comptime MPS = Quantity[M.D / S.D, DT]
+#     comptime MPH = Quantity[Mile.D / Hour.D, DT]
 
 #     assert_equal(S(20).value(), Int64(20))
 #     assert_equal(M(5) / S(2), MPS(2))

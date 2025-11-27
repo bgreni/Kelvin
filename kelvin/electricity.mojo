@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Ampere = Quantity[
+comptime Ampere = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,

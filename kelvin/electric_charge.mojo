@@ -4,7 +4,7 @@ from kelvin.quantity import *
 from .electricity import Ampere
 from .time import Second
 
-alias Coulomb = Quantity[
+comptime Coulomb = Quantity[
     Ampere.D * Second.D,
     *_,
 ]

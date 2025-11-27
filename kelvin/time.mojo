@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Second = Quantity[
+comptime Second = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,
@@ -16,7 +16,7 @@ alias Second = Quantity[
     *_,
 ]
 
-alias Minute = Quantity[
+comptime Minute = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,
@@ -30,7 +30,7 @@ alias Minute = Quantity[
     *_,
 ]
 
-alias Hour = Quantity[
+comptime Hour = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,

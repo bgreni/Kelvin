@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Meter = Quantity[
+comptime Meter = Quantity[
     Dimensions[
         Dimension[1, Ratio.Unitary, "m"](),
         Dimension.Invalid,
@@ -16,7 +16,7 @@ alias Meter = Quantity[
     *_,
 ]
 
-alias Kilometer = Quantity[
+comptime Kilometer = Quantity[
     Dimensions[
         Dimension[1, Ratio.Kilo, "km"](),
         Dimension.Invalid,
@@ -30,7 +30,7 @@ alias Kilometer = Quantity[
     *_,
 ]
 
-alias Mile = Quantity[
+comptime Mile = Quantity[
     Dimensions[
         Dimension[1, Ratio[1609344, 1000]().simplify(), "mile"](),
         Dimension.Invalid,

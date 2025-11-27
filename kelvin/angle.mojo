@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Radian = Quantity[
+comptime Radian = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,
@@ -16,7 +16,7 @@ alias Radian = Quantity[
     *_,
 ]
 
-alias Degree = Quantity[
+comptime Degree = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,

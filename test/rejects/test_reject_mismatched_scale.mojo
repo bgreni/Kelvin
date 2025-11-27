@@ -3,7 +3,7 @@ from sys.param_env import *
 
 
 def main():
-    alias CASE = env_get_string["CASE"]()
+    comptime CASE = env_get_string["CASE"]()
 
     @parameter
     if CASE == "mul":

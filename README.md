@@ -9,14 +9,14 @@ Heavily inspired by [uom](https://docs.rs/uom/latest/uom/index.html).
 
 ## Defining a Quantity
 
-To define a specific unit, you simply need to create an alias to `Quantity` with
+To define a specific unit, you simply need to create an comptime to `Quantity` with
 the particular dimensions defined. Each dimension also requires a `Ratio` and a
 suffix string. The ratio defines the relationship between it and the unitary amount.
 All dimensions that do not exist for a given quantity are given `Dimension.Invalid`.
 
 ```mojo
 # Base unit for time, `Second`
-alias Meter = Quantity[
+comptime Meter = Quantity[
     Dimensions[
         Dimension[1, Ratio.Unitary, "m"](), # Length
         Dimension.Invalid, # Mass
@@ -31,7 +31,7 @@ alias Meter = Quantity[
 ]
 
 # Use Ratio.Kilo to create a `Kilometer`
-alias Kilometer = Quantity[
+comptime Kilometer = Quantity[
     Dimensions[
         Dimension[1, Ratio.Kilo, "km"](),
         Dimension.Invalid,
@@ -46,7 +46,7 @@ alias Kilometer = Quantity[
 ]
 
 # Quantity with a weird conversion ratio
-alias Mile = Quantity[
+comptime Mile = Quantity[
     Dimensions[
         Dimension[1, Ratio[1609344, 1000]().simplify(), "mile"](),
         Dimension.Invalid,
@@ -66,21 +66,21 @@ struct to create derivative units very easily. Here we can define Velocity in
 a single line of code.
 
 ```mojo
-alias MetersPerSecond = Quantity[Meter.D / Second.D, *_,]
-alias MetersSquared = Quantity[Meter.D**2, *_,]
+comptime MetersPerSecond = Quantity[Meter.D / Second.D, *_,]
+comptime MetersSquared = Quantity[Meter.D**2, *_,]
 
-alias kg = Kilogram.D
-alias m = Meter.D
-alias s = Second.D
-alias Newton = Quantity[kg * m * (s ** -2)]
+comptime kg = Kilogram.D
+comptime m = Meter.D
+comptime s = Second.D
+comptime Newton = Quantity[kg * m * (s ** -2)]
 ```
 
 `Quantity` uses the mojo builtin `SIMD` type, so users can also supply a vector width
 parameter after the DType.
 
 ```mojo
-alias SIMDSeconds = Second[_, 4]
-alias SIMDMeter = Meter[_, 4]
+comptime SIMDSeconds = Second[_, 4]
+comptime SIMDMeter = Meter[_, 4]
 print(SIMDMeter(40) / SIMDSeconds(10)) # [4.0, 4.0, 4.0, 4.0] m^1 s^-1
 ```
 
@@ -92,7 +92,7 @@ of the underlying value. The default is `DType.float64`.
 ```mojo
 var s = Second(10.0) # Will be a float64
 
-alias IntSecond = Second[DType.int64]
+comptime IntSecond = Second[DType.int64]
 var is = IntSecond(10) # will be int64
 ```
 
@@ -148,7 +148,7 @@ to keep compile times fast, and there is currently no way of adding additional c
 to methods that use that decorator. The result is expressions like these are erroneously allowed.
 
 ```mojo
-alias BadUnit = Meter.D * Mile.D # Bad
+comptime BadUnit = Meter.D * Mile.D # Bad
 
 var a = Meter(10) * Mile(10) # Reject properly due to using Quantity
 ```
@@ -162,7 +162,7 @@ When using integer value representations, operations are subject to integer roun
 rules. If precision is important, please use a float point representation
 
 ```mojo
-alias IntSeconds = Second[DType.int64]
+comptime IntSeconds = Second[DType.int64]
 
 var a = IntSeconds(11) / IntSeconds(3) # returns IntSeconds(3)
 ```

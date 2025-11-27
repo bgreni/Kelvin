@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Candela = Quantity[
+comptime Candela = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,

@@ -2,7 +2,7 @@
 
 from kelvin.quantity import *
 
-alias Mole = Quantity[
+comptime Mole = Quantity[
     Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,

@@ -6,23 +6,23 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     of a particular unit.
     """
 
-    alias Nano = Ratio[1, pow[10, 9]()]()
-    alias Micro = Ratio[1, pow[10, 6]()]()
-    alias Milli = Ratio[1, pow[10, 3]()]()
-    alias Centi = Ratio[1, 100]()
-    alias Deci = Ratio[1, 10]()
-    alias Unitary = Ratio[1, 1]()
-    alias Deca = Ratio[10, 1]()
-    alias Hecto = Ratio[100, 1]()
-    alias Kilo = Ratio[pow[10, 3](), 1]()
-    alias Mega = Ratio[pow[10, 6](), 1]()
-    alias Giga = Ratio[pow[10, 9](), 1]()
+    comptime Nano = Ratio[1, pow[10, 9]()]()
+    comptime Micro = Ratio[1, pow[10, 6]()]()
+    comptime Milli = Ratio[1, pow[10, 3]()]()
+    comptime Centi = Ratio[1, 100]()
+    comptime Deci = Ratio[1, 10]()
+    comptime Unitary = Ratio[1, 1]()
+    comptime Deca = Ratio[10, 1]()
+    comptime Hecto = Ratio[100, 1]()
+    comptime Kilo = Ratio[pow[10, 3](), 1]()
+    comptime Mega = Ratio[pow[10, 6](), 1]()
+    comptime Giga = Ratio[pow[10, 9](), 1]()
 
-    alias PI = Ratio[355, 113]()
+    comptime PI = Ratio[355, 113]()
 
-    alias _GCD = gcd[Self.N, Self.D]()
+    comptime _GCD = gcd[Self.N, Self.D]()
 
-    alias Invalid = Ratio[0, 0]()
+    comptime Invalid = Ratio[0, 0]()
 
     @always_inline("builtin")
     fn __init__(out self):
@@ -142,13 +142,13 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 # Private Helpers
 # ===------------------------------------------------------------------=== #
 
-alias _pop_int_literal = __mlir_type.`!pop.int_literal`
+comptime _pop_int_literal = __mlir_type.`!pop.int_literal`
 
 
 @always_inline("nodebug")
 fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
-    alias a_ = IntLiteral[a]()
-    alias b_ = IntLiteral[b]()
+    comptime a_ = IntLiteral[a]()
+    comptime b_ = IntLiteral[b]()
 
     @parameter
     if b_:
@@ -164,8 +164,8 @@ fn gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_gcd[a.value, b.value]()]:
 
 @always_inline("nodebug")
 fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
-    alias a_ = IntLiteral[a]()
-    alias b_ = IntLiteral[b]()
+    comptime a_ = IntLiteral[a]()
+    comptime b_ = IntLiteral[b]()
 
     @parameter
     if a_ > b_:
@@ -183,9 +183,9 @@ fn max[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_max[a.value, b.value]()]:
 fn _pow[
     x: _pop_int_literal, n: _pop_int_literal, acc: _pop_int_literal
 ]() -> _pop_int_literal:
-    alias x_ = IntLiteral[x]()
-    alias n_ = IntLiteral[n]()
-    alias acc_ = IntLiteral[acc]()
+    comptime x_ = IntLiteral[x]()
+    comptime n_ = IntLiteral[n]()
+    comptime acc_ = IntLiteral[acc]()
     constrained[n_ >= 0, "Cannot use negative power"]()
 
     @parameter

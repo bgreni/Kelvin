@@ -3,7 +3,7 @@
 from kelvin.quantity import *
 from .length import Meter
 
-alias MetersSquared = Quantity[
+comptime MetersSquared = Quantity[
     Meter.D**2,
     *_,
 ]

@@ -12,7 +12,7 @@ struct Angle[R: Ratio, suffix: String](
     from mixing angular, and non-angular values, as well as mixing angular units.
     """
 
-    alias Invalid = Angle[Ratio.Invalid, ""]()
+    comptime Invalid = Angle[Ratio.Invalid, ""]()
 
     @always_inline("builtin")
     fn __init__(out self):
@@ -62,7 +62,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     """
 
     # Represents the lack of a dimension
-    alias Invalid = Dimension[0, Ratio.Invalid, ""]()
+    comptime Invalid = Dimension[0, Ratio.Invalid, ""]()
 
     @always_inline("builtin")
     fn __init__(out self):
@@ -144,7 +144,7 @@ struct Dimensions[
         Ang: The angle component of the quantity.
     """
 
-    alias Null = Dimensions[
+    comptime Null = Dimensions[
         Dimension.Invalid,
         Dimension.Invalid,
         Dimension.Invalid,
@@ -282,8 +282,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Width: The SIMD width of the value representation.
     """
 
-    alias ValueType = SIMD[Self.DT, Self.Width]
-    alias Mask = SIMD[DType.bool, Self.Width]
+    comptime ValueType = SIMD[Self.DT, Self.Width]
+    comptime Mask = SIMD[DType.bool, Self.Width]
     var _value: Self.ValueType
 
     @always_inline("builtin")
@@ -324,17 +324,17 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         _dimension_space_check[Self.D, cast_from.D]()
         var val = cast_from.value()
 
-        alias OD = cast_from.D
+        comptime OD = cast_from.D
 
         # Calculate the difference between the ratios on each dimension
-        alias LR = OD.L.R / Self.D.L.R
-        alias MR = OD.M.R / Self.D.M.R
-        alias TR = OD.T.R / Self.D.T.R
-        alias ECR = OD.EC.R / Self.D.EC.R
-        alias THR = OD.TH.R / Self.D.TH.R
-        alias AR = OD.A.R / Self.D.A.R
-        alias CDR = OD.CD.R / Self.D.CD.R
-        alias AngR = OD.Ang.R / Self.D.Ang.R
+        comptime LR = OD.L.R / Self.D.L.R
+        comptime MR = OD.M.R / Self.D.M.R
+        comptime TR = OD.T.R / Self.D.T.R
+        comptime ECR = OD.EC.R / Self.D.EC.R
+        comptime THR = OD.TH.R / Self.D.TH.R
+        comptime AR = OD.A.R / Self.D.A.R
+        comptime CDR = OD.CD.R / Self.D.CD.R
+        comptime AngR = OD.Ang.R / Self.D.Ang.R
 
         val = _scale_value[Self.D.L.Z, LR](val)
         val = _scale_value[Self.D.M.Z, MR](val)
