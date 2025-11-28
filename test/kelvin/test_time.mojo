@@ -19,6 +19,9 @@ def test_ctor():
     for i in range(4):
         assert_equal(c[i], i + 1)
 
+    c[0] = 10
+    assert_equal(c[0], 10)
+
 
 def test_add():
     assert_equal(Second(10) + Second(5), Second(15))
@@ -107,6 +110,41 @@ def test_simd():
     assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
     assert_true(S(Vec(1, 2, 3, 4)))
     assert_false(S(Vec(0, 0, 0, 0)))
+
+
+def test_contains():
+    comptime V = Second[Width=4]
+    assert_true(10 in V(1, 10, 2, 4))
+    assert_false(20 in V(1, 2, 3, 4))
+
+
+def test_abs():
+    assert_equal(abs(Second(-10)), Second(10))
+
+
+def test_trunc():
+    assert_equal(trunc(Second(10.231)), Second(10))
+
+
+def test_ceil():
+    assert_equal(ceil(Second(10.231)), Second(11))
+
+
+def test_floor():
+    assert_equal(floor(Second(10.531)), Second(10))
+
+
+# def test_ceildiv(): # Doesn't work with the CeilDivable trait yet
+#   assert_equal(ceildiv(Second(5), Second(2)).value(), 3)
+
+
+def test_round():
+    assert_equal(round(Second(10.2)), Second(10))
+    assert_equal(round(Second(10.23452), 1), Second(10.2))
+
+
+def test_len():
+    assert_equal(len(Second[Width=4](1, 2, 3, 4)), 4)
 
 
 def test_cast():

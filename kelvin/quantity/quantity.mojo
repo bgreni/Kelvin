@@ -1,5 +1,16 @@
 from .ratio import Ratio
 from hashlib.hasher import Hasher
+from math import (
+    Ceilable,
+    CeilDivable,
+    Floorable,
+    Truncable,
+    ceil,
+    ceildiv,
+    floor,
+    trunc,
+)
+from builtin.math import DivModable, Powable
 
 
 @register_passable("trivial")
@@ -263,15 +274,22 @@ struct Dimensions[
 
 @register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
+    Absable,
     Boolable,
+    Ceilable,
     Comparable,
+    Defaultable,
+    Floorable,
     Hashable,
     ImplicitlyBoolable,
     ImplicitlyCopyable,
     KeyElement,
     Movable,
     Representable,
+    Roundable,
+    Sized,
     Stringable,
+    Truncable,
     Writable,
 ):
     """Represents an abstract quantity over some given dimensions.
@@ -283,6 +301,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     """
 
     comptime ValueType = SIMD[Self.DT, Self.Width]
+    comptime ScalarT = Scalar[Self.DT]
     comptime Mask = SIMD[DType.bool, Self.Width]
     var _value: Self.ValueType
 
@@ -290,8 +309,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     fn __init__(out self, v: Self.ValueType):
         self._value = v
 
+    @always_inline("builtin")
+    fn __init__(out self):
+        self._value = 0
+
     @always_inline("nodebug")
-    fn __init__(out self, *elems: Scalar[Self.DT], __list_literal__: () = ()):
+    fn __init__(out self, *elems: Self.ScalarT, __list_literal__: () = ()):
         self._value = Self.ValueType()
         debug_assert(
             len(elems) == Self.Width,
@@ -359,8 +382,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return self._value
 
     @always_inline
-    fn __getitem__(self, ind: Some[Indexer]) -> Scalar[Self.DT]:
-        return self.value()[Int(index(ind))]
+    fn __getitem__(self, ind: Some[Indexer]) -> Self.ScalarT:
+        return self._value[Int(index(ind))]
+
+    @always_inline
+    fn __setitem__(mut self, ind: Some[Indexer], val: Self.ScalarT):
+        self._value[Int(index(ind))] = val
 
     # ===------------------------------------------------------------------=== #
     # Quantity operations
@@ -368,7 +395,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline
     fn __truediv__[
-        OD: Dimensions
+        OD: Dimensions, //
     ](self, other: Quantity[OD, Self.DT, Self.Width]) -> Quantity[
         Self.D / OD, Self.DT, Self.Width
     ]:
@@ -518,7 +545,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns
             The product of v * self.
         """
-        return {v * self.value()}
+        return {v * self._value}
 
     @always_inline
     fn __imul__(mut self, v: Self.ValueType):
@@ -541,11 +568,49 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The value raised to the power p, with the corresponding units transformed.
         """
-        return {self.value() ** p}
+        return {self._value**p}
 
     # ===------------------------------------------------------------------=== #
     # Trait implementations
     # ===------------------------------------------------------------------=== #
+
+    @always_inline
+    fn __abs__(self) -> Self:
+        """The absolute value of the quantity."""
+        return {abs(self._value)}
+
+    @always_inline
+    fn __ceil__(self) -> Self:
+        """The value rounded up."""
+        return {ceil(self._value)}
+
+    @always_inline
+    fn __trunc__(self) -> Self:
+        """The value truncated."""
+        return {trunc(self._value)}
+
+    @always_inline
+    fn __floor__(self) -> Self:
+        """The value rounded down."""
+        return {floor(self._value)}
+
+    # Doesn't work with the CeilDivable trait yet
+    # @always_inline
+    # fn __ceildiv__[OD: Dimensions,//](self, denominator: Quantity[OD, Self.DT, Self.Width]) -> type_of(self/denominator):
+    #     return type_of(self/denominator)(ceildiv(self._value, denominator._value))
+
+    @always_inline
+    fn __round__(self) -> Self:
+        """The value rounded."""
+        return {round(self._value)}
+
+    @always_inline
+    fn __round__(self, ndigits: Int) -> Self:
+        """The value rounded to n digits.
+        Args:
+            ndigits: The number of digits to round to.
+        """
+        return {round(self._value, ndigits)}
 
     @always_inline
     fn __eq__(self, other: Self) -> Bool:
@@ -555,7 +620,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             True of the two matching quantities have the same value.
         """
-        return self.value() == other.value()
+        return self._value == other._value
 
     @always_inline
     fn eq(self, other: Self) -> Self.Mask:
@@ -567,7 +632,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             An elementwise mask.
         """
-        return self.value().eq(other.value())
+        return self._value.eq(other._value)
 
     @always_inline
     fn __ne__(self, other: Self) -> Bool:
@@ -577,7 +642,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             True of the two matching quantities have different values.
         """
-        return self.value() != other.value()
+        return self._value != other._value
 
     @always_inline
     fn ne(self, other: Self) -> Self.Mask:
@@ -589,7 +654,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             An elementwise mask.
         """
-        return self.value().ne(other.value())
+        return self._value.ne(other._value)
 
     @always_inline
     fn __lt__(self, other: Self) -> Bool:
@@ -599,7 +664,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             True of the value of self is less than other.
         """
-        return self.value() < other.value()
+        return self._value < other._value
 
     @always_inline
     fn lt(self, other: Self) -> Self.Mask:
@@ -611,7 +676,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             An elementwise mask.
         """
-        return self.value().lt(other.value())
+        return self._value.lt(other._value)
 
     @always_inline
     fn __le__(self, other: Self) -> Bool:
@@ -621,7 +686,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             True of the value of self is less than or equal to other.
         """
-        return self.value() <= other.value()
+        return self._value <= other._value
 
     @always_inline
     fn le(self, other: Self) -> Self.Mask:
@@ -633,7 +698,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             An elementwise mask.
         """
-        return self.value().le(other.value())
+        return self._value.le(other._value)
 
     @always_inline
     fn __gt__(self, other: Self) -> Bool:
@@ -643,7 +708,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             True of the value of self is greater than other.
         """
-        return self.value() > other.value()
+        return self._value > other._value
 
     @always_inline
     fn gt(self, other: Self) -> Self.Mask:
@@ -655,7 +720,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             An elementwise mask.
         """
-        return self.value().gt(other.value())
+        return self._value.gt(other._value)
 
     @always_inline
     fn __ge__(self, other: Self) -> Bool:
@@ -665,7 +730,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             True of the value of self is greater than or equal to other.
         """
-        return self.value() >= other.value()
+        return self._value >= other._value
 
     @always_inline
     fn ge(self, other: Self) -> Self.Mask:
@@ -677,7 +742,19 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             An elementwise mask.
         """
-        return self.value().ge(other.value())
+        return self._value.ge(other._value)
+
+    @always_inline
+    fn __contains__(self, value: Self.ScalarT) -> Bool:
+        """Whether the quantitiy vector contains the value.
+
+        Args:
+            value: The value to check for.
+
+        Returns:
+            True if the vector contains the value, otherwise False.
+        """
+        return value in self._value
 
     @always_inline
     fn __str__(self) -> String:
@@ -716,6 +793,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         writer.write(self._value)
         writer.write(Self.D)
 
+    @always_inline
+    fn __len__(self) -> Int:
+        return Self.Width
 
 # ===------------------------------------------------------------------=== #
 # Private helpers
