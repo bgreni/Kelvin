@@ -279,10 +279,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Ceilable,
     Comparable,
     Defaultable,
+    Floatable,
     Floorable,
     Hashable,
     ImplicitlyBoolable,
     ImplicitlyCopyable,
+    Intable,
     KeyElement,
     Movable,
     Representable,
@@ -417,6 +419,37 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return {self._value / other._value}
 
     @always_inline
+    fn __floordiv__[
+        OD: Dimensions, //
+    ](self, other: Quantity[OD, Self.DT, Self.Width]) -> type_of(self / other):
+        """Divide on quantity by another. Rounded down to the nearest integer.
+        Output dimensions are the difference of the inputs.
+
+        `m^1 / s^1 -> m^1 s^-1` (aka velocity).
+
+        Inputs must have matching scale on all shared dimensions.
+        Uses floor division for integer data types.
+
+        Args:
+            other: A quantity with matching scale to use as the denominator.
+
+        Returns:
+            The quotient of self // other.
+        """
+        _dimension_scale_check[Self.D, OD]()
+        return {self._value // other._value}
+
+    # Doesn't work with the CeilDivable trait yet
+    # @always_inline
+    # fn __ceildiv__[
+    #     OD: Dimensions, //
+    # ](self, denominator: Quantity[OD, Self.DT, Self.Width]) -> type_of(
+    #     self / denominator
+    # ):
+    #     _dimension_scale_check[Self.D, OD]()
+    #     return {ceildiv(self._value, denominator._value)}
+
+    @always_inline
     fn __mul__[
         OD: Dimensions
     ](self, other: Quantity[OD, Self.DT, Self.Width]) -> Quantity[
@@ -463,7 +496,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline
     fn __sub__(self, other: Self) -> Self:
-        """Compute differecnce of two quantities.
+        """Compute difference of two quantities.
         Subtraction is only defined on quantities of matching types.
 
         Args:
@@ -593,11 +626,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     fn __floor__(self) -> Self:
         """The value rounded down."""
         return {floor(self._value)}
-
-    # Doesn't work with the CeilDivable trait yet
-    # @always_inline
-    # fn __ceildiv__[OD: Dimensions,//](self, denominator: Quantity[OD, Self.DT, Self.Width]) -> type_of(self/denominator):
-    #     return type_of(self/denominator)(ceildiv(self._value, denominator._value))
 
     @always_inline
     fn __round__(self) -> Self:
@@ -774,17 +802,25 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline
     fn __bool__(self) -> Bool:
-        return any(self.value())
+        return Bool(self._value)
 
     @always_inline
     fn __as_bool__(self) -> Bool:
         return {self}
 
     @always_inline
-    fn __hash__(self, mut hasher: Some[Hasher]):
-        return hasher.update(self.value())
+    fn __int__(self) -> Int:
+        return Int(self._value)
 
-    fn write_to[W: Writer](self, mut writer: W):
+    @always_inline
+    fn __float__(self) -> Float64:
+        return self._value.__float__()
+
+    @always_inline
+    fn __hash__(self, mut hasher: Some[Hasher]):
+        return hasher.update(self._value)
+
+    fn write_to(self, mut writer: Some[Writer]):
         """Writes the representation of the quantity to the given writer.
 
         Args:
@@ -796,6 +832,11 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     @always_inline
     fn __len__(self) -> Int:
         return Self.Width
+
+    @always_inline
+    fn __neg__(self) -> Self:
+        return {-self._value}
+
 
 # ===------------------------------------------------------------------=== #
 # Private helpers

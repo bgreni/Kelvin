@@ -2,10 +2,8 @@ from kelvin import *
 from testing import assert_equal, TestSuite
 
 
-fn test_simplify() raises:
-    fn _test[
-        N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral
-    ]() raises:
+def test_simplify():
+    def _test[N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral]():
         var r1 = Ratio[N1, D1]()
         assert_equal(r1.N, N1)
         assert_equal(r1.D, D1)

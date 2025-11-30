@@ -43,6 +43,16 @@ def test_div():
     assert_equal(String(a), "2.0")
 
 
+def test_floordiv():
+    var a = Kilogram(5) // Kilogram(2)
+    assert_equal(a.value(), 2.0)
+
+
+# def test_ceildiv():
+# var a = Kilogram(5).__ceildiv__(Kilogram(2))
+# assert_equal(a.value(), 3.0)
+
+
 def test_mul():
     var a = Kilogram(20) * Kilogram(2)
     assert_equal(a.value(), 40.0)
@@ -134,10 +144,6 @@ def test_floor():
     assert_equal(floor(Kilogram(10.531)), Kilogram(10))
 
 
-# def test_ceildiv(): # Doesn't work with the CeilDivable trait yet
-#   assert_equal(ceildiv(Kilogram(5), Kilogram(2)).value(), 3)
-
-
 def test_round():
     assert_equal(round(Kilogram(10.2)), Kilogram(10))
     assert_equal(round(Kilogram(10.23452), 1), Kilogram(10.2))
@@ -145,6 +151,18 @@ def test_round():
 
 def test_len():
     assert_equal(len(Kilogram[Width=4](1, 2, 3, 4)), 4)
+
+
+def test_intable():
+    assert_equal(Int(Kilogram(10.23)), 10)
+
+
+def test_floatable():
+    assert_equal(Float64(Kilogram(10.23)), 10.23)
+
+
+def test_neg():
+    assert_equal(-Kilogram(10), Kilogram(-10))
 
 
 def main():

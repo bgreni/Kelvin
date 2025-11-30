@@ -43,6 +43,16 @@ def test_div():
     assert_equal(String(a), "2.0")
 
 
+def test_floordiv():
+    var a = Coulomb(5) // Coulomb(2)
+    assert_equal(a.value(), 2.0)
+
+
+# def test_ceildiv():
+# var a = Coulomb(5).__ceildiv__(Coulomb(2))
+# assert_equal(a.value(), 3.0)
+
+
 def test_mul():
     var a = Coulomb(20) * Coulomb(2)
     assert_equal(a.value(), 40.0)
@@ -134,10 +144,6 @@ def test_floor():
     assert_equal(floor(Coulomb(10.531)), Coulomb(10))
 
 
-# def test_ceildiv(): # Doesn't work with the CeilDivable trait yet
-#   assert_equal(ceildiv(Coulomb(5), Coulomb(2)).value(), 3)
-
-
 def test_round():
     assert_equal(round(Coulomb(10.2)), Coulomb(10))
     assert_equal(round(Coulomb(10.23452), 1), Coulomb(10.2))
@@ -145,6 +151,18 @@ def test_round():
 
 def test_len():
     assert_equal(len(Coulomb[Width=4](1, 2, 3, 4)), 4)
+
+
+def test_intable():
+    assert_equal(Int(Coulomb(10.23)), 10)
+
+
+def test_floatable():
+    assert_equal(Float64(Coulomb(10.23)), 10.23)
+
+
+def test_neg():
+    assert_equal(-Coulomb(10), Coulomb(-10))
 
 
 def main():

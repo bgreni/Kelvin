@@ -42,6 +42,14 @@ def test_div():
     assert_equal(a.value(), 2.0)
     assert_equal(String(a), '2.0')
 
+def test_floordiv():
+    var a = {0}(5) // {0}(2)
+    assert_equal(a.value(), 2.0)
+
+#def test_ceildiv():
+    #var a = {0}(5).__ceildiv__({0}(2))
+    #assert_equal(a.value(), 3.0)
+
 def test_mul():
     var a = {0}(20) * {0}(2)
     assert_equal(a.value(), 40.0)
@@ -121,15 +129,21 @@ def test_ceil():
 def test_floor():
     assert_equal(floor({0}(10.531)), {0}(10))
 
-#def test_ceildiv(): # Doesn't work with the CeilDivable trait yet
- #   assert_equal(ceildiv({0}(5), {0}(2)).value(), 3)
-
 def test_round():
     assert_equal(round({0}(10.2)), {0}(10))
     assert_equal(round({0}(10.23452), 1), {0}(10.2))
 
 def test_len():
     assert_equal(len({0}[Width=4](1, 2, 3, 4)), 4)
+
+def test_intable():
+    assert_equal(Int({0}(10.23)), 10)
+
+def test_floatable():
+    assert_equal(Float64({0}(10.23)), 10.23)
+
+def test_neg():
+    assert_equal(-{0}(10), {0}(-10))
 """
 
 cast_test_template = \
