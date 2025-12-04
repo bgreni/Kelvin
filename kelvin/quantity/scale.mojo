@@ -74,31 +74,29 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
         return other >= self
 
     @always_inline("builtin")
-    fn __add__(self, other: Scale, out res: Scale[Self.value + other.value]):
-        return type_of(res)()
+    fn __add__(self, other: Scale) -> Scale[Self.value + other.value]:
+        return {}
 
     @always_inline("builtin")
-    fn __mul__(self, other: Scale, out res: Scale[Self.value * other.value]):
-        return type_of(res)()
+    fn __mul__(self, other: Scale) -> Scale[Self.value * other.value]:
+        return {}
 
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
-        constrained[other.dtype.is_floating_point()]()
+        __comptime_assert other.dtype.is_floating_point()
         return other * Self.value
 
     @always_inline
     fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
-        constrained[other.dtype.is_floating_point()]()
+        __comptime_assert other.dtype.is_floating_point()
         return other * Self.value
 
     @always_inline("builtin")
-    fn __truediv__(
-        self, other: Scale, out res: Scale[Self.value / other.value]
-    ):
-        return type_of(res)()
+    fn __truediv__(self, other: Scale) -> Scale[Self.value / other.value]:
+        return {}
 
     @always_inline
     fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
-        constrained[other.dtype.is_floating_point()]()
+        __comptime_assert other.dtype.is_floating_point()
         return Self.value / other
 
     @always_inline
@@ -106,7 +104,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
         self,
         other: Scalar,
     ) -> Scalar[other.dtype]:
-        constrained[other.dtype.is_floating_point()]()
+        __comptime_assert other.dtype.is_floating_point()
         return other / Self.value
 
     # TODO: ? stdlib doesn't have FloatLiteral**FloatLiteral implemented yet
@@ -117,7 +115,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
     # TODO: ? is this even defined?
     # @always_inline("builtin")
     # fn __or__(self, other: Scale, out res: Scale[max(value, type_of(other).value)]):
-    #     constrained[value == 0 or other.value == 0]()
+    #     __comptime_assert value == 0 or other.value == 0
     #     return type_of(res)()
 
     @always_inline

@@ -331,10 +331,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """This exists to give a more helpful error message when one tries to use the
         wrong type implicitly.
         """
-        constrained[
-            Self.D == other.D,
-            String.write("expected dimensions", Self.D, " received ", other.D),
-        ]()
+        __comptime_assert Self.D == other.D, String.write(
+            "expected dimensions", Self.D, " received ", other.D
+        )
         self._value = other._value
 
     fn __init__(
@@ -859,21 +858,21 @@ fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
 
 
 fn _dimension_space_check[L: Dimensions, R: Dimensions]():
-    constrained[L.L.Z == R.L.Z]()
-    constrained[L.M.Z == R.M.Z]()
-    constrained[L.T.Z == R.T.Z]()
-    constrained[L.EC.Z == R.EC.Z]()
-    constrained[L.TH.Z == R.TH.Z]()
-    constrained[L.A.Z == R.A.Z]()
-    constrained[L.CD.Z == R.CD.Z]()
-    constrained[Bool(L.Ang) == Bool(R.Ang)]()
+    __comptime_assert L.L.Z == R.L.Z
+    __comptime_assert L.M.Z == R.M.Z
+    __comptime_assert L.T.Z == R.T.Z
+    __comptime_assert L.EC.Z == R.EC.Z
+    __comptime_assert L.TH.Z == R.TH.Z
+    __comptime_assert L.A.Z == R.A.Z
+    __comptime_assert L.CD.Z == R.CD.Z
+    __comptime_assert Bool(L.Ang) == Bool(R.Ang)
 
 
 fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     fn check[l: Dimension, r: Dimension]():
         @parameter
         if l.Z and r.Z:
-            constrained[l.R == r.R]()
+            __comptime_assert l.R == r.R
 
     check[L.L, R.L]()
     check[L.M, R.M]()
@@ -885,4 +884,4 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
 
     @parameter
     if Bool(L.Ang) and Bool(R.Ang):
-        constrained[L.Ang.R == R.Ang.R]()
+        __comptime_assert L.Ang.R == R.Ang.R

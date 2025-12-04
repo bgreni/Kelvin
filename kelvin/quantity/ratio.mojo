@@ -186,7 +186,7 @@ fn _pow[
     comptime x_ = IntLiteral[x]()
     comptime n_ = IntLiteral[n]()
     comptime acc_ = IntLiteral[acc]()
-    constrained[n_ >= 0, "Cannot use negative power"]()
+    __comptime_assert n_ >= 0, "Cannot use negative power"
 
     @parameter
     if n_ == 0:
