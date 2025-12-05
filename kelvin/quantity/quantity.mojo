@@ -25,23 +25,23 @@ struct Angle[R: Ratio, suffix: String](
 
     comptime Invalid = Angle[Ratio.Invalid, ""]()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self):
         pass
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __eq__(self, other: Angle) -> Bool:
         return Self.R == other.R
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __ne__(self, other: Angle) -> Bool:
         return not self == other
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __bool__(self) -> Bool:
         return Self.R.__bool__()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn pick_non_null(
         self, other: Angle
     ) -> Angle[Self.R | other.R, Self.suffix or other.suffix]:
@@ -71,19 +71,19 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     # Represents the lack of a dimension
     comptime Invalid = Dimension[0, Ratio.Invalid, ""]()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self):
         pass
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __eq__(self, other: Dimension) -> Bool:
         return Self.Z == other.Z and Self.R == other.R
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __ne__(self, other: Dimension) -> Bool:
         return not self == other
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __add__(
         self, other: Dimension
     ) -> Dimension[
@@ -91,7 +91,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     ]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __sub__(
         self, other: Dimension
     ) -> Dimension[
@@ -99,17 +99,17 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     ]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __mul__(
         self, m: IntLiteral
     ) -> Dimension[Self.Z * type_of(m)(), Self.R, Self.suffix]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __bool__(self) -> Bool:
         return Self.Z != 0
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __neg__(self) -> Dimension[-Self.Z, Self.R, Self.suffix]:
         return {}
 
@@ -158,11 +158,11 @@ struct Dimensions[
         Angle.Invalid,
     ]()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self):
         pass
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __eq__(self, O: Dimensions) -> Bool:
         return (
             Self.L == O.L
@@ -175,11 +175,11 @@ struct Dimensions[
             and Self.Ang == O.Ang
         )
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __ne__(self, O: Dimensions) -> Bool:
         return not self == O
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __truediv__(
         self, other: Dimensions
     ) -> Dimensions[
@@ -192,9 +192,10 @@ struct Dimensions[
         Self.CD - other.CD,
         Self.Ang.pick_non_null(other.Ang),
     ]:
+        _dimension_scale_check[Self(), type_of(other)()]()
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __mul__(
         self, other: Dimensions
     ) -> Dimensions[
@@ -207,9 +208,10 @@ struct Dimensions[
         Self.CD + other.CD,
         Self.Ang.pick_non_null(other.Ang),
     ]:
+        _dimension_scale_check[Self(), type_of(other)()]()
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __pow__(
         self, p: IntLiteral
     ) -> Dimensions[
@@ -224,7 +226,7 @@ struct Dimensions[
     ]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __neg__(
         self,
     ) -> Dimensions[
@@ -298,11 +300,11 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     comptime Mask = SIMD[DType.bool, Self.Width]
     var _value: Self.ValueType
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self, v: Self.ValueType):
         self._value = v
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self):
         self._value = 0
 
@@ -365,7 +367,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
         self._value = val
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn value(self) -> Self.ValueType:
         """
         Returns:
@@ -405,7 +407,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The quotient of self / other.
         """
-        _dimension_scale_check[Self.D, OD]()
         return {self._value / other._value}
 
     @always_inline
@@ -426,7 +427,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The quotient of self // other.
         """
-        _dimension_scale_check[Self.D, OD]()
         return {self._value // other._value}
 
     # Doesn't work with the CeilDivable trait yet
@@ -458,7 +458,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The product of self * other.
         """
-        _dimension_scale_check[Self.D, OD]()
         return {self._value * other._value}
 
     @always_inline

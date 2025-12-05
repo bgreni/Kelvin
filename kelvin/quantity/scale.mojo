@@ -37,19 +37,19 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     comptime Invalid = Scale[0]()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self):
         pass
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __bool__(self) -> Bool:
         return self != Scale.Invalid
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __eq__(self, other: Scale) -> Bool:
         return Self.value == other.value
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __ne__(self, other: Scale) -> Bool:
         return not self == other
 
@@ -69,11 +69,11 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
     fn __le__(self, other: Scale) -> Bool:
         return other >= self
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __add__(self, other: Scale) -> Scale[Self.value + other.value]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __mul__(self, other: Scale) -> Scale[Self.value * other.value]:
         return {}
 
@@ -86,7 +86,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
         __comptime_assert other.dtype.is_floating_point()
         return other * Self.value
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __truediv__(self, other: Scale) -> Scale[Self.value / other.value]:
         return {}
 
@@ -109,7 +109,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
     #     return type_of(res)()
 
     # TODO: ? is this even defined?
-    # @always_inline("builtin")
+    # @always_inline("nodebug")
     # fn __or__(self, other: Scale, out res: Scale[max(value, type_of(other).value)]):
     #     __comptime_assert value == 0 or other.value == 0
     #     return type_of(res)()

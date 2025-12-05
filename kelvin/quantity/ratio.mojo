@@ -24,35 +24,35 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     comptime Invalid = Ratio[0, 0]()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __init__(out self):
         pass
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __bool__(self) -> Bool:
         return self != Ratio.Invalid
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __eq__(self, other: Ratio) -> Bool:
         return Self.N == other.N and Self.D == other.D
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __ne__(self, other: Ratio) -> Bool:
         return not self == other
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __gt__(self, other: Ratio) -> Bool:
         return Self.N * other.D > Self.D * other.N
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __lt__(self, other: Ratio) -> Bool:
         return other > self
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __ge__(self, other: Ratio) -> Bool:
         return Self.N * other.D >= Self.D * other.N
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __le__(self, other: Ratio) -> Bool:
         return other >= self
 
@@ -83,11 +83,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     fn __rmul__(self, other: SIMD) -> type_of(other):
         return self.__mul__(other)
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __mul__(self, other: Ratio) -> Ratio[Self.N * other.N, Self.D * other.D]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __truediv__(
         self, other: Ratio
     ) -> Ratio[Self.N * other.D, Self.D * other.N]:
@@ -113,15 +113,15 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     # ):
     #     return type_of(res)()
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn __or__(self, other: Ratio) -> Ratio[Self.N | other.N, Self.D | other.D]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn inverse(self) -> Ratio[Self.D, Self.N]:
         return {}
 
-    @always_inline("builtin")
+    @always_inline("nodebug")
     fn simplify(self) -> Ratio[Self.N // Self._GCD, Self.D // Self._GCD]:
         return {}
 
