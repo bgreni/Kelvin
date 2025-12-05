@@ -33,10 +33,6 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return self != Ratio.Invalid
 
     @always_inline("builtin")
-    fn __as_bool__(self) -> Bool:
-        return self.__bool__()
-
-    @always_inline("builtin")
     fn __eq__(self, other: Ratio) -> Bool:
         return Self.N == other.N and Self.D == other.D
 

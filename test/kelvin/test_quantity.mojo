@@ -46,7 +46,7 @@ def test_pow():
 
 
 def test_can_be_used_in_container():
-    var l = List(Second(1), Second(2))
+    var l = [Second(1), Second(2)]
     assert_equal(l[0], Second(1))
 
     var d = Dict[Second, Meter]()

@@ -15,7 +15,7 @@ from builtin.math import DivModable, Powable
 
 @register_passable("trivial")
 struct Angle[R: Ratio, suffix: String](
-    Boolable, ImplicitlyBoolable, ImplicitlyCopyable, Stringable, Writable
+    Boolable, ImplicitlyCopyable, Stringable, Writable
 ):
     """Represents the angle component of a quantity.
 
@@ -42,10 +42,6 @@ struct Angle[R: Ratio, suffix: String](
         return Self.R.__bool__()
 
     @always_inline("builtin")
-    fn __as_bool__(self) -> Bool:
-        return Self.R.__bool__()
-
-    @always_inline("builtin")
     fn pick_non_null(
         self, other: Angle
     ) -> Angle[Self.R | other.R, Self.suffix or other.suffix]:
@@ -62,7 +58,7 @@ struct Angle[R: Ratio, suffix: String](
 
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
-    Boolable, ImplicitlyBoolable, ImplicitlyCopyable, Stringable, Writable
+    Boolable, ImplicitlyCopyable, Stringable, Writable
 ):
     """Represents a single dimension.
 
@@ -112,10 +108,6 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     @always_inline("builtin")
     fn __bool__(self) -> Bool:
         return Self.Z != 0
-
-    @always_inline("builtin")
-    fn __as_bool__(self) -> Bool:
-        return self.__bool__()
 
     @always_inline("builtin")
     fn __neg__(self) -> Dimension[-Self.Z, Self.R, Self.suffix]:
@@ -282,7 +274,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Floatable,
     Floorable,
     Hashable,
-    ImplicitlyBoolable,
     ImplicitlyCopyable,
     Intable,
     KeyElement,
@@ -802,10 +793,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     @always_inline
     fn __bool__(self) -> Bool:
         return Bool(self._value)
-
-    @always_inline
-    fn __as_bool__(self) -> Bool:
-        return {self}
 
     @always_inline
     fn __int__(self) -> Int:

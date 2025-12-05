@@ -46,10 +46,6 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
         return self != Scale.Invalid
 
     @always_inline("builtin")
-    fn __as_bool__(self) -> Bool:
-        return self.__bool__()
-
-    @always_inline("builtin")
     fn __eq__(self, other: Scale) -> Bool:
         return Self.value == other.value
 
