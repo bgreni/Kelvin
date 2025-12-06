@@ -56,6 +56,28 @@ struct Angle[R: Ratio, suffix: String](
         return String.write(self)
 
 
+@always_inline("nodebug")
+fn _ternary_int_literal[
+    a: IntLiteral, b: IntLiteral, cond: Bool
+]() -> IntLiteral[a.value if cond else b.value]:
+    return {}
+
+
+@always_inline("nodebug")
+fn _ternary_ratio[
+    a: Ratio, b: Ratio, cond: Bool
+]() -> Ratio[
+    _ternary_int_literal[a.N, b.N, cond](),
+    _ternary_int_literal[a.D, b.D, cond](),
+]:
+    return {}
+
+
+@always_inline("nodebug")
+fn _ternary_string[a: String, b: String, cond: Bool]() -> String:
+    return a if cond else b
+
+
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     Boolable, ImplicitlyCopyable, Stringable, Writable
@@ -87,7 +109,13 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     fn __add__(
         self, other: Dimension
     ) -> Dimension[
-        Self.Z + other.Z, Self.R | other.R, Self.suffix or other.suffix
+        Self.Z + other.Z,
+        _ternary_ratio[
+            Ratio.Invalid, Self.R | other.R, Int(Self.Z + other.Z) == 0
+        ](),
+        _ternary_string[
+            "", Self.suffix or other.suffix, Int(Self.Z + other.Z) == 0
+        ](),
     ]:
         return {}
 
@@ -95,14 +123,26 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     fn __sub__(
         self, other: Dimension
     ) -> Dimension[
-        Self.Z - other.Z, Self.R | other.R, Self.suffix or other.suffix
+        Self.Z - other.Z,
+        _ternary_ratio[
+            Ratio.Invalid, Self.R | other.R, Int(Self.Z - other.Z) == 0
+        ](),
+        _ternary_string[
+            "", Self.suffix or other.suffix, Int(Self.Z - other.Z) == 0
+        ](),
     ]:
         return {}
 
     @always_inline("builtin")
     fn __mul__(
         self, m: IntLiteral
-    ) -> Dimension[Self.Z * type_of(m)(), Self.R, Self.suffix]:
+    ) -> Dimension[
+        Self.Z * type_of(m)(),
+        _ternary_ratio[
+            Ratio.Invalid, Self.R, Int(Self.Z * type_of(m)()) == 0
+        ](),
+        _ternary_string["", Self.suffix, Int(Self.Z * type_of(m)()) == 0](),
+    ]:
         return {}
 
     @always_inline("builtin")
