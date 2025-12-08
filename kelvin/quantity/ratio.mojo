@@ -1,3 +1,6 @@
+from utils._select import _select_register_value as select
+
+
 @register_passable("trivial")
 struct Ratio[N: IntLiteral, D: IntLiteral](
     ImplicitlyCopyable, Stringable, Writable
@@ -158,19 +161,14 @@ fn gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_gcd[a.value, b.value]()]:
     return {}
 
 
-@always_inline("nodebug")
+@always_inline("builtin")
 fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
     comptime a_ = IntLiteral[a]()
     comptime b_ = IntLiteral[b]()
-
-    @parameter
-    if a_ > b_:
-        return a
-    else:
-        return b
+    return select(a_ > b_, a, b)
 
 
-@always_inline("nodebug")
+@always_inline("builtin")
 fn max[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_max[a.value, b.value]()]:
     return {}
 
@@ -198,15 +196,15 @@ fn pow[
     return {}
 
 
-@always_inline("nodebug")
+@always_inline("builtin")
 fn ternary[
     a: IntLiteral, b: IntLiteral, cond: Bool
 ]() -> IntLiteral[_ternary[a.value, b.value, cond]()]:
     return {}
 
 
-@always_inline("nodebug")
+@always_inline("builtin")
 fn _ternary[
     a: _pop_int_literal, b: _pop_int_literal, cond: Bool
 ]() -> _pop_int_literal:
-    return a if cond else b
+    return select(cond, a, b)

@@ -11,6 +11,7 @@ from math import (
     trunc,
 )
 from builtin.math import DivModable, Powable
+from utils._select import _select_register_value as select
 
 
 @register_passable("trivial")
@@ -56,14 +57,14 @@ struct Angle[R: Ratio, suffix: String](
         return String.write(self)
 
 
-@always_inline("nodebug")
+@always_inline("builtin")
 fn _ternary_int_literal[
     a: IntLiteral, b: IntLiteral, cond: Bool
-]() -> IntLiteral[a.value if cond else b.value]:
+]() -> IntLiteral[select(cond, a.value, b.value)]:
     return {}
 
 
-@always_inline("nodebug")
+@always_inline("builtin")
 fn _ternary_ratio[
     a: Ratio, b: Ratio, cond: Bool
 ]() -> Ratio[
@@ -111,10 +112,10 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     ) -> Dimension[
         Self.Z + other.Z,
         _ternary_ratio[
-            Ratio.Invalid, Self.R | other.R, Int(Self.Z + other.Z) == 0
+            Ratio.Invalid, Self.R | other.R, Self.Z + other.Z == 0
         ](),
         _ternary_string[
-            "", Self.suffix or other.suffix, Int(Self.Z + other.Z) == 0
+            "", Self.suffix or other.suffix, Self.Z + other.Z == 0
         ](),
     ]:
         return {}
@@ -125,10 +126,10 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     ) -> Dimension[
         Self.Z - other.Z,
         _ternary_ratio[
-            Ratio.Invalid, Self.R | other.R, Int(Self.Z - other.Z) == 0
+            Ratio.Invalid, Self.R | other.R, Self.Z - other.Z == 0
         ](),
         _ternary_string[
-            "", Self.suffix or other.suffix, Int(Self.Z - other.Z) == 0
+            "", Self.suffix or other.suffix, Self.Z - other.Z == 0
         ](),
     ]:
         return {}
@@ -138,10 +139,8 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         self, m: IntLiteral
     ) -> Dimension[
         Self.Z * type_of(m)(),
-        _ternary_ratio[
-            Ratio.Invalid, Self.R, Int(Self.Z * type_of(m)()) == 0
-        ](),
-        _ternary_string["", Self.suffix, Int(Self.Z * type_of(m)()) == 0](),
+        _ternary_ratio[Ratio.Invalid, Self.R, Self.Z * type_of(m)() == 0](),
+        _ternary_string["", Self.suffix, Self.Z * type_of(m)() == 0](),
     ]:
         return {}
 
@@ -501,7 +500,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         _dimension_scale_check[Self.D, OD]()
         return {self._value * other._value}
 
-    @always_inline
+    @always_inline("builtin")
     fn __add__(self, other: Self) -> Self:
         """Compute sum of two quantities.
         Addition is only defined on quantities of matching types.
@@ -524,7 +523,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         self._value += other._value
 
-    @always_inline
+    @always_inline("builtin")
     fn __sub__(self, other: Self) -> Self:
         """Compute difference of two quantities.
         Subtraction is only defined on quantities of matching types.
@@ -575,7 +574,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The quotient of v / self.
         """
-        return {v / self.value()}
+        return {v / self._value}
 
     @always_inline
     fn __itruediv__(mut self, v: Self.ValueType):
@@ -586,7 +585,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         self._value /= v
 
-    @always_inline
+    @always_inline("builtin")
     fn __mul__(self, v: Self.ValueType) -> Self:
         """Multiply the value but a given scalar.
 
@@ -596,9 +595,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns
             The product of self * v.
         """
-        return {self.value() * v}
+        return {self._value * v}
 
-    @always_inline
+    @always_inline("builtin")
     fn __rmul__(self, v: Self.ValueType) -> Self:
         """Multiply the value but a given scalar.
 
@@ -884,6 +883,7 @@ fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
     return v
 
 
+@always_inline("builtin")
 fn _dimension_space_check[L: Dimensions, R: Dimensions]():
     __comptime_assert L.L.Z == R.L.Z
     __comptime_assert L.M.Z == R.M.Z

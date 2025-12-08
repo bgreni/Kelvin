@@ -54,5 +54,15 @@ def test_can_be_used_in_container():
     assert_equal(d[Second(1)], Meter(10))
 
 
+def test_zerod_dimension():
+    var a = Second(10)
+    var b = a / Second(5)
+
+    assert_equal(b.D.T.Z, 0)
+    assert_true(b.D.T.R == Ratio.Invalid)
+    assert_equal(b.D.T.suffix, "")
+    assert_true(b.D == Dimensions.Null)
+
+
 def main():
     TestSuite.discover_tests[__functions_in_module()]().run()

@@ -77,6 +77,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
     fn __mul__(self, other: Scale) -> Scale[Self.value * other.value]:
         return {}
 
+    @always_inline
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
         __comptime_assert other.dtype.is_floating_point()
         return other * Self.value
