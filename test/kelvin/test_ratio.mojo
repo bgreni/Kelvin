@@ -1,5 +1,5 @@
 from kelvin import *
-from testing import assert_equal, TestSuite
+from testing import assert_equal, assert_true, TestSuite
 
 
 def test_simplify():
@@ -132,6 +132,42 @@ def test_or():
 def test_inverse():
     var r = Ratio[3, 5]()
     assert_equal(String(r.inverse()), String(Ratio[5, 3]()))
+
+
+def test_equality():
+    # Value-based equality check
+    assert_true(Ratio[1, 1]() == Ratio[1000, 1000]())
+    assert_true(Ratio[2, 4]() == Ratio[1, 2]())
+    assert_true(Ratio[3, 2]() == Ratio[15, 10]())
+    assert_true(Ratio[0, 5]() == Ratio[0, 1]())
+
+    # Inequality
+    assert_true(Ratio[1, 2]() != Ratio[1, 3]())
+    assert_true(Ratio[1001, 1000]() != Ratio[1, 1]())
+
+
+def test_comparison():
+    # Greater than
+    assert_true(Ratio[2, 1]() > Ratio[1, 1]())
+    assert_true(Ratio[3, 2]() > Ratio[2, 3]())
+    assert_true(Ratio[100, 100]() > Ratio[99, 100]())
+
+    # Less than
+    assert_true(Ratio[1, 2]() < Ratio[1, 1]())
+    assert_true(Ratio[2, 3]() < Ratio[3, 2]())
+    assert_true(Ratio[99, 100]() < Ratio[100, 100]())
+
+    # Greater than or equal
+    assert_true(Ratio[2, 1]() >= Ratio[1, 1]())
+    assert_true(Ratio[1, 1]() >= Ratio[1, 1]())
+    assert_true(Ratio[1000, 1000]() >= Ratio[1, 1]())
+    assert_true(Ratio[200, 100]() >= Ratio[2, 1]())
+
+    # Less than or equal
+    assert_true(Ratio[1, 2]() <= Ratio[1, 1]())
+    assert_true(Ratio[1, 1]() <= Ratio[1, 1]())
+    assert_true(Ratio[1, 1]() <= Ratio[1000, 1000]())
+    assert_true(Ratio[100, 200]() <= Ratio[1, 2]())
 
 
 def main():

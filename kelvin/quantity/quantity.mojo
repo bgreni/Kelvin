@@ -57,28 +57,6 @@ struct Angle[R: Ratio, suffix: String](
         return String.write(self)
 
 
-@always_inline("builtin")
-fn _ternary_int_literal[
-    a: IntLiteral, b: IntLiteral, cond: Bool
-]() -> IntLiteral[select(cond, a.value, b.value)]:
-    return {}
-
-
-@always_inline("builtin")
-fn _ternary_ratio[
-    a: Ratio, b: Ratio, cond: Bool
-]() -> Ratio[
-    _ternary_int_literal[a.N, b.N, cond](),
-    _ternary_int_literal[a.D, b.D, cond](),
-]:
-    return {}
-
-
-@always_inline("nodebug")
-fn _ternary_string[a: String, b: String, cond: Bool]() -> String:
-    return a if cond else b
-
-
 @register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
     Boolable, ImplicitlyCopyable, Stringable, Writable
@@ -111,12 +89,23 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         self, other: Dimension
     ) -> Dimension[
         Self.Z + other.Z,
-        _ternary_ratio[
-            Ratio.Invalid, Self.R | other.R, Self.Z + other.Z == 0
+        Ratio[
+            IntLiteral[
+                select(
+                    Self.Z + other.Z == 0,
+                    Ratio.Invalid.N.value,
+                    (Self.R.N | other.R.N).value,
+                )
+            ](),
+            IntLiteral[
+                select(
+                    Self.Z + other.Z == 0,
+                    Ratio.Invalid.D.value,
+                    (Self.R.D | other.R.D).value,
+                )
+            ](),
         ](),
-        _ternary_string[
-            "", Self.suffix or other.suffix, Self.Z + other.Z == 0
-        ](),
+        "" if Self.Z + other.Z == 0 else Self.suffix or other.suffix,
     ]:
         return {}
 
@@ -125,12 +114,23 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         self, other: Dimension
     ) -> Dimension[
         Self.Z - other.Z,
-        _ternary_ratio[
-            Ratio.Invalid, Self.R | other.R, Self.Z - other.Z == 0
+        Ratio[
+            IntLiteral[
+                select(
+                    Self.Z - other.Z == 0,
+                    Ratio.Invalid.N.value,
+                    (Self.R.N | other.R.N).value,
+                )
+            ](),
+            IntLiteral[
+                select(
+                    Self.Z - other.Z == 0,
+                    Ratio.Invalid.D.value,
+                    (Self.R.D | other.R.D).value,
+                )
+            ](),
         ](),
-        _ternary_string[
-            "", Self.suffix or other.suffix, Self.Z - other.Z == 0
-        ](),
+        "" if Self.Z - other.Z == 0 else Self.suffix or other.suffix,
     ]:
         return {}
 
@@ -139,8 +139,23 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         self, m: IntLiteral
     ) -> Dimension[
         Self.Z * type_of(m)(),
-        _ternary_ratio[Ratio.Invalid, Self.R, Self.Z * type_of(m)() == 0](),
-        _ternary_string["", Self.suffix, Self.Z * type_of(m)() == 0](),
+        Ratio[
+            IntLiteral[
+                select(
+                    Self.Z * type_of(m)() == 0,
+                    Ratio.Invalid.N.value,
+                    Self.R.N.value,
+                )
+            ](),
+            IntLiteral[
+                select(
+                    Self.Z * type_of(m)() == 0,
+                    Ratio.Invalid.D.value,
+                    Self.R.D.value,
+                )
+            ](),
+        ](),
+        "" if Self.Z * type_of(m)() == 0 else Self.suffix,
     ]:
         return {}
 
@@ -869,6 +884,10 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
 
 fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
+    @parameter
+    if R == Ratio.Unitary:
+        return v
+
     @parameter
     if Z > 0:
 
