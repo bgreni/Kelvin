@@ -32,28 +32,67 @@ struct Angle[R: Ratio, suffix: String](
 
     @always_inline("builtin")
     fn __eq__(self, other: Angle) -> Bool:
+        """Returns True if the angles are equal.
+
+        Args:
+            other: The other angle to compare.
+
+        Returns:
+            True if angles are equal.
+        """
         return Self.R == other.R
 
     @always_inline("builtin")
     fn __ne__(self, other: Angle) -> Bool:
+        """Returns True if the angles are not equal.
+
+        Args:
+            other: The other angle to compare.
+
+        Returns:
+            True if angles are not equal.
+        """
         return not self == other
 
     @always_inline("builtin")
     fn __bool__(self) -> Bool:
+        """Returns True if the angle is not zero.
+
+        Returns:
+            True if angle is not zero.
+        """
         return Self.R.__bool__()
 
     @always_inline("builtin")
     fn pick_non_null(
         self, other: Angle
     ) -> Angle[Self.R | other.R, Self.suffix or other.suffix]:
+        """Returns the non-null angle between self and other.
+
+        Args:
+           other: The other angle.
+
+        Returns:
+           The non-null angle.
+        """
         return {}
 
     @always_inline
     fn write_to(self, mut writer: Some[Writer]):
+        """Write the angle to a writer.
+
+        Args:
+             writer: The writer to write to.
+        """
         writer.write(Self.suffix)
 
     @always_inline
     fn __str__(self) -> String:
+        """Returns the string representation of the angle.
+
+        Returns:
+            The string representation.
+        """
         return String.write(self)
 
 
@@ -78,10 +117,26 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
 
     @always_inline("builtin")
     fn __eq__(self, other: Dimension) -> Bool:
+        """Returns True if the dimensions are equal.
+
+        Args:
+            other: The other dimension to compare.
+
+        Returns:
+            True if the dimensions are equal.
+        """
         return Self.Z == other.Z and Self.R == other.R
 
     @always_inline("builtin")
     fn __ne__(self, other: Dimension) -> Bool:
+        """Returns True if the dimensions are not equal.
+
+        Args:
+           other: The other dimension to compare.
+
+        Returns:
+           True if the dimensions are not equal.
+        """
         return not self == other
 
     @always_inline("builtin")
@@ -107,6 +162,14 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         ](),
         "" if Self.Z + other.Z == 0 else Self.suffix or other.suffix,
     ]:
+        """Add two dimensions together.
+
+        Args:
+            other: The other dimension to add.
+
+        Returns:
+            The sum of the dimensions.
+        """
         return {}
 
     @always_inline("builtin")
@@ -132,6 +195,14 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         ](),
         "" if Self.Z - other.Z == 0 else Self.suffix or other.suffix,
     ]:
+        """Subtract two dimensions.
+
+        Args:
+            other: The other dimension to subtract.
+
+        Returns:
+            The difference of the dimensions.
+        """
         return {}
 
     @always_inline("builtin")
@@ -157,22 +228,50 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
         ](),
         "" if Self.Z * type_of(m)() == 0 else Self.suffix,
     ]:
+        """Multiply the dimension by an integer.
+
+        Args:
+            m: The integer multiplier.
+
+        Returns:
+            The multiplied dimension.
+        """
         return {}
 
     @always_inline("builtin")
     fn __bool__(self) -> Bool:
+        """Returns True if the dimension is not zero.
+
+        Returns:
+            True if the dimension is not zero.
+        """
         return Self.Z != 0
 
     @always_inline("builtin")
     fn __neg__(self) -> Dimension[-Self.Z, Self.R, Self.suffix]:
+        """Negate the dimension.
+
+        Returns:
+            The negated dimension.
+        """
         return {}
 
     @always_inline
     fn __str__(self) -> String:
+        """Returns the string representation of the dimension.
+
+        Returns:
+            The string representation of the dimension.
+        """
         return String.write(self)
 
     @always_inline
     fn write_to[W: Writer](self, mut writer: W):
+        """Write the dimension to a writer.
+
+        Args:
+            writer: The writer to write to.
+        """
         writer.write(Self.suffix, "^", Self.Z)
 
 
@@ -218,6 +317,14 @@ struct Dimensions[
 
     @always_inline("builtin")
     fn __eq__(self, O: Dimensions) -> Bool:
+        """Returns True if the dimensions are equal.
+
+        Args:
+            O: The other dimensions to compare.
+
+        Returns:
+            True if the dimensions are equal.
+        """
         return (
             Self.L == O.L
             and Self.M == O.M
@@ -231,6 +338,14 @@ struct Dimensions[
 
     @always_inline("builtin")
     fn __ne__(self, O: Dimensions) -> Bool:
+        """Returns True if the dimensions are not equal.
+
+        Args:
+            O: The other dimensions to compare.
+
+        Returns:
+            True if the dimensions are not equal.
+        """
         return not self == O
 
     @always_inline("builtin")
@@ -246,6 +361,14 @@ struct Dimensions[
         Self.CD - other.CD,
         Self.Ang.pick_non_null(other.Ang),
     ]:
+        """Returns the difference of the dimensions (self - other).
+
+        Args:
+            other: The other dimensions to subtract.
+
+        Returns:
+            The difference of the dimensions.
+        """
         return {}
 
     @always_inline("builtin")
@@ -261,6 +384,14 @@ struct Dimensions[
         Self.CD + other.CD,
         Self.Ang.pick_non_null(other.Ang),
     ]:
+        """Returns the sum of the dimensions (self + other).
+
+        Args:
+            other: The other dimensions to add.
+
+        Returns:
+            The sum of the dimensions.
+        """
         return {}
 
     @always_inline("builtin")
@@ -276,6 +407,14 @@ struct Dimensions[
         type_of(Self.CD * p)(),
         Self.Ang,
     ]:
+        """Returns the dimensions multiplied by p.
+
+        Args:
+            p: The power to raise the dimensions to.
+
+        Returns:
+            The dimensions multiplied by p.
+        """
         return {}
 
     @always_inline("builtin")
@@ -291,13 +430,29 @@ struct Dimensions[
         -Self.CD,
         Self.Ang,
     ]:
+        """Returns the negated dimensions.
+
+        Returns:
+            The negated dimensions.
+        """
         return {}
 
     @always_inline
     fn __str__(self) -> String:
+        """Returns the string representation of the dimensions.
+
+        Returns:
+            The string representation of the dimensions.
+        """
         return String.write(self)
 
     fn write_to(self, mut writer: Some[Writer]):
+        """Write the dimensions to a writer.
+
+        Args:
+            writer: The writer to write to.
+        """
+
         @parameter
         @always_inline
         fn write[d: Dimension]():
@@ -429,10 +584,24 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline
     fn __getitem__(self, ind: Some[Indexer]) -> Self.ScalarT:
+        """Get the scalar value at the given index.
+
+        Args:
+            ind: The index to retrieve.
+
+        Returns:
+             The scalar value.
+        """
         return self._value[Int(index(ind))]
 
     @always_inline
     fn __setitem__(mut self, ind: Some[Indexer], val: Self.ScalarT):
+        """Set the scalar value at the given index.
+
+        Args:
+            ind: The index to set.
+            val: The value to set.
+        """
         self._value[Int(index(ind))] = val
 
     # ===------------------------------------------------------------------=== #
@@ -846,18 +1015,38 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline
     fn __bool__(self) -> Bool:
+        """Returns True if the quantity is non-zero.
+
+        Returns:
+            True if quantity is non-zero.
+        """
         return Bool(self._value)
 
     @always_inline
     fn __int__(self) -> Int:
+        """Returns the integer representation of the value.
+
+        Returns:
+            The integer representation.
+        """
         return Int(self._value)
 
     @always_inline
     fn __float__(self) -> Float64:
+        """Returns the float representation of the value.
+
+        Returns:
+            The float representation.
+        """
         return self._value.__float__()
 
     @always_inline
     fn __hash__(self, mut hasher: Some[Hasher]):
+        """Update the hasher with the value.
+
+        Args:
+            hasher: The hasher to update.
+        """
         return hasher.update(self._value)
 
     fn write_to(self, mut writer: Some[Writer]):
@@ -871,10 +1060,20 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline
     fn __len__(self) -> Int:
+        """Returns the SIMD width of the quantity.
+
+        Returns:
+            The SIMD width.
+        """
         return Self.Width
 
     @always_inline
     fn __neg__(self) -> Self:
+        """Negate the quantity.
+
+        Returns:
+            The negated quantity.
+        """
         return {-self._value}
 
 
