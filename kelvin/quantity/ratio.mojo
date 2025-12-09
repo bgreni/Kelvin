@@ -36,15 +36,13 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return self != Ratio.Invalid
 
     @always_inline("builtin")
-    fn __eq__[
-        O_N: IntLiteral, O_D: IntLiteral
-    ](self, other: Ratio[O_N, O_D]) -> Bool:
+    fn __eq__(self, other: Ratio) -> Bool:
         # Resolve logic at compile time, use select to choose result (folded)
-        comptime is_invalid = (Self.D == 0) or (O_D == 0)
+        comptime is_invalid = (Self.D == 0) or (other.D == 0)
         return select(
             is_invalid,
-            (Self.N == O_N) and (Self.D == O_D),
-            (Self.N * O_D) == (Self.D * O_N),
+            (Self.N == other.N) and (Self.D == other.D),
+            (Self.N * other.D) == (Self.D * other.N),
         )
 
     @always_inline("builtin")
