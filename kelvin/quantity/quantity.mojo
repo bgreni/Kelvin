@@ -13,9 +13,11 @@ from math import (
 from builtin.math import DivModable, Powable
 from utils._select import _select_register_value as select
 
+comptime Suffix = String
+
 
 @register_passable("trivial")
-struct Angle[R: Ratio, suffix: String](
+struct Angle[R: Ratio, suffix: Suffix](
     Boolable, ImplicitlyCopyable, Stringable, Writable
 ):
     """Represents the angle component of a quantity.
@@ -97,7 +99,7 @@ struct Angle[R: Ratio, suffix: String](
 
 
 @register_passable("trivial")
-struct Dimension[Z: IntLiteral, R: Ratio, suffix: String](
+struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
     Boolable, ImplicitlyCopyable, Stringable, Writable
 ):
     """Represents a single dimension.
@@ -515,7 +517,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     fn __init__(out self):
         self._value = 0
 
-    @always_inline("nodebug")
+    @always_inline
     fn __init__(out self, *elems: Self.ScalarT, __list_literal__: () = ()):
         self._value = Self.ValueType()
         debug_assert(
@@ -525,15 +527,14 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         for i in range(len(elems)):
             self._value[i] = elems[i]
 
-    @always_inline
+    @always_inline("builtin")
     @implicit
-    fn __init__(out self, other: Quantity[DT = Self.DT, Width = Self.Width]):
+    fn __init__(
+        out self, other: Quantity[DT = Self.DT, Width = Self.Width]
+    ) where Self.D == other.D:
         """This exists to give a more helpful error message when one tries to use the
         wrong type implicitly.
         """
-        __comptime_assert Self.D == other.D, String.write(
-            "expected dimensions", Self.D, " received ", other.D
-        )
         self._value = other._value
 
     fn __init__(

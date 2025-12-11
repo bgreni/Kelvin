@@ -24,22 +24,25 @@ comptime rho_sea_level = Density(1.225)
 comptime scale_height = Meter(8500)
 
 
+comptime DT = DType.float64
+
+
 struct Rocket:
-    var mass: Kilogram[DType.float64]
-    var fuel_mass: Kilogram[DType.float64]
+    var mass: Kilogram[DT]
+    var fuel_mass: Kilogram[DT]
     var drag_coefficient: Float64
-    var area: MetersSquared[DType.float64]
-    var thrust: Newton[DType.float64]
-    var isp: Second[DType.float64]  # Specific Impulse
+    var area: MetersSquared[DT]
+    var thrust: Newton[DT]
+    var isp: Second[DT]  # Specific Impulse
 
     fn __init__(
         out self,
-        dry_mass: Kilogram[DType.float64],
-        fuel_mass: Kilogram[DType.float64],
+        dry_mass: Kilogram[DT],
+        fuel_mass: Kilogram[DT],
         drag_coefficient: Float64,
-        area: MetersSquared[DType.float64],
-        thrust: Newton[DType.float64],
-        isp: Second[DType.float64],
+        area: MetersSquared[DT],
+        thrust: Newton[DT],
+        isp: Second[DT],
     ):
         self.mass = dry_mass + fuel_mass
         self.fuel_mass = fuel_mass
@@ -48,19 +51,15 @@ struct Rocket:
         self.thrust = thrust
         self.isp = isp
 
-    fn total_mass(self) -> Kilogram[DType.float64]:
+    fn total_mass(self) -> Kilogram[DT]:
         return self.mass
 
-    fn burn_fuel(
-        mut self, dt: Second[DType.float64]
-    ) -> Kilogram[DType.float64]:
+    fn burn_fuel(mut self, dt: Second[DT]) -> Kilogram[DT]:
         # Mass flow rate = Thrust / (Isp * g0)
         # Note: g0 here is typically just a conversion factor 9.80665 m/s^2,
         # but dimensionally it matches acceleration.
         # We need to cast g0 to match the rocket's data type
-        var g = MetersPerSecondSquared[DType.float64](
-            g0.value().cast[DType.float64]()
-        )
+        var g = MetersPerSecondSquared[DT](g0.value().cast[DT]())
         var m_dot = self.thrust / (self.isp * g)
         var burned = m_dot * dt
 
@@ -72,7 +71,7 @@ struct Rocket:
         return burned
 
 
-fn atmosphere_density(altitude: Meter[DType.float64]) -> Density[DType.float64]:
+fn atmosphere_density(altitude: Meter[DT]) -> Density[DT]:
     # Simple exponential atmosphere model
     # rho = rho0 * exp(-h / H)
     if altitude < Meter(0.0):
