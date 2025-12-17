@@ -8,13 +8,15 @@ preview = ["pixi-build"]
 
 [tasks]
 test_reject = { cmd = "python3 ./scripts/run_reject_tests.py" }
-test = { cmd = "python run_test.py", depends-on=["generate_tests", "format_quiet", "test_reject"] }
+test = { cmd = "python run_test.py", depends-on=["generate_tests", "format_quiet"] }
+test_all = { depends-on=["test", "test_reject", "test_ctime"] }
 format = "mojo format -l 80 kelvin test"
 format_quiet = "pixi run format -q"
 package = "mojo package kelvin -o kelvin.mojopkg"
 generate_tests = "python3 ./scripts/generate_tests.py"
 update_and_test = "pixi update && pixi run test"
 rocket = "mojo -I . ./examples/rocket.mojo"
+test_ctime = "time mojo build -I . ./examples/rocket.mojo && rm rocket"
 
 
 [dependencies]
