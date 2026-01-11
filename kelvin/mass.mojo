@@ -13,5 +13,5 @@ comptime Kilogram = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]

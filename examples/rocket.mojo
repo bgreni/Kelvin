@@ -4,15 +4,15 @@ from math import exp
 # Define Derived Units
 comptime Newton = Quantity[
     (Kilogram.D * Meter.D) / (Second.D**2),
-    *_,
+    ...,
 ]
 comptime Pascal = Quantity[
     Newton.D / (Meter.D**2),
-    *_,
+    ...,
 ]
 comptime Density = Quantity[
     Kilogram.D / (Meter.D**3),
-    *_,
+    ...,
 ]
 
 # Physical Constants

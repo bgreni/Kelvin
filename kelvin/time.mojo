@@ -13,7 +13,7 @@ comptime Second = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]
 
 comptime Minute = Quantity[
@@ -27,7 +27,7 @@ comptime Minute = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]
 
 comptime Hour = Quantity[
@@ -41,5 +41,5 @@ comptime Hour = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]

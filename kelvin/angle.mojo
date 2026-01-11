@@ -13,7 +13,7 @@ comptime Radian = Quantity[
         Dimension.Invalid,
         Angle[Ratio.Unitary, "rad"](),
     ](),
-    *_,
+    ...,
 ]
 
 comptime Degree = Quantity[
@@ -27,5 +27,5 @@ comptime Degree = Quantity[
         Dimension.Invalid,
         Angle[(Ratio.PI / Ratio[180, 1]()).simplify(), "°"](),
     ](),
-    *_,
+    ...,
 ]

@@ -6,5 +6,5 @@ from .time import Second
 
 comptime Coulomb = Quantity[
     Ampere.D * Second.D,
-    *_,
+    ...,
 ]

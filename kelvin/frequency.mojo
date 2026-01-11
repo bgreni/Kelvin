@@ -6,5 +6,5 @@ from .time import Second
 
 comptime Hertz = Quantity[
     Dimensions.Null / Second.D,
-    *_,
+    ...,
 ]

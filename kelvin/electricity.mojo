@@ -13,5 +13,5 @@ comptime Ampere = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]

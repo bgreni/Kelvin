@@ -13,5 +13,5 @@ comptime Mole = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]

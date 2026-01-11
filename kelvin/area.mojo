@@ -5,5 +5,5 @@ from .length import Meter
 
 comptime MetersSquared = Quantity[
     Meter.D**2,
-    *_,
+    ...,
 ]

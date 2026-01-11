@@ -13,7 +13,7 @@ comptime Meter = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]
 
 comptime Kilometer = Quantity[
@@ -27,7 +27,7 @@ comptime Kilometer = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]
 
 comptime Mile = Quantity[
@@ -41,5 +41,5 @@ comptime Mile = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]

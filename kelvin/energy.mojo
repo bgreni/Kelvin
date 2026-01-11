@@ -7,5 +7,5 @@ from .time import Second
 
 comptime Joule = Quantity[
     (Kilogram.D * (Meter.D**2)) / Second.D**2,
-    *_,
+    ...,
 ]

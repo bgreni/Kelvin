@@ -13,5 +13,5 @@ comptime Candela = Quantity[
         Dimension[1, Ratio.Unitary, "cd"](),
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]

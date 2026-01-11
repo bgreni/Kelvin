@@ -13,5 +13,5 @@ comptime Kelvin = Quantity[
         Dimension.Invalid,
         Angle.Invalid,
     ](),
-    *_,
+    ...,
 ]
