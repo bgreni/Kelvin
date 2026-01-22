@@ -509,6 +509,14 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     comptime Mask = SIMD[DType.bool, Self.Width]
     var _value: Self.ValueType
 
+    @always_inline("nodebug")
+    fn __init__(out self, v: IntLiteral):
+        self._value = Self.ValueType(v)
+
+    @always_inline("nodebug")
+    fn __init__(out self, v: FloatLiteral):
+        self._value = Self.ValueType(v)
+
     @always_inline("builtin")
     fn __init__(out self, v: Self.ValueType):
         self._value = v

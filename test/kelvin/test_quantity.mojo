@@ -49,7 +49,7 @@ def test_can_be_used_in_container():
     var l = [Second(1), Second(2)]
     assert_equal(l[0], Second(1))
 
-    var d = Dict[Second, Meter]()
+    var d = Dict[Second[DT = DType.float64], Meter[DT = DType.float64]]()
     d[Second(1)] = Meter(10)
     assert_equal(d[Second(1)], Meter(10))
 
