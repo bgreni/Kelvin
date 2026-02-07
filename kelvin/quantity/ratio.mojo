@@ -1,9 +1,8 @@
 from utils._select import _select_register_value as select
 
 
-@register_passable("trivial")
 struct Ratio[N: IntLiteral, D: IntLiteral](
-    ImplicitlyCopyable, Stringable, Writable
+    ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
 ):
     """A compile time, known rational value, used to represent the scale
     of a particular unit.
@@ -315,7 +314,7 @@ fn _pow[
     comptime x_ = IntLiteral[x]()
     comptime n_ = IntLiteral[n]()
     comptime acc_ = IntLiteral[acc]()
-    __comptime_assert n_ >= 0, "Cannot use negative power"
+    comptime assert n_ >= 0, "Cannot use negative power"
 
     @parameter
     if n_ == 0:

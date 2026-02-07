@@ -16,9 +16,8 @@ from utils._select import _select_register_value as select
 comptime Suffix = String
 
 
-@register_passable("trivial")
 struct Angle[R: Ratio, suffix: Suffix](
-    Boolable, ImplicitlyCopyable, Stringable, Writable
+    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
 ):
     """Represents the angle component of a quantity.
 
@@ -98,9 +97,8 @@ struct Angle[R: Ratio, suffix: Suffix](
         return String.write(self)
 
 
-@register_passable("trivial")
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
-    Boolable, ImplicitlyCopyable, Stringable, Writable
+    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
 ):
     """Represents a single dimension.
 
@@ -277,7 +275,6 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         writer.write(Self.suffix, "^", Self.Z)
 
 
-@register_passable("trivial")
 struct Dimensions[
     L: Dimension,
     M: Dimension,
@@ -287,7 +284,7 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
     Ang: Angle,
-](ImplicitlyCopyable, Stringable, Writable):
+](ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable):
     """Represents the 7 SI unit dimensions + angle, all within the parameter
     domain.
 
@@ -475,7 +472,6 @@ struct Dimensions[
             writer.write(" ", Self.Ang)
 
 
-@register_passable("trivial")
 struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Absable,
     Boolable,
@@ -493,6 +489,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Roundable,
     Sized,
     Stringable,
+    TrivialRegisterType,
     Truncable,
     Writable,
 ):
@@ -1112,21 +1109,21 @@ fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
 
 @always_inline("builtin")
 fn _dimension_space_check[L: Dimensions, R: Dimensions]():
-    __comptime_assert L.L.Z == R.L.Z
-    __comptime_assert L.M.Z == R.M.Z
-    __comptime_assert L.T.Z == R.T.Z
-    __comptime_assert L.EC.Z == R.EC.Z
-    __comptime_assert L.TH.Z == R.TH.Z
-    __comptime_assert L.A.Z == R.A.Z
-    __comptime_assert L.CD.Z == R.CD.Z
-    __comptime_assert Bool(L.Ang) == Bool(R.Ang)
+    comptime assert L.L.Z == R.L.Z
+    comptime assert L.M.Z == R.M.Z
+    comptime assert L.T.Z == R.T.Z
+    comptime assert L.EC.Z == R.EC.Z
+    comptime assert L.TH.Z == R.TH.Z
+    comptime assert L.A.Z == R.A.Z
+    comptime assert L.CD.Z == R.CD.Z
+    comptime assert Bool(L.Ang) == Bool(R.Ang)
 
 
 fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     fn check[l: Dimension, r: Dimension]():
         @parameter
         if l.Z and r.Z:
-            __comptime_assert l.R == r.R
+            comptime assert l.R == r.R
 
     check[L.L, R.L]()
     check[L.M, R.M]()
@@ -1138,4 +1135,4 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
 
     @parameter
     if Bool(L.Ang) and Bool(R.Ang):
-        __comptime_assert L.Ang.R == R.Ang.R
+        comptime assert L.Ang.R == R.Ang.R

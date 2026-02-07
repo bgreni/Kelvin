@@ -20,7 +20,7 @@ test_ctime = "time mojo build -I . ./examples/rocket.mojo && rm rocket"
 
 
 [dependencies]
-mojo = ">=0.26.1.0.dev2025112105,<0.27"
+mojo = ">=0.26.2.0.dev2026020616,<0.27"
 
 [environments]
 default = { solve-group = "default" }
@@ -41,10 +41,10 @@ version = "0.2.0"
 backend = { name = "pixi-build-mojo", version = "0.1.*" }
 
 [package.host-dependencies]
-mojo-compiler = ">=0.26.1.0.dev2025112105,<0.27"
+mojo-compiler = ">=0.26.2.0.dev2026020616,<0.27"
 
 [package.build-dependencies]
-mojo-compiler = ">=0.26.1.0.dev2025112105,<0.27"
+mojo-compiler = ">=0.26.2.0.dev2026020616,<0.27"
 
 [package.run-dependencies]
-mojo-compiler = ">=0.26.1.0.dev2025112105,<0.27"
+mojo-compiler = ">=0.26.2.0.dev2026020616,<0.27"

@@ -18,7 +18,7 @@ def test_unit_squared():
     comptime S2 = Quantity[Second.D * Second.D]
     comptime M2 = Quantity[Minute.D * Minute.D]
     assert_equal(S2(cast_from=M2(1)), S2(3600))
-    assert_equal(M2(cast_from=S2(1)), M2(1 / 3600))
+    assert_equal(M2(cast_from=S2(1)), M2(1.0 / 3600.0))
 
 
 def test_mul():
@@ -62,6 +62,7 @@ def test_zerod_dimension():
     assert_true(b.D.T.R == Ratio.Invalid)
     assert_equal(b.D.T.suffix, "")
     assert_true(b.D == Dimensions.Null)
+    _ = b
 
 
 def main():

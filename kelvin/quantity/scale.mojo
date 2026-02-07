@@ -1,8 +1,9 @@
 from math import pi
 
 
-@register_passable("trivial")
-struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
+struct Scale[value: FloatLiteral](
+    ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
+):
     """A compile time, known value, used to represent the scale of a particular
     unit.
     """
@@ -79,12 +80,12 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline
     fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
-        __comptime_assert other.dtype.is_floating_point()
+        comptime assert other.dtype.is_floating_point()
         return other * Self.value
 
     @always_inline
     fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
-        __comptime_assert other.dtype.is_floating_point()
+        comptime assert other.dtype.is_floating_point()
         return other * Self.value
 
     @always_inline("builtin")
@@ -93,7 +94,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
 
     @always_inline
     fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
-        __comptime_assert other.dtype.is_floating_point()
+        comptime assert other.dtype.is_floating_point()
         return Self.value / other
 
     @always_inline
@@ -101,7 +102,7 @@ struct Scale[value: FloatLiteral](ImplicitlyCopyable, Stringable, Writable):
         self,
         other: Scalar,
     ) -> Scalar[other.dtype]:
-        __comptime_assert other.dtype.is_floating_point()
+        comptime assert other.dtype.is_floating_point()
         return other / Self.value
 
     # TODO: ? stdlib doesn't have FloatLiteral**FloatLiteral implemented yet
