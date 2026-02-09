@@ -2,7 +2,7 @@ from utils._select import _select_register_value as select
 
 
 struct Ratio[N: IntLiteral, D: IntLiteral](
-    ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
+    ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
 ):
     """A compile time, known rational value, used to represent the scale
     of a particular unit.

@@ -17,7 +17,7 @@ comptime Suffix = String
 
 
 struct Angle[R: Ratio, suffix: Suffix](
-    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
+    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
 ):
     """Represents the angle component of a quantity.
 
@@ -98,7 +98,7 @@ struct Angle[R: Ratio, suffix: Suffix](
 
 
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
-    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
+    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
 ):
     """Represents a single dimension.
 
@@ -284,7 +284,7 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
     Ang: Angle,
-](ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable):
+](ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable):
     """Represents the 7 SI unit dimensions + angle, all within the parameter
     domain.
 
@@ -489,7 +489,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Roundable,
     Sized,
     Stringable,
-    TrivialRegisterType,
+    TrivialRegisterPassable,
     Truncable,
     Writable,
 ):

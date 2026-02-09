@@ -2,7 +2,7 @@ from math import pi
 
 
 struct Scale[value: FloatLiteral](
-    ImplicitlyCopyable, Stringable, TrivialRegisterType, Writable
+    ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
 ):
     """A compile time, known value, used to represent the scale of a particular
     unit.
