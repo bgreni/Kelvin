@@ -1,8 +1,8 @@
-from math import pi
+from std.math import pi
 
 
 struct Scale[value: FloatLiteral](
-    ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
+    ImplicitlyCopyable, TrivialRegisterPassable, Writable
 ):
     """A compile time, known value, used to represent the scale of a particular
     unit.
@@ -119,7 +119,3 @@ struct Scale[value: FloatLiteral](
     @always_inline
     fn write_to(self, mut writer: Some[Writer]):
         writer.write(Self.value)
-
-    @always_inline
-    fn __str__(self) -> String:
-        return String.write(self)

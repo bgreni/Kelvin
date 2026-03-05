@@ -1,6 +1,6 @@
 from .ratio import Ratio
-from hashlib.hasher import Hasher
-from math import (
+from std.hashlib.hasher import Hasher
+from std.math import (
     Ceilable,
     CeilDivable,
     Floorable,
@@ -10,14 +10,14 @@ from math import (
     floor,
     trunc,
 )
-from builtin.math import DivModable, Powable
-from utils._select import _select_register_value as select
+from std.math import DivModable, Powable
+from std.utils._select import _select_register_value as select
 
 comptime Suffix = String
 
 
 struct Angle[R: Ratio, suffix: Suffix](
-    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
+    Boolable, ImplicitlyCopyable, TrivialRegisterPassable, Writable
 ):
     """Represents the angle component of a quantity.
 
@@ -87,18 +87,9 @@ struct Angle[R: Ratio, suffix: Suffix](
         """
         writer.write(Self.suffix)
 
-    @always_inline
-    fn __str__(self) -> String:
-        """Returns the string representation of the angle.
-
-        Returns:
-            The string representation.
-        """
-        return String.write(self)
-
 
 struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
-    Boolable, ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
+    Boolable, ImplicitlyCopyable, TrivialRegisterPassable, Writable
 ):
     """Represents a single dimension.
 
@@ -257,15 +248,6 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return {}
 
     @always_inline
-    fn __str__(self) -> String:
-        """Returns the string representation of the dimension.
-
-        Returns:
-            The string representation of the dimension.
-        """
-        return String.write(self)
-
-    @always_inline
     fn write_to[W: Writer](self, mut writer: W):
         """Write the dimension to a writer.
 
@@ -284,7 +266,7 @@ struct Dimensions[
     A: Dimension,
     CD: Dimension,
     Ang: Angle,
-](ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable):
+](ImplicitlyCopyable, TrivialRegisterPassable, Writable):
     """Represents the 7 SI unit dimensions + angle, all within the parameter
     domain.
 
@@ -436,15 +418,6 @@ struct Dimensions[
         """
         return {}
 
-    @always_inline
-    fn __str__(self) -> String:
-        """Returns the string representation of the dimensions.
-
-        Returns:
-            The string representation of the dimensions.
-        """
-        return String.write(self)
-
     fn write_to(self, mut writer: Some[Writer]):
         """Write the dimensions to a writer.
 
@@ -455,8 +428,7 @@ struct Dimensions[
         @parameter
         @always_inline
         fn write[d: Dimension]():
-            @parameter
-            if d:
+            comptime if d:
                 writer.write(" ", d)
 
         write[Self.L]()
@@ -467,8 +439,7 @@ struct Dimensions[
         write[Self.A]()
         write[Self.CD]()
 
-        @parameter
-        if Self.Ang:
+        comptime if Self.Ang:
             writer.write(" ", Self.Ang)
 
 
@@ -485,10 +456,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     Intable,
     KeyElement,
     Movable,
-    Representable,
     Roundable,
     Sized,
-    Stringable,
     TrivialRegisterPassable,
     Truncable,
     Writable,
@@ -574,8 +543,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         val = _scale_value[Self.D.A.Z, AR](val)
         val = _scale_value[Self.D.CD.Z, CDR](val)
 
-        @parameter
-        if AngR:
+        comptime if AngR:
             val = AngR * val
 
         self._value = val
@@ -1004,22 +972,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return value in self._value
 
     @always_inline
-    fn __str__(self) -> String:
-        """
-        Returns:
-            The string representation of the quantity.
-        """
-        return String.write(self)
-
-    @always_inline
-    fn __repr__(self) -> String:
-        """
-        Returns:
-            The string representation of the quantity.
-        """
-        return String.write(self)
-
-    @always_inline
     fn __bool__(self) -> Bool:
         """Returns True if the quantity is non-zero.
 
@@ -1089,20 +1041,14 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
 
 fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
-    @parameter
     if R == Ratio.Unitary:
         return v
 
-    @parameter
-    if Z > 0:
-
-        @parameter
-        for _ in range(Z):
+    comptime if Z > 0:
+        comptime for _ in range(Z):
             v = R * v
     elif Z < 0:
-
-        @parameter
-        for _ in range(-Z):
+        comptime for _ in range(-Z):
             v = v / R
     return v
 
@@ -1121,8 +1067,7 @@ fn _dimension_space_check[L: Dimensions, R: Dimensions]():
 
 fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     fn check[l: Dimension, r: Dimension]():
-        @parameter
-        if l.Z and r.Z:
+        comptime if l.Z and r.Z:
             comptime assert l.R == r.R
 
     check[L.L, R.L]()
@@ -1133,6 +1078,5 @@ fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
     check[L.A, R.A]()
     check[L.CD, R.CD]()
 
-    @parameter
-    if Bool(L.Ang) and Bool(R.Ang):
+    comptime if Bool(L.Ang) and Bool(R.Ang):
         comptime assert L.Ang.R == R.Ang.R

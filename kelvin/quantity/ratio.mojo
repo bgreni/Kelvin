@@ -1,8 +1,8 @@
-from utils._select import _select_register_value as select
+from std.utils._select import _select_register_value as select
 
 
 struct Ratio[N: IntLiteral, D: IntLiteral](
-    ImplicitlyCopyable, Stringable, TrivialRegisterPassable, Writable
+    ImplicitlyCopyable, TrivialRegisterPassable, Writable
 ):
     """A compile time, known rational value, used to represent the scale
     of a particular unit.
@@ -261,15 +261,6 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         """
         writer.write(Self.N, "/", Self.D)
 
-    @always_inline
-    fn __str__(self) -> String:
-        """Returns the string representation of the ratio.
-
-        Returns:
-            The string representation.
-        """
-        return String.write(self)
-
 
 # ===------------------------------------------------------------------=== #
 # Private Helpers
@@ -283,8 +274,7 @@ fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
     comptime a_ = IntLiteral[a]()
     comptime b_ = IntLiteral[b]()
 
-    @parameter
-    if b_:
+    comptime if b_:
         return _gcd[b, (a_ % b_).value]()
     else:
         return a
@@ -316,8 +306,7 @@ fn _pow[
     comptime acc_ = IntLiteral[acc]()
     comptime assert n_ >= 0, "Cannot use negative power"
 
-    @parameter
-    if n_ == 0:
+    comptime if n_ == 0:
         return acc
     else:
         return _pow[x, (n_ - 1).value, (acc_ * x_).value]()
