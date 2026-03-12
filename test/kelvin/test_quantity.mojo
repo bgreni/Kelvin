@@ -1,35 +1,35 @@
 from kelvin import *
-from testing import *
-from collections import Dict
+from std.testing import *
+from std.collections import Dict
 
 
-def test_seconds_to_minutes():
+def test_seconds_to_minutes() raises:
     assert_equal(Minute(cast_from=Second(600)), Minute(10))
     assert_equal(Second(cast_from=Minute(10)), Second(600))
 
 
-def test_mph_to_mps():
+def test_mph_to_mps() raises:
     assert_equal(
         MetersPerSecond(cast_from=MilesPerHour(50)), MetersPerSecond(22.352)
     )
 
 
-def test_unit_squared():
+def test_unit_squared() raises:
     comptime S2 = Quantity[Second.D * Second.D]
     comptime M2 = Quantity[Minute.D * Minute.D]
     assert_equal(S2(cast_from=M2(1)), S2(3600))
     assert_equal(M2(cast_from=S2(1)), M2(1.0 / 3600.0))
 
 
-def test_mul():
+def test_mul() raises:
     assert_equal(Meter(20) * Meter(3), MetersSquared(60))
 
 
-def test_div():
+def test_div() raises:
     assert_equal(Meter(30) / Second(5), MetersPerSecond(6))
 
 
-def test_integer_values():
+def test_integer_values() raises:
     comptime DT = DType.int64
     comptime S = Second[DT]
     comptime M = Meter[DT]
@@ -41,11 +41,11 @@ def test_integer_values():
     assert_equal(MPS(cast_from=MPH(10)), MPS(4))
 
 
-def test_pow():
+def test_pow() raises:
     assert_equal(Meter(10) ** 2, MetersSquared(100))
 
 
-def test_can_be_used_in_container():
+def test_can_be_used_in_container() raises:
     var l = [Second(1), Second(2)]
     assert_equal(l[0], Second(1))
 
@@ -54,7 +54,7 @@ def test_can_be_used_in_container():
     assert_equal(d[Second(1)], Meter(10))
 
 
-def test_zerod_dimension():
+def test_zerod_dimension() raises:
     var a = Second(10)
     var b = a / Second(5)
 
@@ -65,5 +65,5 @@ def test_zerod_dimension():
     _ = b
 
 
-def main():
+def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()

@@ -1,5 +1,5 @@
 from kelvin import *
-from math import exp
+from std.math import exp
 
 # Define Derived Units
 comptime Newton = Quantity[
@@ -35,7 +35,7 @@ struct Rocket:
     var thrust: Newton[DT]
     var isp: Second[DT]  # Specific Impulse
 
-    fn __init__(
+    def __init__(
         out self,
         dry_mass: Kilogram[DT],
         fuel_mass: Kilogram[DT],
@@ -51,10 +51,10 @@ struct Rocket:
         self.thrust = thrust
         self.isp = isp
 
-    fn total_mass(self) -> Kilogram[DT]:
+    def total_mass(self) -> Kilogram[DT]:
         return self.mass
 
-    fn burn_fuel(mut self, dt: Second[DT]) -> Kilogram[DT]:
+    def burn_fuel(mut self, dt: Second[DT]) -> Kilogram[DT]:
         # Mass flow rate = Thrust / (Isp * g0)
         # Note: g0 here is typically just a conversion factor 9.80665 m/s^2,
         # but dimensionally it matches acceleration.
@@ -71,7 +71,7 @@ struct Rocket:
         return burned
 
 
-fn atmosphere_density(altitude: Meter[DT]) -> Density[DT]:
+def atmosphere_density(altitude: Meter[DT]) -> Density[DT]:
     # Simple exponential atmosphere model
     # rho = rho0 * exp(-h / H)
     if altitude < Meter(0.0):
@@ -87,7 +87,7 @@ fn atmosphere_density(altitude: Meter[DT]) -> Density[DT]:
     return rho_sea_level * exp(-scalar_ratio)
 
 
-fn main():
+def main():
     print("Initializing Rocket Simulation...")
 
     # Setup Rocket

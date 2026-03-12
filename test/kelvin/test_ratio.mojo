@@ -1,9 +1,11 @@
 from kelvin import *
-from testing import assert_equal, assert_true, TestSuite
+from std.testing import assert_equal, assert_true, TestSuite
 
 
-def test_simplify():
-    def _test[N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral]():
+def test_simplify() raises:
+    def _test[
+        N1: IntLiteral, D1: IntLiteral, N2: IntLiteral, D2: IntLiteral
+    ]() raises:
         var r1 = Ratio[N1, D1]()
         assert_equal(r1.N, N1)
         assert_equal(r1.D, D1)
@@ -21,7 +23,7 @@ def test_simplify():
     _test[10 * 3, 10 * 4, 3, 4]()
 
 
-def test_add():
+def test_add() raises:
     assert_equal(
         String((Ratio[2, 3]() + Ratio[1, 3]()).simplify()),
         String(Ratio[1, 1]()),
@@ -42,7 +44,7 @@ def test_add():
     assert_equal(String(Ratio[1, 2]() + Ratio.Invalid), String(Ratio[1, 2]()))
 
 
-def test_ratio_mul():
+def test_ratio_mul() raises:
     assert_equal(
         String((Ratio[2, 3]() * Ratio[1, 3]()).simplify()),
         String(Ratio[2, 9]()),
@@ -61,7 +63,7 @@ def test_ratio_mul():
     )
 
 
-def test_scalar_mul():
+def test_scalar_mul() raises:
     assert_equal(Float64(1) * Ratio[1, 2](), 0.5)
     assert_equal(Int64(1) * Ratio[1, 2](), 0)
     assert_equal(Float64(3) * Ratio[1, 2](), 1.5)
@@ -81,7 +83,7 @@ def test_scalar_mul():
 #     assert_equal(String(Ratio[2, 3]() ** -2), String(Ratio[9, 4]()))
 
 
-def test_ratio_div():
+def test_ratio_div() raises:
     assert_equal(
         String((Ratio[2, 3]() / Ratio[3, 1]()).simplify()),
         String(Ratio[2, 9]()),
@@ -100,7 +102,7 @@ def test_ratio_div():
     )
 
 
-def test_scalar_div():
+def test_scalar_div() raises:
     # truediv
     assert_equal(Ratio[1, 2]() / Float64(1), 0.5)
     assert_equal(Ratio[1, 2]() / Int64(1), 0)
@@ -121,7 +123,7 @@ def test_scalar_div():
     assert_equal(Ratio[3 * 999, 2 * 1000]() / Int64(1), 1)
 
 
-def test_or():
+def test_or() raises:
     var r1 = Ratio.Invalid
     var r2 = Ratio[1, 2]()
     assert_equal(String(r1 | r2), String(r2))
@@ -129,12 +131,12 @@ def test_or():
     assert_equal(String(r2 | r2), String(r2))
 
 
-def test_inverse():
+def test_inverse() raises:
     var r = Ratio[3, 5]()
     assert_equal(String(r.inverse()), String(Ratio[5, 3]()))
 
 
-def test_equality():
+def test_equality() raises:
     # Value-based equality check
     assert_true(Ratio[1, 1]() == Ratio[1000, 1000]())
     assert_true(Ratio[2, 4]() == Ratio[1, 2]())
@@ -146,7 +148,7 @@ def test_equality():
     assert_true(Ratio[1001, 1000]() != Ratio[1, 1]())
 
 
-def test_comparison():
+def test_comparison() raises:
     # Greater than
     assert_true(Ratio[2, 1]() > Ratio[1, 1]())
     assert_true(Ratio[3, 2]() > Ratio[2, 3]())
@@ -170,5 +172,5 @@ def test_comparison():
     assert_true(Ratio[100, 200]() <= Ratio[1, 2]())
 
 
-def main():
+def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()

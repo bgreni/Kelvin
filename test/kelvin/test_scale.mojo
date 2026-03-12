@@ -1,8 +1,8 @@
 from kelvin import *
-from testing import assert_equal, TestSuite
+from std.testing import assert_equal, TestSuite
 
 
-def test_add():
+def test_add() raises:
     assert_equal(
         String(Scale[2.0 / 3.0]() + Scale[1.0 / 3.0]()),
         String(Scale[1.0 / 1.0]()),
@@ -27,7 +27,7 @@ def test_add():
     )
 
 
-def test_multiply():
+def test_multiply() raises:
     assert_equal(
         String(Scale[2.0 / 3.0]() * Scale[1.0 / 3.0]()),
         String(Scale[2.0 / 9.0]()),
@@ -46,5 +46,5 @@ def test_multiply():
     )
 
 
-def main():
+def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()

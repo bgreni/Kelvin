@@ -1,10 +1,10 @@
 from kelvin import *
-from testing import *
+from std.testing import *
 
 # AUTOMATICALLY GENERATED TESTS, DO NOT EDIT
 
 
-def test_ctor():
+def test_ctor() raises:
     var a = Kilogram(10)
     assert_equal(a.value(), 10.0)
     assert_equal(a.DT, DType.float64)
@@ -23,51 +23,51 @@ def test_ctor():
     assert_equal(c[0], 10)
 
 
-def test_add():
+def test_add() raises:
     assert_equal(Kilogram(10) + Kilogram(5), Kilogram(15))
     var s = Kilogram(30)
     s += Kilogram(20)
     assert_equal(s, Kilogram(50))
 
 
-def test_sub():
+def test_sub() raises:
     assert_equal(Kilogram(10) - Kilogram(5), Kilogram(5))
     var s = Kilogram(30)
     s -= Kilogram(20)
     assert_equal(s, Kilogram(10))
 
 
-def test_div():
+def test_div() raises:
     var a = Kilogram(20) / Kilogram(10)
     assert_equal(a.value(), 2.0)
     assert_equal(String(a), "2.0")
 
 
-def test_floordiv():
+def test_floordiv() raises:
     var a = Kilogram(5) // Kilogram(2)
     assert_equal(a.value(), 2.0)
 
 
-# def test_ceildiv():
+# def test_ceildiv() raises:
 # var a = Kilogram(5).__ceildiv__(Kilogram(2))
 # assert_equal(a.value(), 3.0)
 
 
-def test_mul():
+def test_mul() raises:
     var a = Kilogram(20) * Kilogram(2)
     assert_equal(a.value(), 40.0)
 
 
-def test_str():
+def test_str() raises:
     assert_equal(String(Kilogram(10)), "10.0 kg^1")
 
 
-def test_eq():
+def test_eq() raises:
     assert_equal(Kilogram(10), Kilogram(10))
     assert_not_equal(Kilogram(10), Kilogram(20))
 
 
-def test_scalar_arithmetic():
+def test_scalar_arithmetic() raises:
     var a = Kilogram(10)
     assert_equal(a * 5, Kilogram(50))
     a *= 5
@@ -81,7 +81,7 @@ def test_scalar_arithmetic():
     assert_equal(20 / a, Quantity[-Kilogram.D](2))
 
 
-def test_bool():
+def test_bool() raises:
     assert_true(Bool(Kilogram(10)))
     assert_false(Bool(Kilogram(0)))
 
@@ -92,7 +92,7 @@ def test_bool():
         assert_true(False)
 
 
-def test_compare():
+def test_compare() raises:
     assert_true(Kilogram(10) == Kilogram(10))
     assert_true(Kilogram(10) < Kilogram(20))
     assert_true(Kilogram(20) > Kilogram(10))
@@ -111,7 +111,7 @@ def test_compare():
     assert_equal(T(1, 2, 3, 4).ge(T(1, 4, 5, 2)), B(True, False, False, True))
 
 
-def test_simd():
+def test_simd() raises:
     comptime Vec = SIMD[DType.int64, 4]
     comptime S = Kilogram[DType.int64, 4]
 
@@ -122,48 +122,48 @@ def test_simd():
     assert_false(S(Vec(0, 0, 0, 0)))
 
 
-def test_contains():
+def test_contains() raises:
     comptime V = Kilogram[Width=4]
     assert_true(10 in V(1, 10, 2, 4))
     assert_false(20 in V(1, 2, 3, 4))
 
 
-def test_abs():
+def test_abs() raises:
     assert_equal(abs(Kilogram(-10)), Kilogram(10))
 
 
-def test_trunc():
+def test_trunc() raises:
     assert_equal(trunc(Kilogram(10.231)), Kilogram(10))
 
 
-def test_ceil():
+def test_ceil() raises:
     assert_equal(ceil(Kilogram(10.231)), Kilogram(11))
 
 
-def test_floor():
+def test_floor() raises:
     assert_equal(floor(Kilogram(10.531)), Kilogram(10))
 
 
-def test_round():
+def test_round() raises:
     assert_equal(round(Kilogram(10.2)), Kilogram(10))
     assert_equal(round(Kilogram(10.23452), 1), Kilogram(10.2))
 
 
-def test_len():
+def test_len() raises:
     assert_equal(len(Kilogram[Width=4](1, 2, 3, 4)), 4)
 
 
-def test_intable():
+def test_intable() raises:
     assert_equal(Int(Kilogram(10.23)), 10)
 
 
-def test_floatable():
+def test_floatable() raises:
     assert_equal(Float64(Kilogram(10.23)), 10.23)
 
 
-def test_neg():
+def test_neg() raises:
     assert_equal(-Kilogram(10), Kilogram(-10))
 
 
-def main():
+def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()

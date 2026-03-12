@@ -1,11 +1,11 @@
 
 template = \
 """from kelvin import *
-from testing import *
+from std.testing import *
 
 # AUTOMATICALLY GENERATED TESTS, DO NOT EDIT
 
-def test_ctor():
+def test_ctor() raises:
     var a = {0}(10)
     assert_equal(a.value(), 10.0)
     assert_equal(a.DT, DType.float64)
@@ -24,44 +24,44 @@ def test_ctor():
     assert_equal(c[0], 10)
 
 
-def test_add():
+def test_add() raises:
     assert_equal({0}(10) + {0}(5), {0}(15))
     var s = {0}(30)
     s += {0}(20)
     assert_equal(s, {0}(50))
 
 
-def test_sub():
+def test_sub() raises:
     assert_equal({0}(10) - {0}(5), {0}(5))
     var s = {0}(30)
     s -= {0}(20)
     assert_equal(s, {0}(10))
 
-def test_div():
+def test_div() raises:
     var a = {0}(20) / {0}(10)
     assert_equal(a.value(), 2.0)
     assert_equal(String(a), '2.0')
 
-def test_floordiv():
+def test_floordiv() raises:
     var a = {0}(5) // {0}(2)
     assert_equal(a.value(), 2.0)
 
-#def test_ceildiv():
+#def test_ceildiv() raises:
     #var a = {0}(5).__ceildiv__({0}(2))
     #assert_equal(a.value(), 3.0)
 
-def test_mul():
+def test_mul() raises:
     var a = {0}(20) * {0}(2)
     assert_equal(a.value(), 40.0)
 
-def test_str():
+def test_str() raises:
     assert_equal(String({0}(10)), "10.0 {1}")
 
-def test_eq():
+def test_eq() raises:
     assert_equal({0}(10), {0}(10))
     assert_not_equal({0}(10), {0}(20))
 
-def test_scalar_arithmetic():
+def test_scalar_arithmetic() raises:
     var a = {0}(10)
     assert_equal(a * 5, {0}(50))
     a *= 5
@@ -74,7 +74,7 @@ def test_scalar_arithmetic():
     assert_equal(5 * a, {0}(50))
     assert_equal(20 / a, Quantity[-{0}.D](2))
 
-def test_bool():
+def test_bool() raises:
     assert_true(Bool({0}(10)))
     assert_false(Bool({0}(0)))
 
@@ -84,7 +84,7 @@ def test_bool():
     if {0}(0):
         assert_true(False)
 
-def test_compare():
+def test_compare() raises:
     assert_true({0}(10) == {0}(10))
     assert_true({0}(10) < {0}(20))
     assert_true({0}(20) > {0}(10))
@@ -102,7 +102,7 @@ def test_compare():
     assert_equal(T(1, 2, 3, 4).gt(T(1, 4, 5, 2)), B(False, False, False, True))
     assert_equal(T(1, 2, 3, 4).ge(T(1, 4, 5, 2)), B(True, False, False, True))
 
-def test_simd():
+def test_simd() raises:
     comptime Vec = SIMD[DType.int64, 4]
     comptime S = {0}[DType.int64, 4]
 
@@ -112,43 +112,43 @@ def test_simd():
     assert_true(S(Vec(1, 2, 3, 4)))
     assert_false(S(Vec(0, 0, 0, 0)))
 
-def test_contains():
+def test_contains() raises:
     comptime V = {0}[Width=4]
     assert_true(10 in V(1, 10, 2, 4))
     assert_false(20 in V(1, 2, 3, 4))
 
-def test_abs():
+def test_abs() raises:
     assert_equal(abs({0}(-10)), {0}(10))
 
-def test_trunc():
+def test_trunc() raises:
     assert_equal(trunc({0}(10.231)), {0}(10))
 
-def test_ceil():
+def test_ceil() raises:
     assert_equal(ceil({0}(10.231)), {0}(11))
 
-def test_floor():
+def test_floor() raises:
     assert_equal(floor({0}(10.531)), {0}(10))
 
-def test_round():
+def test_round() raises:
     assert_equal(round({0}(10.2)), {0}(10))
     assert_equal(round({0}(10.23452), 1), {0}(10.2))
 
-def test_len():
+def test_len() raises:
     assert_equal(len({0}[Width=4](1, 2, 3, 4)), 4)
 
-def test_intable():
+def test_intable() raises:
     assert_equal(Int({0}(10.23)), 10)
 
-def test_floatable():
+def test_floatable() raises:
     assert_equal(Float64({0}(10.23)), 10.23)
 
-def test_neg():
+def test_neg() raises:
     assert_equal(-{0}(10), {0}(-10))
 """
 
 cast_test_template = \
 """
-def test_cast():
+def test_cast() raises:
     var a = {0}(cast_from={1}(10))
     assert_equal(a.value(), {2})
 """
@@ -240,7 +240,7 @@ if __name__ == '__main__':
                 f.write('\n' + s)
             
             f.write("""
-def main():
+def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()""")
 
 

@@ -39,66 +39,66 @@ struct Scale[value: FloatLiteral](
     comptime Invalid = Scale[0]()
 
     @always_inline("builtin")
-    fn __init__(out self):
+    def __init__(out self):
         pass
 
     @always_inline("builtin")
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         return self != Scale.Invalid
 
     @always_inline("builtin")
-    fn __eq__(self, other: Scale) -> Bool:
+    def __eq__(self, other: Scale) -> Bool:
         return Self.value == other.value
 
     @always_inline("builtin")
-    fn __ne__(self, other: Scale) -> Bool:
+    def __ne__(self, other: Scale) -> Bool:
         return not self == other
 
     @always_inline
-    fn __gt__(self, other: Scale) -> Bool:
+    def __gt__(self, other: Scale) -> Bool:
         return Self.value > other.value
 
     @always_inline
-    fn __lt__(self, other: Scale) -> Bool:
+    def __lt__(self, other: Scale) -> Bool:
         return other > self
 
     @always_inline
-    fn __ge__(self, other: Scale) -> Bool:
+    def __ge__(self, other: Scale) -> Bool:
         return Self.value >= other.value
 
     @always_inline
-    fn __le__(self, other: Scale) -> Bool:
+    def __le__(self, other: Scale) -> Bool:
         return other >= self
 
     @always_inline("builtin")
-    fn __add__(self, other: Scale) -> Scale[Self.value + other.value]:
+    def __add__(self, other: Scale) -> Scale[Self.value + other.value]:
         return {}
 
     @always_inline("builtin")
-    fn __mul__(self, other: Scale) -> Scale[Self.value * other.value]:
+    def __mul__(self, other: Scale) -> Scale[Self.value * other.value]:
         return {}
 
     @always_inline
-    fn __mul__(self, other: Scalar) -> Scalar[other.dtype]:
+    def __mul__(self, other: Scalar) -> Scalar[other.dtype]:
         comptime assert other.dtype.is_floating_point()
         return other * Self.value
 
     @always_inline
-    fn __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
+    def __rmul__(self, other: Scalar) -> Scalar[other.dtype]:
         comptime assert other.dtype.is_floating_point()
         return other * Self.value
 
     @always_inline("builtin")
-    fn __truediv__(self, other: Scale) -> Scale[Self.value / other.value]:
+    def __truediv__(self, other: Scale) -> Scale[Self.value / other.value]:
         return {}
 
     @always_inline
-    fn __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
+    def __truediv__(self, other: Scalar) -> Scalar[other.dtype]:
         comptime assert other.dtype.is_floating_point()
         return Self.value / other
 
     @always_inline
-    fn __rtruediv__(
+    def __rtruediv__(
         self,
         other: Scalar,
     ) -> Scalar[other.dtype]:
@@ -107,15 +107,15 @@ struct Scale[value: FloatLiteral](
 
     # TODO: ? stdlib doesn't have FloatLiteral**FloatLiteral implemented yet
     # @always_inline
-    # fn __pow__(self, p: FloatLiteral, out res: Scale[value**p]):
+    # def __pow__(self, p: FloatLiteral, out res: Scale[value**p]):
     #     return type_of(res)()
 
     # TODO: ? is this even defined?
     # @always_inline("builtin")
-    # fn __or__(self, other: Scale, out res: Scale[max(value, type_of(other).value)]):
+    # def __or__(self, other: Scale, out res: Scale[max(value, type_of(other).value)]):
     #     __comptime_assert value == 0 or other.value == 0
     #     return type_of(res)()
 
     @always_inline
-    fn write_to(self, mut writer: Some[Writer]):
+    def write_to(self, mut writer: Some[Writer]):
         writer.write(Self.value)

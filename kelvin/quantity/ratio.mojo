@@ -27,11 +27,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     comptime Invalid = Ratio[0, 0]()
 
     @always_inline("builtin")
-    fn __init__(out self):
+    def __init__(out self):
         pass
 
     @always_inline("builtin")
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         """Returns True if the ratio is valid (non-zero denominator).
 
         Returns:
@@ -40,7 +40,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return self != Ratio.Invalid
 
     @always_inline("builtin")
-    fn __eq__(self, other: Ratio) -> Bool:
+    def __eq__(self, other: Ratio) -> Bool:
         """Check if two ratios are equal.
 
         Args:
@@ -58,7 +58,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         )
 
     @always_inline("builtin")
-    fn __ne__(self, other: Ratio) -> Bool:
+    def __ne__(self, other: Ratio) -> Bool:
         """Check if two ratios are not equal.
 
         Args:
@@ -70,7 +70,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return not self == other
 
     @always_inline("builtin")
-    fn __gt__(self, other: Ratio) -> Bool:
+    def __gt__(self, other: Ratio) -> Bool:
         """Check if self is greater than other.
 
         Args:
@@ -82,7 +82,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return Self.N * other.D > Self.D * other.N
 
     @always_inline("builtin")
-    fn __lt__(self, other: Ratio) -> Bool:
+    def __lt__(self, other: Ratio) -> Bool:
         """Check if self is less than other.
 
         Args:
@@ -94,7 +94,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return other > self
 
     @always_inline("builtin")
-    fn __ge__(self, other: Ratio) -> Bool:
+    def __ge__(self, other: Ratio) -> Bool:
         """Check if self is greater than or equal to other.
 
         Args:
@@ -106,7 +106,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return Self.N * other.D >= Self.D * other.N
 
     @always_inline("builtin")
-    fn __le__(self, other: Ratio) -> Bool:
+    def __le__(self, other: Ratio) -> Bool:
         """Check if self is less than or equal to other.
 
         Args:
@@ -118,7 +118,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return other >= self
 
     @always_inline("builtin")
-    fn __add__(
+    def __add__(
         self, other: Ratio
     ) -> Ratio[
         max[Self.N * other.D + other.N * Self.D, Self.N + other.N](),
@@ -137,7 +137,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline
-    fn __mul__(self, other: SIMD) -> type_of(other):
+    def __mul__(self, other: SIMD) -> type_of(other):
         """Multiply the ratio by a scalar.
 
         Args:
@@ -149,7 +149,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return (other * Self.N) / Self.D
 
     @always_inline
-    fn __rmul__(self, other: SIMD) -> type_of(other):
+    def __rmul__(self, other: SIMD) -> type_of(other):
         """Multiply a scalar by the ratio.
 
         Args:
@@ -161,7 +161,9 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return self.__mul__(other)
 
     @always_inline("builtin")
-    fn __mul__(self, other: Ratio) -> Ratio[Self.N * other.N, Self.D * other.D]:
+    def __mul__(
+        self, other: Ratio
+    ) -> Ratio[Self.N * other.N, Self.D * other.D]:
         """Multiply two ratios.
 
         Args:
@@ -173,7 +175,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline("builtin")
-    fn __truediv__(
+    def __truediv__(
         self, other: Ratio
     ) -> Ratio[Self.N * other.D, Self.D * other.N]:
         """Divide two ratios.
@@ -187,7 +189,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline
-    fn __truediv__(self, other: SIMD) -> type_of(other):
+    def __truediv__(self, other: SIMD) -> type_of(other):
         """Divide the ratio by a scalar.
 
         Args:
@@ -199,7 +201,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return Self.N / (other * Self.D)
 
     @always_inline
-    fn __rtruediv__(self, other: SIMD) -> type_of(other):
+    def __rtruediv__(self, other: SIMD) -> type_of(other):
         """Divide a scalar by the ratio.
 
         Args:
@@ -212,7 +214,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
 
     # TODO: Not sure why this doesn't work
     # @always_inline
-    # fn __pow__(
+    # def __pow__(
     #     self,
     #     p: IntLiteral,
     #     out res: Ratio[
@@ -223,7 +225,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     #     return type_of(res)()
 
     @always_inline("builtin")
-    fn __or__(self, other: Ratio) -> Ratio[Self.N | other.N, Self.D | other.D]:
+    def __or__(self, other: Ratio) -> Ratio[Self.N | other.N, Self.D | other.D]:
         """Compute the bitwise OR of two ratios.
 
         Args:
@@ -235,7 +237,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline("builtin")
-    fn inverse(self) -> Ratio[Self.D, Self.N]:
+    def inverse(self) -> Ratio[Self.D, Self.N]:
         """Invert the ratio (swap numerator and denominator).
 
         Returns:
@@ -244,7 +246,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline("builtin")
-    fn simplify(self) -> Ratio[Self.N // Self._GCD, Self.D // Self._GCD]:
+    def simplify(self) -> Ratio[Self.N // Self._GCD, Self.D // Self._GCD]:
         """Simplify the ratio by dividing by the GCD.
 
         Returns:
@@ -253,7 +255,7 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         return {}
 
     @always_inline
-    fn write_to(self, mut writer: Some[Writer]):
+    def write_to(self, mut writer: Some[Writer]):
         """Write the ratio to a writer.
 
         Args:
@@ -270,7 +272,7 @@ comptime _pop_int_literal = __mlir_type.`!pop.int_literal`
 
 
 @always_inline("nodebug")
-fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
+def _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
     comptime a_ = IntLiteral[a]()
     comptime b_ = IntLiteral[b]()
 
@@ -281,24 +283,24 @@ fn _gcd[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
 
 
 @always_inline("nodebug")
-fn gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_gcd[a.value, b.value]()]:
+def gcd[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_gcd[a.value, b.value]()]:
     return {}
 
 
 @always_inline("builtin")
-fn _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
+def _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
     comptime a_ = IntLiteral[a]()
     comptime b_ = IntLiteral[b]()
     return select(a_ > b_, a, b)
 
 
 @always_inline("builtin")
-fn max[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_max[a.value, b.value]()]:
+def max[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_max[a.value, b.value]()]:
     return {}
 
 
 @always_inline("nodebug")
-fn _pow[
+def _pow[
     x: _pop_int_literal, n: _pop_int_literal, acc: _pop_int_literal
 ]() -> _pop_int_literal:
     comptime x_ = IntLiteral[x]()
@@ -313,21 +315,21 @@ fn _pow[
 
 
 @always_inline("nodebug")
-fn pow[
+def pow[
     x: IntLiteral, n: IntLiteral
 ]() -> IntLiteral[_pow[x.value, n.value, (1).value]()]:
     return {}
 
 
 @always_inline("builtin")
-fn ternary[
+def ternary[
     a: IntLiteral, b: IntLiteral, cond: Bool
 ]() -> IntLiteral[_ternary[a.value, b.value, cond]()]:
     return {}
 
 
 @always_inline("builtin")
-fn _ternary[
+def _ternary[
     a: _pop_int_literal, b: _pop_int_literal, cond: Bool
 ]() -> _pop_int_literal:
     return select(cond, a, b)

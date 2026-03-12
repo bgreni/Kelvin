@@ -28,11 +28,11 @@ struct Angle[R: Ratio, suffix: Suffix](
     comptime Invalid = Angle[Ratio.Invalid, ""]()
 
     @always_inline("builtin")
-    fn __init__(out self):
+    def __init__(out self):
         pass
 
     @always_inline("builtin")
-    fn __eq__(self, other: Angle) -> Bool:
+    def __eq__(self, other: Angle) -> Bool:
         """Returns True if the angles are equal.
 
         Args:
@@ -44,7 +44,7 @@ struct Angle[R: Ratio, suffix: Suffix](
         return Self.R == other.R
 
     @always_inline("builtin")
-    fn __ne__(self, other: Angle) -> Bool:
+    def __ne__(self, other: Angle) -> Bool:
         """Returns True if the angles are not equal.
 
         Args:
@@ -56,7 +56,7 @@ struct Angle[R: Ratio, suffix: Suffix](
         return not self == other
 
     @always_inline("builtin")
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         """Returns True if the angle is not zero.
 
         Returns:
@@ -65,7 +65,7 @@ struct Angle[R: Ratio, suffix: Suffix](
         return Self.R.__bool__()
 
     @always_inline("builtin")
-    fn pick_non_null(
+    def pick_non_null(
         self, other: Angle
     ) -> Angle[Self.R | other.R, Self.suffix or other.suffix]:
         """Returns the non-null angle between self and other.
@@ -79,7 +79,7 @@ struct Angle[R: Ratio, suffix: Suffix](
         return {}
 
     @always_inline
-    fn write_to(self, mut writer: Some[Writer]):
+    def write_to(self, mut writer: Some[Writer]):
         """Write the angle to a writer.
 
         Args:
@@ -103,11 +103,11 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
     comptime Invalid = Dimension[0, Ratio.Invalid, ""]()
 
     @always_inline("builtin")
-    fn __init__(out self):
+    def __init__(out self):
         pass
 
     @always_inline("builtin")
-    fn __eq__(self, other: Dimension) -> Bool:
+    def __eq__(self, other: Dimension) -> Bool:
         """Returns True if the dimensions are equal.
 
         Args:
@@ -119,7 +119,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return Self.Z == other.Z and Self.R == other.R
 
     @always_inline("builtin")
-    fn __ne__(self, other: Dimension) -> Bool:
+    def __ne__(self, other: Dimension) -> Bool:
         """Returns True if the dimensions are not equal.
 
         Args:
@@ -131,7 +131,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return not self == other
 
     @always_inline("builtin")
-    fn __add__(
+    def __add__(
         self, other: Dimension
     ) -> Dimension[
         Self.Z + other.Z,
@@ -164,7 +164,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return {}
 
     @always_inline("builtin")
-    fn __sub__(
+    def __sub__(
         self, other: Dimension
     ) -> Dimension[
         Self.Z - other.Z,
@@ -197,7 +197,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return {}
 
     @always_inline("builtin")
-    fn __mul__(
+    def __mul__(
         self, m: IntLiteral
     ) -> Dimension[
         Self.Z * type_of(m)(),
@@ -230,7 +230,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return {}
 
     @always_inline("builtin")
-    fn __bool__(self) -> Bool:
+    def __bool__(self) -> Bool:
         """Returns True if the dimension is not zero.
 
         Returns:
@@ -239,7 +239,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return Self.Z != 0
 
     @always_inline("builtin")
-    fn __neg__(self) -> Dimension[-Self.Z, Self.R, Self.suffix]:
+    def __neg__(self) -> Dimension[-Self.Z, Self.R, Self.suffix]:
         """Negate the dimension.
 
         Returns:
@@ -248,7 +248,7 @@ struct Dimension[Z: IntLiteral, R: Ratio, suffix: Suffix](
         return {}
 
     @always_inline
-    fn write_to[W: Writer](self, mut writer: W):
+    def write_to[W: Writer](self, mut writer: W):
         """Write the dimension to a writer.
 
         Args:
@@ -293,11 +293,11 @@ struct Dimensions[
     ]()
 
     @always_inline("builtin")
-    fn __init__(out self):
+    def __init__(out self):
         pass
 
     @always_inline("builtin")
-    fn __eq__(self, O: Dimensions) -> Bool:
+    def __eq__(self, O: Dimensions) -> Bool:
         """Returns True if the dimensions are equal.
 
         Args:
@@ -318,7 +318,7 @@ struct Dimensions[
         )
 
     @always_inline("builtin")
-    fn __ne__(self, O: Dimensions) -> Bool:
+    def __ne__(self, O: Dimensions) -> Bool:
         """Returns True if the dimensions are not equal.
 
         Args:
@@ -330,7 +330,7 @@ struct Dimensions[
         return not self == O
 
     @always_inline("builtin")
-    fn __truediv__(
+    def __truediv__(
         self, other: Dimensions
     ) -> Dimensions[
         Self.L - other.L,
@@ -353,7 +353,7 @@ struct Dimensions[
         return {}
 
     @always_inline("builtin")
-    fn __mul__(
+    def __mul__(
         self, other: Dimensions
     ) -> Dimensions[
         Self.L + other.L,
@@ -376,7 +376,7 @@ struct Dimensions[
         return {}
 
     @always_inline("builtin")
-    fn __pow__(
+    def __pow__(
         self, p: IntLiteral
     ) -> Dimensions[
         type_of(Self.L * p)(),
@@ -399,7 +399,7 @@ struct Dimensions[
         return {}
 
     @always_inline("builtin")
-    fn __neg__(
+    def __neg__(
         self,
     ) -> Dimensions[
         -Self.L,
@@ -418,7 +418,7 @@ struct Dimensions[
         """
         return {}
 
-    fn write_to(self, mut writer: Some[Writer]):
+    def write_to(self, mut writer: Some[Writer]):
         """Write the dimensions to a writer.
 
         Args:
@@ -427,7 +427,7 @@ struct Dimensions[
 
         @parameter
         @always_inline
-        fn write[d: Dimension]():
+        def write[d: Dimension]():
             comptime if d:
                 writer.write(" ", d)
 
@@ -475,24 +475,24 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     comptime Mask = SIMD[DType.bool, Self.Width]
     var _value: Self.ValueType
 
-    @always_inline("nodebug")
-    fn __init__(out self, v: IntLiteral):
+    @always_inline("builtin")
+    def __init__(out self, v: IntLiteral):
         self._value = Self.ValueType(v)
 
     @always_inline("nodebug")
-    fn __init__(out self, v: FloatLiteral):
+    def __init__(out self, v: FloatLiteral):
         self._value = Self.ValueType(v)
 
     @always_inline("builtin")
-    fn __init__(out self, v: Self.ValueType):
+    def __init__(out self, v: Self.ValueType):
         self._value = v
 
     @always_inline("builtin")
-    fn __init__(out self):
+    def __init__(out self):
         self._value = 0
 
     @always_inline
-    fn __init__(out self, *elems: Self.ScalarT, __list_literal__: () = ()):
+    def __init__(out self, *elems: Self.ScalarT, __list_literal__: () = ()):
         self._value = Self.ValueType()
         debug_assert(
             len(elems) == Self.Width,
@@ -503,17 +503,17 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
     @always_inline("builtin")
     @implicit
-    fn __init__(
-        out self, other: Quantity[DT = Self.DT, Width = Self.Width]
-    ) where Self.D == other.D:
+    def __init__[
+        OD: Dimensions, //
+    ](out self, other: Quantity[OD, Self.DT, Self.Width]) where Self.D == OD:
         """This exists to give a more helpful error message when one tries to use the
         wrong type implicitly.
         """
         self._value = other._value
 
-    fn __init__(
-        out self, *, cast_from: Quantity[DT = Self.DT, Width = Self.Width]
-    ):
+    def __init__[
+        OD: Dimensions, //
+    ](out self, *, cast_from: Quantity[OD, Self.DT, Self.Width]):
         """Cast the value from the incoming quanitity into this quantity.
         Both quantities must live in the same dimensional space (eg. velocity in, velocity out).
 
@@ -522,8 +522,6 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         _dimension_space_check[Self.D, cast_from.D]()
         var val = cast_from.value()
-
-        comptime OD = cast_from.D
 
         # Calculate the difference between the ratios on each dimension
         comptime LR = OD.L.R / Self.D.L.R
@@ -549,7 +547,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         self._value = val
 
     @always_inline("builtin")
-    fn value(self) -> Self.ValueType:
+    def value(self) -> Self.ValueType:
         """
         Returns:
             the value of the quantity.
@@ -557,7 +555,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return self._value
 
     @always_inline
-    fn __getitem__(self, ind: Some[Indexer]) -> Self.ScalarT:
+    def __getitem__(self, ind: Some[Indexer]) -> Self.ScalarT:
         """Get the scalar value at the given index.
 
         Args:
@@ -569,7 +567,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return self._value[Int(index(ind))]
 
     @always_inline
-    fn __setitem__(mut self, ind: Some[Indexer], val: Self.ScalarT):
+    def __setitem__(mut self, ind: Some[Indexer], val: Self.ScalarT):
         """Set the scalar value at the given index.
 
         Args:
@@ -582,12 +580,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     # Quantity operations
     # ===------------------------------------------------------------------=== #
 
-    @always_inline
-    fn __truediv__[
+    @always_inline("builtin")
+    def __truediv__[
         OD: Dimensions, //
     ](self, other: Quantity[OD, Self.DT, Self.Width]) -> Quantity[
         Self.D / OD, Self.DT, Self.Width
-    ]:
+    ] where _dimension_scale_check[Self.D, OD]():
         """Divide on quantity by another.
         Output dimensions are the difference of the inputs.
 
@@ -602,13 +600,14 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The quotient of self / other.
         """
-        _dimension_scale_check[Self.D, OD]()
         return {self._value / other._value}
 
     @always_inline
-    fn __floordiv__[
+    def __floordiv__[
         OD: Dimensions, //
-    ](self, other: Quantity[OD, Self.DT, Self.Width]) -> type_of(self / other):
+    ](self, other: Quantity[OD, Self.DT, Self.Width]) -> Quantity[
+        Self.D / OD, Self.DT, Self.Width
+    ] where _dimension_scale_check[Self.D, OD]():
         """Divide on quantity by another. Rounded down to the nearest integer.
         Output dimensions are the difference of the inputs.
 
@@ -623,12 +622,11 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The quotient of self // other.
         """
-        _dimension_scale_check[Self.D, OD]()
         return {self._value // other._value}
 
     # Doesn't work with the CeilDivable trait yet
     # @always_inline
-    # fn __ceildiv__[
+    # def __ceildiv__[
     #     OD: Dimensions, //
     # ](self, denominator: Quantity[OD, Self.DT, Self.Width]) -> type_of(
     #     self / denominator
@@ -636,12 +634,12 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     #     _dimension_scale_check[Self.D, OD]()
     #     return {ceildiv(self._value, denominator._value)}
 
-    @always_inline
-    fn __mul__[
+    @always_inline("builtin")
+    def __mul__[
         OD: Dimensions
     ](self, other: Quantity[OD, Self.DT, Self.Width]) -> Quantity[
         Self.D * OD, Self.DT, Self.Width
-    ]:
+    ] where _dimension_scale_check[Self.D, OD]():
         """Compute the product between two quantities
         Output dimensions are the sum of the inputs.
 
@@ -655,11 +653,10 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Returns:
             The product of self * other.
         """
-        _dimension_scale_check[Self.D, OD]()
         return {self._value * other._value}
 
     @always_inline("builtin")
-    fn __add__(self, other: Self) -> Self:
+    def __add__(self, other: Self) -> Self:
         """Compute sum of two quantities.
         Addition is only defined on quantities of matching types.
 
@@ -672,7 +669,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return {self._value + other._value}
 
     @always_inline
-    fn __iadd__(mut self, other: Self):
+    def __iadd__(mut self, other: Self):
         """Compute sum of two quantities in place.
         Addition is only defined on quantities of matching types.
 
@@ -682,7 +679,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         self._value += other._value
 
     @always_inline("builtin")
-    fn __sub__(self, other: Self) -> Self:
+    def __sub__(self, other: Self) -> Self:
         """Compute difference of two quantities.
         Subtraction is only defined on quantities of matching types.
 
@@ -695,7 +692,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return {self._value - other._value}
 
     @always_inline
-    fn __isub__(mut self, other: Self):
+    def __isub__(mut self, other: Self):
         """Compute difference of two quantities in place.
         Subtraction is only defined on quantities of matching types.
 
@@ -708,8 +705,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     # Scalar operations
     # ===------------------------------------------------------------------=== #
 
-    @always_inline
-    fn __truediv__(self, v: Self.ValueType) -> Self:
+    @always_inline("builtin")
+    def __truediv__(self, v: Self.ValueType) -> Self:
         """Divides the value by the given scalar.
 
         Args:
@@ -720,8 +717,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return {self._value / v}
 
-    @always_inline
-    fn __rtruediv__(
+    @always_inline("builtin")
+    def __rtruediv__(
         self, v: Self.ValueType
     ) -> Quantity[-Self.D, Self.DT, Self.Width]:
         """Divides the scalar by the value of self.
@@ -735,7 +732,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return {v / self._value}
 
     @always_inline
-    fn __itruediv__(mut self, v: Self.ValueType):
+    def __itruediv__(mut self, v: Self.ValueType):
         """Divides the value by the given scalar in place.
 
         Args:
@@ -744,7 +741,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         self._value /= v
 
     @always_inline("builtin")
-    fn __mul__(self, v: Self.ValueType) -> Self:
+    def __mul__(self, v: Self.ValueType) -> Self:
         """Multiply the value but a given scalar.
 
         Args:
@@ -756,7 +753,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return {self._value * v}
 
     @always_inline("builtin")
-    fn __rmul__(self, v: Self.ValueType) -> Self:
+    def __rmul__(self, v: Self.ValueType) -> Self:
         """Multiply the value but a given scalar.
 
         Args:
@@ -768,7 +765,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return {v * self._value}
 
     @always_inline
-    fn __imul__(mut self, v: Self.ValueType):
+    def __imul__(mut self, v: Self.ValueType):
         """Multiply the value but a given scalar in place.
 
         Args:
@@ -777,7 +774,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         self._value *= v
 
     @always_inline
-    fn __pow__(
+    def __pow__(
         self, p: IntLiteral
     ) -> Quantity[Self.D ** type_of(p)(), Self.DT, Self.Width]:
         """Compute self ** p.
@@ -794,41 +791,41 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     # Trait implementations
     # ===------------------------------------------------------------------=== #
 
-    @always_inline
-    fn __abs__(self) -> Self:
+    @always_inline("builtin")
+    def __abs__(self) -> Self:
         """The absolute value of the quantity."""
-        return {abs(self._value)}
+        return {self._value.__abs__()}
 
-    @always_inline
-    fn __ceil__(self) -> Self:
+    @always_inline("builtin")
+    def __ceil__(self) -> Self:
         """The value rounded up."""
-        return {ceil(self._value)}
+        return {self._value.__ceil__()}
 
-    @always_inline
-    fn __trunc__(self) -> Self:
+    @always_inline("builtin")
+    def __trunc__(self) -> Self:
         """The value truncated."""
-        return {trunc(self._value)}
+        return {self._value.__trunc__()}
 
-    @always_inline
-    fn __floor__(self) -> Self:
+    @always_inline("builtin")
+    def __floor__(self) -> Self:
         """The value rounded down."""
-        return {floor(self._value)}
+        return {self._value.__floor__()}
 
-    @always_inline
-    fn __round__(self) -> Self:
+    @always_inline("builtin")
+    def __round__(self) -> Self:
         """The value rounded."""
-        return {round(self._value)}
+        return {self._value.__round__()}
 
     @always_inline
-    fn __round__(self, ndigits: Int) -> Self:
+    def __round__(self, ndigits: Int) -> Self:
         """The value rounded to n digits.
         Args:
             ndigits: The number of digits to round to.
         """
         return {round(self._value, ndigits)}
 
-    @always_inline
-    fn __eq__(self, other: Self) -> Bool:
+    @always_inline("builtin")
+    def __eq__(self, other: Self) -> Bool:
         """
         Args:
             other: A quantity of matching type.
@@ -837,8 +834,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value == other._value
 
-    @always_inline
-    fn eq(self, other: Self) -> Self.Mask:
+    @always_inline("builtin")
+    def eq(self, other: Self) -> Self.Mask:
         """Performs an elementwise equality.
 
         Args:
@@ -849,8 +846,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value.eq(other._value)
 
-    @always_inline
-    fn __ne__(self, other: Self) -> Bool:
+    @always_inline("builtin")
+    def __ne__(self, other: Self) -> Bool:
         """
         Args:
             other: A quantity of matching type.
@@ -859,8 +856,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value != other._value
 
-    @always_inline
-    fn ne(self, other: Self) -> Self.Mask:
+    @always_inline("builtin")
+    def ne(self, other: Self) -> Self.Mask:
         """Performs an elementwise not equal.
 
         Args:
@@ -871,8 +868,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value.ne(other._value)
 
-    @always_inline
-    fn __lt__(self, other: Self) -> Bool:
+    @always_inline("builtin")
+    def __lt__(self, other: Self) -> Bool:
         """
         Args:
             other: A quantity of matching type.
@@ -881,8 +878,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value < other._value
 
-    @always_inline
-    fn lt(self, other: Self) -> Self.Mask:
+    @always_inline("builtin")
+    def lt(self, other: Self) -> Self.Mask:
         """Performs an elementwise less than.
 
         Args:
@@ -893,8 +890,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value.lt(other._value)
 
-    @always_inline
-    fn __le__(self, other: Self) -> Bool:
+    @always_inline("builtin")
+    def __le__(self, other: Self) -> Bool:
         """
         Args:
             other: A quantity of matching type.
@@ -903,8 +900,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value <= other._value
 
-    @always_inline
-    fn le(self, other: Self) -> Self.Mask:
+    @always_inline("builtin")
+    def le(self, other: Self) -> Self.Mask:
         """Performs an elementwise less than equal.
 
         Args:
@@ -915,8 +912,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value.le(other._value)
 
-    @always_inline
-    fn __gt__(self, other: Self) -> Bool:
+    @always_inline("builtin")
+    def __gt__(self, other: Self) -> Bool:
         """
         Args:
             other: A quantity of matching type.
@@ -925,8 +922,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value > other._value
 
-    @always_inline
-    fn gt(self, other: Self) -> Self.Mask:
+    @always_inline("builtin")
+    def gt(self, other: Self) -> Self.Mask:
         """Performs an elementwise greater than.
 
         Args:
@@ -937,8 +934,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value.gt(other._value)
 
-    @always_inline
-    fn __ge__(self, other: Self) -> Bool:
+    @always_inline("builtin")
+    def __ge__(self, other: Self) -> Bool:
         """
         Args:
             other: A quantity of matching type.
@@ -947,8 +944,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return self._value >= other._value
 
-    @always_inline
-    fn ge(self, other: Self) -> Self.Mask:
+    @always_inline("builtin")
+    def ge(self, other: Self) -> Self.Mask:
         """Performs an elementwise greater equal.
 
         Args:
@@ -960,7 +957,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return self._value.ge(other._value)
 
     @always_inline
-    fn __contains__(self, value: Self.ScalarT) -> Bool:
+    def __contains__(self, value: Self.ScalarT) -> Bool:
         """Whether the quantitiy vector contains the value.
 
         Args:
@@ -971,17 +968,17 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return value in self._value
 
-    @always_inline
-    fn __bool__(self) -> Bool:
+    @always_inline("builtin")
+    def __bool__(self) -> Bool:
         """Returns True if the quantity is non-zero.
 
         Returns:
             True if quantity is non-zero.
         """
-        return Bool(self._value)
+        return self._value.__bool__()
 
     @always_inline
-    fn __int__(self) -> Int:
+    def __int__(self) -> Int:
         """Returns the integer representation of the value.
 
         Returns:
@@ -990,7 +987,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return Int(self._value)
 
     @always_inline
-    fn __float__(self) -> Float64:
+    def __float__(self) -> Float64:
         """Returns the float representation of the value.
 
         Returns:
@@ -999,7 +996,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         return self._value.__float__()
 
     @always_inline
-    fn __hash__(self, mut hasher: Some[Hasher]):
+    def __hash__(self, mut hasher: Some[Hasher]):
         """Update the hasher with the value.
 
         Args:
@@ -1007,7 +1004,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return hasher.update(self._value)
 
-    fn write_to(self, mut writer: Some[Writer]):
+    def write_to(self, mut writer: Some[Writer]):
         """Writes the representation of the quantity to the given writer.
 
         Args:
@@ -1017,7 +1014,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         writer.write(Self.D)
 
     @always_inline
-    fn __len__(self) -> Int:
+    def __len__(self) -> Int:
         """Returns the SIMD width of the quantity.
 
         Returns:
@@ -1025,8 +1022,8 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         """
         return Self.Width
 
-    @always_inline
-    fn __neg__(self) -> Self:
+    @always_inline("builtin")
+    def __neg__(self) -> Self:
         """Negate the quantity.
 
         Returns:
@@ -1040,7 +1037,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 # ===------------------------------------------------------------------=== #
 
 
-fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
+def _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
     if R == Ratio.Unitary:
         return v
 
@@ -1054,7 +1051,7 @@ fn _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
 
 
 @always_inline("builtin")
-fn _dimension_space_check[L: Dimensions, R: Dimensions]():
+def _dimension_space_check[L: Dimensions, R: Dimensions]():
     comptime assert L.L.Z == R.L.Z
     comptime assert L.M.Z == R.M.Z
     comptime assert L.T.Z == R.T.Z
@@ -1065,18 +1062,20 @@ fn _dimension_space_check[L: Dimensions, R: Dimensions]():
     comptime assert Bool(L.Ang) == Bool(R.Ang)
 
 
-fn _dimension_scale_check[L: Dimensions, R: Dimensions]():
-    fn check[l: Dimension, r: Dimension]():
-        comptime if l.Z and r.Z:
-            comptime assert l.R == r.R
+@always_inline("builtin")
+def _scale_check[l: Dimension, r: Dimension]() -> Bool:
+    return (l.Z == 0 or r.Z == 0) or (l.R == r.R)
 
-    check[L.L, R.L]()
-    check[L.M, R.M]()
-    check[L.T, R.T]()
-    check[L.EC, R.EC]()
-    check[L.TH, R.TH]()
-    check[L.A, R.A]()
-    check[L.CD, R.CD]()
 
-    comptime if Bool(L.Ang) and Bool(R.Ang):
-        comptime assert L.Ang.R == R.Ang.R
+@always_inline("builtin")
+def _dimension_scale_check[L: Dimensions, R: Dimensions]() -> Bool:
+    return (
+        _scale_check[L.L, R.L]()
+        and _scale_check[L.M, R.M]()
+        and _scale_check[L.T, R.T]()
+        and _scale_check[L.EC, R.EC]()
+        and _scale_check[L.TH, R.TH]()
+        and _scale_check[L.A, R.A]()
+        and _scale_check[L.CD, R.CD]()
+        and ((not L.Ang or not R.Ang) or (L.Ang.R == R.Ang.R))
+    )
