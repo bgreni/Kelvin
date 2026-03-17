@@ -65,5 +65,17 @@ def test_zerod_dimension() raises:
     _ = b
 
 
+def test_to_conversion() raises:
+    assert_equal(Kilometer(5).to[Meter.D](), Meter(5000))
+    assert_equal(Meter(1000).to[Kilometer.D](), Kilometer(1))
+    assert_equal(Minute(10).to[Second.D](), Second(600))
+
+
+def test_ratio_ge_invalid() raises:
+    assert_true(Ratio.Invalid >= Ratio.Invalid)
+    assert_false(Ratio.Invalid >= Ratio[1, 2]())
+    assert_false(Ratio[1, 2]() >= Ratio.Invalid)
+
+
 def main() raises:
     TestSuite.discover_tests[__functions_in_module()]().run()

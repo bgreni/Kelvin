@@ -1,0 +1,174 @@
+from kelvin import *
+from std.testing import *
+
+# AUTOMATICALLY GENERATED TESTS, DO NOT EDIT
+
+
+def test_ctor() raises:
+    var a = Millisecond(10)
+    assert_equal(a.value(), 10.0)
+    assert_equal(a.DT, DType.float64)
+
+    var b = Millisecond[DType.int64](10)
+    assert_equal(b.value(), 10)
+    assert_equal(b.DT, DType.int64)
+
+    var c: Millisecond[Width=4] = [1, 2, 3, 4]
+    var d = Millisecond[Width=4](1, 2, 3, 4)
+    assert_equal(c, d)
+    for i in range(4):
+        assert_equal(c[i], i + 1)
+
+    c[0] = 10
+    assert_equal(c[0], 10)
+
+
+def test_add() raises:
+    assert_equal(Millisecond(10) + Millisecond(5), Millisecond(15))
+    var s = Millisecond(30)
+    s += Millisecond(20)
+    assert_equal(s, Millisecond(50))
+
+
+def test_sub() raises:
+    assert_equal(Millisecond(10) - Millisecond(5), Millisecond(5))
+    var s = Millisecond(30)
+    s -= Millisecond(20)
+    assert_equal(s, Millisecond(10))
+
+
+def test_div() raises:
+    var a = Millisecond(20) / Millisecond(10)
+    assert_equal(a.value(), 2.0)
+    assert_equal(String(a), "2.0")
+
+
+def test_floordiv() raises:
+    var a = Millisecond(5) // Millisecond(2)
+    assert_equal(a.value(), 2.0)
+
+
+# def test_ceildiv() raises:
+# var a = Millisecond(5).__ceildiv__(Millisecond(2))
+# assert_equal(a.value(), 3.0)
+
+
+def test_mul() raises:
+    var a = Millisecond(20) * Millisecond(2)
+    assert_equal(a.value(), 40.0)
+
+
+def test_str() raises:
+    assert_equal(String(Millisecond(10)), "10.0 ms^1")
+
+
+def test_eq() raises:
+    assert_equal(Millisecond(10), Millisecond(10))
+    assert_not_equal(Millisecond(10), Millisecond(20))
+
+
+def test_scalar_arithmetic() raises:
+    var a = Millisecond(10)
+    assert_equal(a * 5, Millisecond(50))
+    a *= 5
+    assert_equal(a, Millisecond(50))
+    assert_equal(a / 5, Millisecond(10))
+    a /= 5
+    assert_equal(a, Millisecond(10))
+
+    a = Millisecond(10)
+    assert_equal(5 * a, Millisecond(50))
+    assert_equal(20 / a, Quantity[-Millisecond.D](2))
+
+
+def test_bool() raises:
+    assert_true(Bool(Millisecond(10)))
+    assert_false(Bool(Millisecond(0)))
+
+    if not Millisecond(10):
+        assert_true(False)
+
+    if Millisecond(0):
+        assert_true(False)
+
+
+def test_compare() raises:
+    assert_true(Millisecond(10) == Millisecond(10))
+    assert_true(Millisecond(10) < Millisecond(20))
+    assert_true(Millisecond(20) > Millisecond(10))
+    assert_true(Millisecond(10) <= Millisecond(10))
+    assert_true(Millisecond(10) <= Millisecond(20))
+    assert_true(Millisecond(10) >= Millisecond(10))
+    assert_true(Millisecond(20) >= Millisecond(10))
+
+    comptime T = Millisecond[Width=4]
+    comptime B = SIMD[DType.bool, 4]
+    assert_equal(T(1, 2, 3, 4).eq(T(1, 4, 3, 12)), B(True, False, True, False))
+    assert_equal(T(1, 2, 3, 4).ne(T(4, 3, 3, 1)), B(True, True, False, True))
+    assert_equal(T(1, 2, 3, 4).lt(T(1, 4, 5, 2)), B(False, True, True, False))
+    assert_equal(T(1, 2, 3, 4).le(T(1, 4, 5, 2)), B(True, True, True, False))
+    assert_equal(T(1, 2, 3, 4).gt(T(1, 4, 5, 2)), B(False, False, False, True))
+    assert_equal(T(1, 2, 3, 4).ge(T(1, 4, 5, 2)), B(True, False, False, True))
+
+
+def test_simd() raises:
+    comptime Vec = SIMD[DType.int64, 4]
+    comptime S = Millisecond[DType.int64, 4]
+
+    assert_equal(S(Vec(1, 2, 3, 4)), S(Vec(1, 2, 3, 4)))
+    assert_equal(S(Vec(1, 2, 3, 4)) * 3, S(Vec(3, 6, 9, 12)))
+    assert_equal(S(Vec(1, 2, 3, 4)) + S(Vec(1, 2, 3, 4)), S(Vec(2, 4, 6, 8)))
+    assert_true(S(Vec(1, 2, 3, 4)))
+    assert_false(S(Vec(0, 0, 0, 0)))
+
+
+def test_contains() raises:
+    comptime V = Millisecond[Width=4]
+    assert_true(10 in V(1, 10, 2, 4))
+    assert_false(20 in V(1, 2, 3, 4))
+
+
+def test_abs() raises:
+    assert_equal(abs(Millisecond(-10)), Millisecond(10))
+
+
+def test_trunc() raises:
+    assert_equal(trunc(Millisecond(10.231)), Millisecond(10))
+
+
+def test_ceil() raises:
+    assert_equal(ceil(Millisecond(10.231)), Millisecond(11))
+
+
+def test_floor() raises:
+    assert_equal(floor(Millisecond(10.531)), Millisecond(10))
+
+
+def test_round() raises:
+    assert_equal(round(Millisecond(10.2)), Millisecond(10))
+    assert_equal(round(Millisecond(10.23452), 1), Millisecond(10.2))
+
+
+def test_len() raises:
+    assert_equal(len(Millisecond[Width=4](1, 2, 3, 4)), 4)
+
+
+def test_intable() raises:
+    assert_equal(Int(Millisecond(10.23)), 10)
+
+
+def test_floatable() raises:
+    assert_equal(Float64(Millisecond(10.23)), 10.23)
+
+
+def test_neg() raises:
+    assert_equal(-Millisecond(10), Millisecond(-10))
+
+
+def test_cast() raises:
+    var a = Millisecond(cast_from=Second(10))
+    assert_equal(a.value(), 10000)
+
+
+def main() raises:
+    TestSuite.discover_tests[__functions_in_module()]().run()

@@ -1,4 +1,5 @@
 from std.utils._select import _select_register_value as select
+from std.hashlib.hasher import Hasher
 
 
 struct Ratio[N: IntLiteral, D: IntLiteral](
@@ -8,17 +9,17 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
     of a particular unit.
     """
 
-    comptime Nano = Ratio[1, pow[10, 9]()]()
-    comptime Micro = Ratio[1, pow[10, 6]()]()
-    comptime Milli = Ratio[1, pow[10, 3]()]()
+    comptime Nano = Ratio[1, 1000000000]()
+    comptime Micro = Ratio[1, 1000000]()
+    comptime Milli = Ratio[1, 1000]()
     comptime Centi = Ratio[1, 100]()
     comptime Deci = Ratio[1, 10]()
     comptime Unitary = Ratio[1, 1]()
     comptime Deca = Ratio[10, 1]()
     comptime Hecto = Ratio[100, 1]()
-    comptime Kilo = Ratio[pow[10, 3](), 1]()
-    comptime Mega = Ratio[pow[10, 6](), 1]()
-    comptime Giga = Ratio[pow[10, 9](), 1]()
+    comptime Kilo = Ratio[1000, 1]()
+    comptime Mega = Ratio[1000000, 1]()
+    comptime Giga = Ratio[1000000000, 1]()
 
     comptime PI = Ratio[355, 113]()
 
@@ -103,7 +104,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         Returns:
             True if self >= other.
         """
-        return Self.N * other.D >= Self.D * other.N
+        return (Self.D == 0 and other.D == 0) or (
+            Self.D != 0
+            and other.D != 0
+            and Self.N * other.D >= Self.D * other.N
+        )
 
     @always_inline("builtin")
     def __le__(self, other: Ratio) -> Bool:
@@ -263,6 +268,20 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
         """
         writer.write(Self.N, "/", Self.D)
 
+    @always_inline
+    def __hash__(self, mut hasher: Some[Hasher]):
+        """Hash the ratio using its normalized (simplified) form.
+
+        Args:
+            hasher: The hasher to update.
+        """
+        comptime if Self.D == 0:
+            hasher.update(Int64(0))
+            hasher.update(Int64(0))
+        else:
+            hasher.update(Int64(Self.N // Self._GCD))
+            hasher.update(Int64(Self.D // Self._GCD))
+
 
 # ===------------------------------------------------------------------=== #
 # Private Helpers
@@ -296,28 +315,6 @@ def _max[a: _pop_int_literal, b: _pop_int_literal]() -> _pop_int_literal:
 
 @always_inline("builtin")
 def max[a: IntLiteral, b: IntLiteral]() -> IntLiteral[_max[a.value, b.value]()]:
-    return {}
-
-
-@always_inline("nodebug")
-def _pow[
-    x: _pop_int_literal, n: _pop_int_literal, acc: _pop_int_literal
-]() -> _pop_int_literal:
-    comptime x_ = IntLiteral[x]()
-    comptime n_ = IntLiteral[n]()
-    comptime acc_ = IntLiteral[acc]()
-    comptime assert n_ >= 0, "Cannot use negative power"
-
-    comptime if n_ == 0:
-        return acc
-    else:
-        return _pow[x, (n_ - 1).value, (acc_ * x_).value]()
-
-
-@always_inline("nodebug")
-def pow[
-    x: IntLiteral, n: IntLiteral
-]() -> IntLiteral[_pow[x.value, n.value, (1).value]()]:
     return {}
 
 

@@ -43,3 +43,31 @@ comptime Hour = Quantity[
     ](),
     ...,
 ]
+
+comptime Millisecond = Quantity[
+    Dimensions[
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension[1, Ratio.Milli, "ms"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    ...,
+]
+
+comptime Microsecond = Quantity[
+    Dimensions[
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension[1, Ratio.Micro, "µs"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    ...,
+]

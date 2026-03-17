@@ -546,6 +546,18 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
         self._value = val
 
+    @always_inline
+    def to[D2: Dimensions](self) -> Quantity[D2, Self.DT, Self.Width]:
+        """Convert this quantity to a different unit in the same dimensional space.
+
+        Parameters:
+            D2: The target dimensions (e.g. Meter.D).
+
+        Returns:
+            The quantity expressed in the target unit.
+        """
+        return Quantity[D2, Self.DT, Self.Width](cast_from=self)
+
     @always_inline("builtin")
     def value(self) -> Self.ValueType:
         """
@@ -631,7 +643,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     # ](self, denominator: Quantity[OD, Self.DT, Self.Width]) -> type_of(
     #     self / denominator
     # ):
-    #     _dimension_scale_check[Self.D, OD]()
+    #     comptime assert _dimension_scale_check[Self.D, OD]()
     #     return {ceildiv(self._value, denominator._value)}
 
     @always_inline("builtin")

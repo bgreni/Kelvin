@@ -43,3 +43,31 @@ comptime Mile = Quantity[
     ](),
     ...,
 ]
+
+comptime Centimeter = Quantity[
+    Dimensions[
+        Dimension[1, Ratio.Centi, "cm"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    ...,
+]
+
+comptime Millimeter = Quantity[
+    Dimensions[
+        Dimension[1, Ratio.Milli, "mm"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    ...,
+]

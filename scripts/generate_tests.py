@@ -227,6 +227,84 @@ if __name__ == '__main__':
             'unit_name': 'Coulomb',
             'str_suffix': 's^1 A^1'
         },
+        {
+            'module_name': 'centimeter',
+            'unit_name': 'Centimeter',
+            'str_suffix': 'cm^1',
+            'cast_test_config': {
+                'other_type': 'Meter',
+                'expected_value': 1000
+            }
+        },
+        {
+            'module_name': 'millimeter',
+            'unit_name': 'Millimeter',
+            'str_suffix': 'mm^1',
+            'cast_test_config': {
+                'other_type': 'Meter',
+                'expected_value': 10000
+            }
+        },
+        {
+            'module_name': 'gram',
+            'unit_name': 'Gram',
+            'str_suffix': 'g^1',
+            'cast_test_config': {
+                'other_type': 'Kilogram',
+                'expected_value': 10000
+            }
+        },
+        {
+            'module_name': 'milligram',
+            'unit_name': 'Milligram',
+            'str_suffix': 'mg^1',
+            'cast_test_config': {
+                'other_type': 'Kilogram',
+                'expected_value': 10000000
+            }
+        },
+        {
+            'module_name': 'millisecond',
+            'unit_name': 'Millisecond',
+            'str_suffix': 'ms^1',
+            'cast_test_config': {
+                'other_type': 'Second',
+                'expected_value': 10000
+            }
+        },
+        {
+            'module_name': 'microsecond',
+            'unit_name': 'Microsecond',
+            'str_suffix': 'µs^1',
+            'cast_test_config': {
+                'other_type': 'Second',
+                'expected_value': 10000000
+            }
+        },
+        {
+            'module_name': 'kilometers_per_hour',
+            'unit_name': 'KilometersPerHour',
+            'str_suffix': 'km^1 h^-1',
+            'cast_test_config': {
+                'other_type': 'MetersPerSecond',
+                'expected_value': 36.0
+            }
+        },
+        {
+            'module_name': 'newton',
+            'unit_name': 'Newton',
+            'str_suffix': 'm^1 kg^1 s^-2'
+        },
+        {
+            'module_name': 'pascal',
+            'unit_name': 'Pascal',
+            'str_suffix': 'm^-1 kg^1 s^-2'
+        },
+        {
+            'module_name': 'watt',
+            'unit_name': 'Watt',
+            'str_suffix': 'm^2 kg^1 s^-3'
+        },
     ]
 
     for config in test_configs:

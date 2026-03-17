@@ -15,3 +15,31 @@ comptime Kilogram = Quantity[
     ](),
     ...,
 ]
+
+comptime Gram = Quantity[
+    Dimensions[
+        Dimension.Invalid,
+        Dimension[1, Ratio.Milli, "g"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    ...,
+]
+
+comptime Milligram = Quantity[
+    Dimensions[
+        Dimension.Invalid,
+        Dimension[1, Ratio.Micro, "mg"](),
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Dimension.Invalid,
+        Angle.Invalid,
+    ](),
+    ...,
+]

@@ -9,6 +9,9 @@ from .luminosity import Candela
 from .time import Second
 from .mass import Kilogram
 from .energy import Joule
+from .temperature import Kelvin
+from .length import Meter
+from .acceleration import MetersPerSecondSquared
 
 # ===------------------------------------------------------------------=== #
 # SI Defining Constants
