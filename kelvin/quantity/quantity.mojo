@@ -494,10 +494,9 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     @always_inline
     def __init__(out self, *elems: Self.ScalarT, __list_literal__: () = ()):
         self._value = Self.ValueType()
-        debug_assert(
-            len(elems) == Self.Width,
-            "Wrong number of elements in variadic constructor",
-        )
+        assert (
+            len(elems) == Self.Width
+        ), "Wrong number of elements in variadic constructor"
         for i in range(len(elems)):
             self._value[i] = elems[i]
 
@@ -1050,7 +1049,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
 
 
 def _scale_value[Z: IntLiteral, R: Ratio](var v: SIMD) -> type_of(v):
-    if R == Ratio.Unitary:
+    comptime if R == Ratio.Unitary:
         return v
 
     comptime if Z > 0:
