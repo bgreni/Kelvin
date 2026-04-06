@@ -3,7 +3,7 @@ authors = ["Brian Grenier <grenierb96@gmail.com>"]
 channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
 name = "Kelvin"
 platforms = ["linux-64", "linux-aarch64", "osx-arm64"]
-version = "0.2.0"
+version = "0.2.2"
 preview = ["pixi-build"]
 
 [tasks]
@@ -20,7 +20,7 @@ test_ctime = "time mojo build -I . ./examples/rocket.mojo && rm rocket"
 
 
 [dependencies]
-mojo = ">=0.26.2.0.dev2026020616,<0.27"
+mojo = ">=0.26.3.0.dev2026040505,<0.27"
 
 [environments]
 default = { solve-group = "default" }
@@ -35,16 +35,16 @@ z3-solver = ">=4.14.1.0, <5"
 
 [package]
 name = "kelvin"
-version = "0.2.0"
+version = "0.2.2"
 
 [package.build]
 backend = { name = "pixi-build-mojo", version = "0.1.*" }
 
 [package.host-dependencies]
-mojo-compiler = ">=0.26.2.0.dev2026020616,<0.27"
+mojo-compiler = ">=0.26.3.0.dev2026040505,<0.27"
 
 [package.build-dependencies]
-mojo-compiler = ">=0.26.2.0.dev2026020616,<0.27"
+mojo-compiler = ">=0.26.3.0.dev2026040505,<0.27"
 
 [package.run-dependencies]
-mojo-compiler = ">=0.26.2.0.dev2026020616,<0.27"
+mojo-compiler = ">=0.26.3.0.dev2026040505,<0.27"
