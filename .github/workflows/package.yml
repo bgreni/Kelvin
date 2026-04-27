@@ -3,6 +3,9 @@ name: Build the package
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   package:
     name: Package
