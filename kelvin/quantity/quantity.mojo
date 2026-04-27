@@ -491,14 +491,19 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
     def __init__(out self):
         self._value = 0
 
-    @always_inline
-    def __init__(out self, *elems: Self.ScalarT, __list_literal__: () = ()):
+    def __init__(
+        out self, var *elems: Self.ScalarT, __list_literal__: NoneType
+    ):
         self._value = Self.ValueType()
         assert (
             len(elems) == Self.Width
         ), "Wrong number of elements in variadic constructor"
         for i in range(len(elems)):
             self._value[i] = elems[i]
+
+    @always_inline
+    def __init__(out self, var *elems: Self.ScalarT):
+        self = self.__init__(*elems^, __list_literal__=None)
 
     @always_inline("builtin")
     @implicit
