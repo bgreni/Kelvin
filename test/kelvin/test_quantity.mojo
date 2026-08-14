@@ -51,7 +51,7 @@ def test_can_be_used_in_container() raises:
 
     var d = Dict[Second[], Meter[]]()
     d[Second(1)] = Meter(10)
-    assert_equal(d[Second(1)], Meter(10))
+    assert_equal(d.get(Second(1)).value(), Meter(10))
 
 
 def test_zerod_dimension() raises:

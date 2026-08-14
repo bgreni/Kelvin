@@ -1,5 +1,6 @@
 """Force related definitions."""
 
+from kelvin.quantity import *
 from .mass import Kilogram
 from .length import Meter
 from .time import Second

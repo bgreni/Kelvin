@@ -18,7 +18,7 @@ def test_ctor() raises:
     var d = {0}[Width=4](1, 2, 3, 4)
     assert_equal(c, d)
     for i in range(4):
-        assert_equal(c[i], i + 1)
+        assert_equal(c[i], Float64(i + 1))
 
     c[0] = 10
     assert_equal(c[0], 10)
@@ -80,7 +80,7 @@ def test_bool() raises:
 
     if not {0}(10):
         assert_true(False)
-    
+
     if {0}(0):
         assert_true(False)
 

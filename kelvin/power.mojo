@@ -1,5 +1,6 @@
 """Power related definitions."""
 
+from kelvin.quantity import *
 from .energy import Joule
 from .time import Second
 
