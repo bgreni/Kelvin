@@ -1,5 +1,6 @@
 """Velocity related definitions."""
 
+from kelvin.quantity import *
 from .time import Hour, Second
 from .length import Meter, Mile, Kilometer
 

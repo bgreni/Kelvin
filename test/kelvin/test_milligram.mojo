@@ -17,7 +17,7 @@ def test_ctor() raises:
     var d = Milligram[Width=4](1, 2, 3, 4)
     assert_equal(c, d)
     for i in range(4):
-        assert_equal(c[i], i + 1)
+        assert_equal(c[i], Float64(i + 1))
 
     c[0] = 10
     assert_equal(c[0], 10)

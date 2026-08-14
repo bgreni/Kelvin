@@ -1,5 +1,6 @@
 """Pressure related definitions."""
 
+from kelvin.quantity import *
 from .force import Newton
 from .length import Meter
 
