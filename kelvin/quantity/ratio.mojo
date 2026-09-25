@@ -276,11 +276,11 @@ struct Ratio[N: IntLiteral, D: IntLiteral](
             hasher: The hasher to update.
         """
         comptime if Self.D == 0:
-            hasher.update(Int64(0))
-            hasher.update(Int64(0))
+            Int64(0).__hash__(hasher)
+            Int64(0).__hash__(hasher)
         else:
-            hasher.update(Int64(Self.N // Self._GCD))
-            hasher.update(Int64(Self.D // Self._GCD))
+            Int64(Self.N // Self._GCD).__hash__(hasher)
+            Int64(Self.D // Self._GCD).__hash__(hasher)
 
 
 # ===------------------------------------------------------------------=== #

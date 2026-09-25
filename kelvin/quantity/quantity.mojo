@@ -425,9 +425,8 @@ struct Dimensions[
             writer: The writer to write to.
         """
 
-        @parameter
         @always_inline
-        def write[d: Dimension]():
+        def write[d: Dimension]() {mut writer}:
             comptime if d:
                 writer.write(" ", d)
 
@@ -1018,7 +1017,7 @@ struct Quantity[D: Dimensions, DT: DType = DType.float64, Width: Int = 1](
         Args:
             hasher: The hasher to update.
         """
-        return hasher.update(self._value)
+        self._value.__hash__(hasher)
 
     def write_to(self, mut writer: Some[Writer]):
         """Writes the representation of the quantity to the given writer.
