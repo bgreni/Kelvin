@@ -10,7 +10,7 @@ Kelvin is a compile-time dimensional analysis library written in Mojo, inspired 
 
 ```bash
 # Build the package
-pixi run build              # mojo package kelvin -o kelvin.mojopkg
+pixi run build              # mojo precompile kelvin -o kelvin.mojoc
 
 # Run all tests
 pixi run test_all           # runs test, test_reject, and test_ctime

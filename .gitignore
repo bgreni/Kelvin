@@ -6,7 +6,7 @@
 .magic
 
 playground.mojo
-kelvin.mojopkg
+kelvin.mojoc
 .DS_Store
 kgen.trace**
 rocket
